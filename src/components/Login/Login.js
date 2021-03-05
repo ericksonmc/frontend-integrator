@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from '@reach/router';
+import Alert from 'react-bootstrap/Alert';
 import { useAuth } from '../../hook/use-auth';
 
 function Login(props) {
@@ -26,11 +27,13 @@ function Login(props) {
     }
 
     return loading ? (
-        <h1>Loading... {props.token}</h1>
+        <Alert variant="info" className="w-50 m-auto text-center">
+            Login user...
+        </Alert>
     ) : (
-        <>
-            <h1>Loged!</h1>{' '}
-        </>
+        <Alert variant="success" className="w-50 m-auto text-center">
+            Loged!
+        </Alert>
     );
 }
 

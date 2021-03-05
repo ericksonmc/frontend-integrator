@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router } from '@reach/router';
+import Alert from 'react-bootstrap/Alert';
 import { ProvideAuth } from '../hook/use-auth';
 import { ProvideStore } from '../hook/use-store';
 import Login from './Login/Login';
@@ -7,7 +8,11 @@ import PrivateRoute from './PrivateRoute/PrivateRoute';
 import Home from './Home/Home';
 
 function NotFound() {
-    return <h1>Not found</h1>;
+    return (
+        <Alert variant="danger" className="m-auto text-center w-50">
+            Not found
+        </Alert>
+    );
 }
 
 function App() {

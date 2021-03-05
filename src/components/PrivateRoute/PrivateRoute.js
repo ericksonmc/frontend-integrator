@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from '@reach/router';
+import Alert from 'react-bootstrap/Alert';
 import { useAuth } from '../../hook/use-auth';
 
 export default function PrivateRoute(props) {
@@ -10,7 +11,9 @@ export default function PrivateRoute(props) {
     }
 
     return isLoadingFromPersisted ? (
-        <h1>Loading user from persisted token</h1>
+        <Alert variant="info" className="w-50 m-auto text-center">
+            Loading user from persisted token
+        </Alert>
     ) : (
         props.children
     );
