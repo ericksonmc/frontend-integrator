@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext, createContext } from 'react';
 import Auth from '../api/auth';
 import { setAuthToken, deleteAuthToken } from '../util/request';
-import { usePlayer } from './use-player';
+import { useStore } from './use-store';
 
 export const AuthContext = createContext();
 
@@ -17,7 +17,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
     const authTK = getPersistedToken();
-    const { setPlayer } = usePlayer();
+    const { setPlayer, setLotterySetup, setProducts } = useStore();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoadingFromPersisted, setIsLoadingFromPersisted] = useState(!!authTK);
 
@@ -32,11 +32,13 @@ function useProvideAuth() {
             setAuthToken(token);
             setIsLoggedIn(true);
             setIsLoadingFromPersisted(false);
-            return setPlayer(data.player);
+            setPlayer(data.player);
+            setProducts(data.producst);
+            setLotterySetup(data.lottery_setup);
         } catch (e) {
             throw e;
         }
-    }, [setPlayer]);
+    }, [setPlayer, setLotterySetup, setProducts]);
 
     const logout = async () => {
         await Auth.logout();

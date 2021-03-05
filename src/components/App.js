@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from '@reach/router';
 import { ProvideAuth } from '../hook/use-auth';
-import { ProvidePlayer } from '../hook/use-player';
+import { ProvideStore } from '../hook/use-store';
 import Login from './Login/Login';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import Home from './Home/Home';
@@ -12,17 +12,17 @@ function NotFound() {
 
 function App() {
     return (
-        <ProvidePlayer>
+        <ProvideStore>
             <ProvideAuth>
                 <Router>
-                    <NotFound default />
                     <Login path="/login/:token"></Login>
                     <PrivateRoute path="/">
+                        <NotFound default />
                         <Home path="/"></Home>
                     </PrivateRoute>
                 </Router>
             </ProvideAuth>
-        </ProvidePlayer>
+        </ProvideStore>
     );
 }
 

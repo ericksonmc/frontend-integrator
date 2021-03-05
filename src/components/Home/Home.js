@@ -1,8 +1,8 @@
 import React from 'react';
-import { usePlayer } from '../../hook/use-player';
+import { useStore } from '../../hook/use-store';
 
 export default function Home() {
-    const { player } = usePlayer();
+    const { player, products, lotterySetup } = useStore();
 
     return (
         <>
@@ -10,6 +10,14 @@ export default function Home() {
             <div>
                 <h1>Player</h1>
                 <pre>{JSON.stringify(player, null, 2)}</pre>
+            </div>
+            <div>
+                <h1>Products</h1>
+                <pre>{JSON.stringify(products, null, 2)}</pre>
+            </div>
+            <div>
+                <h1>Lottery setup</h1>
+                <pre>{JSON.stringify(lotterySetup, null, 2)}</pre>
             </div>
         </>
     );
