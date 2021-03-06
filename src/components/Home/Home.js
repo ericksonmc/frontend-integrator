@@ -1,26 +1,27 @@
 import React from 'react';
+import styled from 'styled-components';
 import { useStore } from '../../hook/use-store';
 import Lotteries from '../Lotteries/Lotteries';
+import BetBar from '../BetBar/BetBar';
+import Bets from '../Bets/Bets';
+
+const Board = styled.div`
+    display: flex;
+    background-color: ${(props) => props.theme.backgroundColor};
+    color: ${(props) => props.theme.primaryFontColor};
+    padding: 20px;
+`;
 
 export default function Home() {
     const { player, products, lotterySetup } = useStore();
 
     return (
-        <>
-            <h1>Home page</h1>
-            <Lotteries lotteries={products} />
-            <div>
-                <h1>Player</h1>
-                <pre>{JSON.stringify(player, null, 2)}</pre>
+        <Board>
+            <div className="mr-3">
+                <BetBar className="mb-1" />
+                <Lotteries lotteries={products} />
             </div>
-            <div>
-                <h1>Products</h1>
-                <pre>{JSON.stringify(products, null, 2)}</pre>
-            </div>
-            <div>
-                <h1>Lottery setup</h1>
-                <pre>{JSON.stringify(lotterySetup, null, 2)}</pre>
-            </div>
-        </>
+            <Bets />
+        </Board>
     );
 }
