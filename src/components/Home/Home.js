@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Container, Row } from 'react-bootstrap';
 import { useStore } from '../../hook/use-store';
 import Lotteries from '../Lotteries/Lotteries';
 import BetBar from '../BetBar/BetBar';
@@ -16,12 +17,16 @@ export default function Home() {
     const { player, products, lotterySetup } = useStore();
 
     return (
-        <Board>
-            <div className="mr-3">
-                <BetBar className="mb-1" />
-                <Lotteries lotteries={products} />
-            </div>
-            <Bets />
-        </Board>
+        <Container>
+            <Row>
+                <Board>
+                    <div className="mr-3">
+                        <BetBar className="mb-1" />
+                        <Lotteries lotteries={products} />
+                    </div>
+                    <Bets />
+                </Board>
+            </Row>
+        </Container>
     );
 }
