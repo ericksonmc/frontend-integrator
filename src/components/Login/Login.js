@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from '@reach/router';
-import Alert from 'react-bootstrap/Alert';
+import { Alert, Container, Row, Spinner } from 'react-bootstrap';
 import { useAuth } from '../../hook/use-auth';
 
 function Login(props) {
@@ -27,14 +27,21 @@ function Login(props) {
     }
 
     return loading ? (
-        <Alert variant="info" className="w-50 m-auto text-center">
-            Login user...
-        </Alert>
+
+        <Container>
+            <Row className="justify-content-center align-items-center">
+                <Spinner animation="border" />
+            </Row>
+        </Container>
     ) : (
-        <Alert variant="success" className="w-50 m-auto text-center">
-            Loged!
-        </Alert>
-    );
+        <Container>
+            <Row className="justify-content-center align-items-center">
+                <Alert variant="success" className="w-50 m-auto text-center">
+                    Loged!
+                </Alert>
+            </Row>
+        </Container>
+        );
 }
 
 export default Login;
