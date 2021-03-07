@@ -27,9 +27,9 @@ function useProvideAuth() {
 
     const tokenLogin = useCallback(async (token) => {
         try {
-            const data = await Auth.tokenLogin(token);
-            persistToken(token);
             setAuthToken(token);
+            const data = await Auth.tokenLogin();
+            persistToken(token);
             setIsLoggedIn(true);
             setIsLoadingFromPersisted(false);
             setPlayer(data.player);

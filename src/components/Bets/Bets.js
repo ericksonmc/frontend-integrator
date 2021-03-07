@@ -67,6 +67,22 @@ export default function Bets({
     const formatMoney = (number) => {
         return `Bs. ${new Intl.NumberFormat('es-VE').format(number)}`;
     };
+    const total = Object.values(bets).reduce(
+        (memo, curr) => {
+            memo.quantity += curr.j.length;
+            memo.amount += curr.j.reduce(
+                (total, amount) => total + amount.m,
+                0
+            );
+            return memo;
+        },
+        { quantity: 0, amount: 0 }
+    );
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            onAddBets();
+        }
+    };
 
     return (
         <div>
@@ -77,6 +93,7 @@ export default function Bets({
                 <Input
                     value={betAmount}
                     onChange={(e) => setBetAmount(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
             </div>
             <Button
@@ -89,37 +106,53 @@ export default function Bets({
             <div className="mt-1">
                 <BetSection>Jugadas</BetSection>
                 <BetList>
-                    {bets.map((bet, bi) => (
-                        <div key={bi}>
-                            <BetDraw>
-                                {bet.n}{' '}
-                                <TrashIcon
-                                    icon="trash-alt"
-                                    className="ml-auto"
-                                    onClick={() => onDeleteBets(bi)}
-                                />
-                            </BetDraw>
-                            {bet.j.map((j, bj) => (
-                                <BetPlay key={bj}>
-                                    <div>{j.n}</div>
-                                    <div className="flex-fill text-right ml-2">
-                                        {formatMoney(j.m)}
-                                    </div>
+                    {total.quantity > 0 ? (
+                        Object.keys(bets).map((drawId) => (
+                            <div key={drawId}>
+                                <BetDraw>
+                                    {bets[drawId].n}
                                     <TrashIcon
                                         icon="trash-alt"
-                                        className="ml-2"
-                                        onClick={() => onDeleteBets(bi, bj)}
+                                        className="ml-auto"
+                                        onClick={() => onDeleteBets(drawId)}
                                     />
-                                </BetPlay>
-                            ))}
-                        </div>
-                    ))}
+                                </BetDraw>
+                                {bets[drawId].j.map((j, bj) => (
+                                    <BetPlay key={bj}>
+                                        <div>{j.n}</div>
+                                        <div className="flex-fill text-right ml-2">
+                                            {formatMoney(j.m)}
+                                        </div>
+                                        <TrashIcon
+                                            icon="trash-alt"
+                                            className="ml-2"
+                                            onClick={() =>
+                                                onDeleteBets(drawId, bj)
+                                            }
+                                        />
+                                    </BetPlay>
+                                ))}
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-center mt-2 font-weight-normal">
+                            No has agregado ninguna jugada.
+                        </p>
+                    )}
                 </BetList>
-                <BetSection>Jugadas</BetSection>
+                <BetSection className="d-flex">
+                    <div>Jugadas: {total.quantity}</div>
+                    <div className="flex-fill text-right">
+                        Total: {formatMoney(total.amount)}
+                    </div>
+                </BetSection>
             </div>
 
             <div className="d-flex mt-4 justify-content-around">
-                <Button className="btn btn-light btn-sm" onClick={() => onDeleteBets()}>
+                <Button
+                    className="btn btn-light btn-sm"
+                    onClick={() => onDeleteBets()}
+                >
                     Borrar jugadas
                 </Button>
                 <Button className="btn btn-light btn-sm">Comprar</Button>

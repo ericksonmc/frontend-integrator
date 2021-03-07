@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import { useStore } from '../../hook/use-store';
+import { formatMoney, formatNumber } from '../../util/currency';
 import Lotteries from '../Lotteries/Lotteries';
 import BetBar from '../BetBar/BetBar';
 import Bets from '../Bets/Bets';
-
-const MINIMUM_BET = 10000;
 
 const Board = styled.div`
     display: flex;
@@ -15,9 +15,16 @@ const Board = styled.div`
     padding: 20px;
 `;
 
+const showError = (text) => {
+    Swal.fire({
+        title: text,
+        icon: 'error',
+    });
+};
+
 export default function Home() {
     const { player, products, lotterySetup, setProducts } = useStore();
-    const [bets, setBets] = useState([]);
+    const [bets, setBets] = useState({});
     const [playerBet, setPlayerBet] = useState('');
     const [draws, setDraws] = useState([]);
     const [betAmount, setBetAmount] = useState('');
@@ -56,51 +63,61 @@ export default function Home() {
 
     const onAddBets = () => {
         const amount = Number(betAmount);
-        if (Number.isNaN(amount) || amount < MINIMUM_BET) {
-            console.log('minimum bet is ', MINIMUM_BET);
+        if (Number.isNaN(amount) || amount < lotterySetup.mpj) {
+            showError(
+                'El monto minimo por jugada es ' + formatMoney(lotterySetup.mpj)
+            );
+            return;
+        }
+
+        if (amount % lotterySetup.mt > 0) {
+            showError(
+                'La jugada debe ser multiplo de ' +
+                    formatNumber(lotterySetup.mt)
+            );
+            return;
         }
 
         if (playerBet === '') {
-            console.log('you need to make a bet');
+            showError('Ingresa tu jugada');
+            return;
         }
 
         if (Object.keys(draws).length === 0) {
-            console.log('select a draw');
+            showError('Selecciona al menos un sorteo');
+            return;
         }
 
         const betNumbers = playerBet.split('.');
-        const cBets = [...bets];
+        const cBets = { ...bets };
         Object.keys(draws).forEach((drawId) => {
-            const j = [];
+            if (!cBets[drawId]) {
+                cBets[drawId] = { j: [], n: draws[drawId] };
+            }
             betNumbers.forEach((number, index) => {
-                j.push({
+                cBets[drawId].j.push({
                     i: index,
                     n: number,
-                    m: betAmount,
+                    m: amount,
                 });
-            });
-            cBets.push({
-                j,
-                c: drawId,
-                n: draws[drawId],
             });
         });
 
         setBets(cBets);
     };
 
-    const onDeleteBets = (drawIndex = null, numberIndex = null) => {
-        let cBets = [...bets];
-        if (numberIndex != null && drawIndex != null) {
-            cBets[drawIndex].j.splice(numberIndex, 1);
+    const onDeleteBets = (drawId = null, numberIndex = null) => {
+        let cBets = { ...bets };
+        if (numberIndex != null && drawId != null) {
+            cBets[drawId].j.splice(numberIndex, 1);
 
-            if (cBets[drawIndex].j.length === 0) {
-                cBets.splice(drawIndex, 1);
+            if (cBets[drawId].j.length === 0) {
+                delete cBets[drawId];
             }
-        } else if (drawIndex != null) {
-            cBets.splice(drawIndex, 1);
+        } else if (drawId != null) {
+            delete cBets[drawId];
         } else {
-            cBets = [];
+            cBets = {};
         }
         setBets(cBets);
     };
