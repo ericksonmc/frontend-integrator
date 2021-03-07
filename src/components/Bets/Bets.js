@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
+import { formatMoney } from '../../util/currency';
 import Input from '../shared/Input';
 
 const Button = styled.button`
@@ -63,10 +64,8 @@ export default function Bets({
     setBetAmount,
     onAddBets,
     onDeleteBets,
+    onBuyTicket,
 }) {
-    const formatMoney = (number) => {
-        return `Bs. ${new Intl.NumberFormat('es-VE').format(number)}`;
-    };
     const total = Object.values(bets).reduce(
         (memo, curr) => {
             memo.quantity += curr.j.length;
@@ -155,7 +154,9 @@ export default function Bets({
                 >
                     Borrar jugadas
                 </Button>
-                <Button className="btn btn-light btn-sm">Comprar</Button>
+                <Button className="btn btn-light btn-sm" onClick={onBuyTicket}>
+                    Comprar
+                </Button>
             </div>
         </div>
     );

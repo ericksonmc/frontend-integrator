@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import OptionButton from '../shared/OptionButton';
 import Input from '../shared/Input';
@@ -47,8 +47,6 @@ export default function BetBar(props) {
         { name: 'corrida' },
         { name: 'terminal' },
     ];
-
-    const [bets, setBets] = useState('');
 
     return (
         <Bar className={props.className}>

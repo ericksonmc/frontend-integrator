@@ -7,6 +7,7 @@ import { formatMoney, formatNumber } from '../../util/currency';
 import Lotteries from '../Lotteries/Lotteries';
 import BetBar from '../BetBar/BetBar';
 import Bets from '../Bets/Bets';
+import Sales from '../../api/sales';
 
 const Board = styled.div`
     display: flex;
@@ -28,6 +29,17 @@ export default function Home() {
     const [playerBet, setPlayerBet] = useState('');
     const [draws, setDraws] = useState([]);
     const [betAmount, setBetAmount] = useState('');
+    const total = Object.values(bets).reduce(
+        (memo, curr) => {
+            memo.quantity += curr.j.length;
+            memo.amount += curr.j.reduce(
+                (total, amount) => total + amount.m,
+                0
+            );
+            return memo;
+        },
+        { quantity: 0, amount: 0 }
+    );
 
     const onSelectDraw = (lotteryIndex, drawIndex) => {
         const p = [...products];
@@ -96,7 +108,7 @@ export default function Home() {
             }
             betNumbers.forEach((number, index) => {
                 cBets[drawId].j.push({
-                    i: index,
+                    i: index + 1,
                     n: number,
                     m: amount,
                 });
@@ -105,7 +117,6 @@ export default function Home() {
 
         setBets(cBets);
     };
-
     const onDeleteBets = (drawId = null, numberIndex = null) => {
         let cBets = { ...bets };
         if (numberIndex != null && drawId != null) {
@@ -120,6 +131,50 @@ export default function Home() {
             cBets = {};
         }
         setBets(cBets);
+    };
+
+    const onBuyTicket = async () => {
+        if (total.amount < lotterySetup.mmt) {
+            showError(
+                'El monto minimo por ticket es ' + formatMoney(lotterySetup.mmt)
+            );
+            return;
+        }
+
+        if (total.quantity > lotterySetup.jpt) {
+            showError('El maximo de jugadas por ticket es ' + lotterySetup.jpt);
+            return;
+        }
+
+        const result = await Swal.fire({
+            title: 'Confirmar compra',
+            showCancelButton: true,
+            confirmButtonText: 'Comprar',
+            preConfirm: async () => {
+                const today = new Date();
+                return await Sales.sales({
+                    amount: total.amount,
+                    date:
+                        today.getDate().toString().padStart(2, '0') +
+                        '/' +
+                        (today.getMonth() + 1).toString().padStart(2, '0') +
+                        '/' +
+                        today.getFullYear(),
+                    ced: player.cedula,
+                    email: player.email,
+                    bets: Object.keys(bets).map((drawId) => {
+                        return { c: drawId, j: bets[drawId].j };
+                    }),
+                });
+            },
+        });
+
+
+        if (result.isConfirmed) {
+            setBets({});
+            setBetAmount('');
+            setPlayerBet('');
+        }
     };
 
     return (
@@ -145,6 +200,7 @@ export default function Home() {
                         setBetAmount={setBetAmount}
                         onAddBets={onAddBets}
                         onDeleteBets={onDeleteBets}
+                        onBuyTicket={onBuyTicket}
                     />
                 </Board>
             </Row>
