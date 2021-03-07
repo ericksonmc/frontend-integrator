@@ -60,8 +60,8 @@ export default function BetBar(props) {
                     id="bets"
                     className="ml-1 flex-fill"
                     placeholder="Separe las jugadas con punto ."
-                    value={bets}
-                    onChange={(e) => setBets(e.target.value)}
+                    value={props.playerBet}
+                    onChange={(e) => props.setPlayerBet(e.target.value)}
                 />
             </div>
             <div className="d-flex flex-fill ml-5">

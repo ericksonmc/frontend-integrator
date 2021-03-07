@@ -32,7 +32,7 @@ const Button = styled.div`
 
 export default function OptionButton(props) {
     return (
-        <Button className={props.className}>
+        <Button {...props} className={props.className}>
             <div>{props.children}</div>
         </Button>
     );

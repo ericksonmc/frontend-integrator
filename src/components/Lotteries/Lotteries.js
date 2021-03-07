@@ -10,10 +10,13 @@ const LotteryButton = styled(OptionButton)`
 `;
 const DrawButton = styled(OptionButton)`
     min-width: 68px;
-    flex-shrink: 0
+    flex-shrink: 0;
+    background-color: ${(props) =>
+        props.active ? props.theme.secondaryBackgroundColor : '#fff'};
+    color: ${(props) => (props.active ? '#fff' : '#656464')};
 `;
 
-function LotteryDetail({ lottery }) {
+function LotteryDetail({ lottery, onSelectDraw, onToggleDraws }) {
     const formatTime = (t) => {
         if (!t) {
             return '-';
@@ -29,9 +32,14 @@ function LotteryDetail({ lottery }) {
 
     return (
         <div className="d-flex flex-wrap">
-            <LotteryButton className="mr-2">{lottery.nombre}</LotteryButton>
-            {lottery.sorteos.map((draw) => (
-                <DrawButton className="ml-1" key={draw.id}>
+            <LotteryButton className="mr-2" onClick={onToggleDraws}>{lottery.nombre}</LotteryButton>
+            {lottery.sorteos.map((draw, index) => (
+                <DrawButton
+                    className="ml-1"
+                    key={draw.id}
+                    active={draw.selected}
+                    onClick={() => onSelectDraw(index)}
+                >
                     <div>{draw.nombre}</div>
                     <div>{formatTime(draw.horac_ls)}</div>
                 </DrawButton>
@@ -40,15 +48,24 @@ function LotteryDetail({ lottery }) {
     );
 }
 
-export default function Lotteries({ lotteries = [] }) {
+export default function Lotteries({
+    lotteries = [],
+    onSelectDraw,
+    onToggleDraws,
+}) {
     if (lotteries == null) {
         return null;
     }
 
     return (
         <div className="d-flex flex-column">
-            {lotteries.map((l) => (
-                <LotteryDetail key={l.id} lottery={l} />
+            {lotteries.map((l, index) => (
+                <LotteryDetail
+                    key={l.id}
+                    lottery={l}
+                    onSelectDraw={(drawIndex) => onSelectDraw(index, drawIndex)}
+                    onToggleDraws={() => onToggleDraws(index)}
+                />
             ))}
         </div>
     );

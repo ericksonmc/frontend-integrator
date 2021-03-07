@@ -4,6 +4,7 @@ import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './fontawesome';
 
 ReactDOM.render(
   <React.StrictMode>
