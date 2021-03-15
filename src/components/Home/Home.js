@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Link, Router } from '@reach/router';
 import { Container, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useStore } from '../../hook/use-store';
 import { formatMoney, formatNumber } from '../../util/currency';
-import Lotteries from '../Lotteries/Lotteries';
+import Triples from '../Triples/Triples';
+import Animals from '../Animals/Animals';
 import Bets from '../Bets/Bets';
 import Sales from '../../api/sales';
 import './Home_styles.scss';
@@ -176,24 +178,35 @@ export default function Home() {
 
     return (
         <Container fluid className="home-container p-1 overflow-hidden">
-            <Row>
-                <div className="home-nav w-100 d-flex">
-                    <div className="ml-auto p-3">
-                        Saldo: {formatMoney(playerBalance)}
-                    </div>
-                </div>
+            <Row className="px-4">
+                <Col className="d-flex align-items-center">
+                    <Link to="triples" className="btn btn-light">
+                        Triples
+                    </Link>
+                    <Link to="animalitos" className="btn btn-light ml-3">
+                        Animalitos
+                    </Link>
+                </Col>
+                <Col className="col-auto p-3">
+                    Saldo: {formatMoney(playerBalance)}
+                </Col>
             </Row>
             <Row>
                 <Col>
                     <div className="home-board p-3">
-                        <Lotteries
-                            lotteries={products}
-                            draws={draws}
-                            onSelectDraw={onSelectDraw}
-                            onToggleDraws={onToggleDraws}
-                            playerBet={playerBet}
-                            setPlayerBet={setPlayerBet}
-                        />
+                        <Router>
+                            <Triples
+                                default
+                                path="triples"
+                                lotteries={products}
+                                draws={draws}
+                                onSelectDraw={onSelectDraw}
+                                onToggleDraws={onToggleDraws}
+                                playerBet={playerBet}
+                                setPlayerBet={setPlayerBet}
+                            />
+                            <Animals path="animalitos"></Animals>
+                        </Router>
                     </div>
                 </Col>
                 <Col className="col-auto">

@@ -25,7 +25,7 @@ function App() {
                         <Login path="/login/:token"></Login>
                         <PrivateRoute path="/">
                             <NotFound default />
-                            <Home path="/"></Home>
+                            <Home path="/*"></Home>
                         </PrivateRoute>
                     </Router>
                 </ProvideTheme>

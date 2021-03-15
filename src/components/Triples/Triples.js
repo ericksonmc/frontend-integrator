@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import Input from '../shared/Input/Input';
-import './Lotteries_styles.scss';
+import './Triples_styles.scss';
 
 function LotteryDetail({ lottery, onSelectDraw, onToggleDraws }) {
     const formatTime = (t) => {
@@ -34,7 +34,7 @@ function LotteryDetail({ lottery, onSelectDraw, onToggleDraws }) {
     );
 }
 
-export default function Lotteries({
+export default function Triples({
     lotteries = [],
     onSelectDraw,
     onToggleDraws,
