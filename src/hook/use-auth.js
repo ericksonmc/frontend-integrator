@@ -17,7 +17,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
     const authTK = getPersistedToken();
-    const { setPlayer, setLotterySetup, setProducts } = useStore();
+    const { setPlayer, setLotterySetup, setProducts, setPlayerBalance } = useStore();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoadingFromPersisted, setIsLoadingFromPersisted] = useState(!!authTK);
 
@@ -35,10 +35,11 @@ function useProvideAuth() {
             setPlayer(data.player);
             setProducts(data.producst);
             setLotterySetup(data.lottery_setup);
+            setPlayerBalance(data.saldo_actual);
         } catch (e) {
             throw e;
         }
-    }, [setPlayer, setLotterySetup, setProducts]);
+    }, [setPlayer, setLotterySetup, setProducts, setPlayerBalance]);
 
     const logout = async () => {
         await Auth.logout();

@@ -1,0 +1,11 @@
+@import '../../styles/colors';
+
+.lotteries {
+    &-draw-button {
+        min-width: 68px;
+        flex-shrink: 0;
+        background-color: $bg-option-button;
+        color: $text-option-button;
+        cursor: pointer;
+    }
+}

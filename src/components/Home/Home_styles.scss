@@ -1,0 +1,12 @@
+@import '../../styles/colors';
+
+.home {
+    &-container {
+        background-color: $bg-sections;
+        color: $text-white;
+    }
+
+    &-board {
+        background-color: $bg-nav;
+    }
+}

@@ -1,62 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
+import { Button } from 'react-bootstrap';
 import { formatMoney } from '../../util/currency';
-import Input from '../shared/Input';
-
-const Button = styled.button`
-    color: ${(props) => props.theme.buttonFontColor};
-`;
-const Border = styled.div`
-    border-width: 2px;
-    border-style: solid;
-    border-image: linear-gradient(
-            90deg,
-            #dfa54d,
-            #472714 14%,
-            #8d5924 25%,
-            #eabe69 36%,
-            #f9f290 46%,
-            #ae7936 65%,
-            #6a4421 81%,
-            #a77c2f 92%,
-            #674220
-        )
-        100% 1;
-    border-image-slice: 1;
-`;
-const BetSection = styled(Border)`
-    color: ${(props) => props.theme.buttonFontColor};
-    background-color: #fff;
-    padding: 5px 10px;
-`;
-const BetList = styled(Border)`
-    color: #000;
-    height: 296px;
-    overflow-y: auto;
-    background-color: #dfdede;
-    font-size: 12px;
-    font-weight: 600;
-}
-`;
-const BetDraw = styled.div`
-    display: flex;
-    color: #b71103;
-    margin: 0 5px;
-    padding-top: 8px;
-`;
-const BetPlay = styled.div`
-    display: flex;
-    color: #06639e;
-    padding: 8px 10px;
-    margin-top: 1px;
-    background-color: #fff;
-`;
-
-const TrashIcon = styled(FontAwesomeIcon)`
-    color: #b71103;
-    cursor: pointer;
-`;
+import Input from '../shared/Input/Input';
+import './Bets_styles.scss';
 
 export default function Bets({
     bets,
@@ -65,6 +12,7 @@ export default function Bets({
     onAddBets,
     onDeleteBets,
     onBuyTicket,
+    ...props
 }) {
     const total = Object.values(bets).reduce(
         (memo, curr) => {
@@ -84,7 +32,7 @@ export default function Bets({
     };
 
     return (
-        <div>
+        <div className={props.className}>
             <div className="d-flex align-items-center">
                 <label htmlFor="amount" className="mb-0 mr-4">
                     Monto
@@ -95,41 +43,38 @@ export default function Bets({
                     onKeyDown={handleKeyDown}
                 />
             </div>
-            <Button
-                className="btn btn-light btn-block mt-4"
-                onClick={onAddBets}
-            >
+            <Button block className="mt-4" variant="light" onClick={onAddBets}>
                 Agregar Jugadas
             </Button>
 
             <div className="mt-1">
-                <BetSection>Jugadas</BetSection>
-                <BetList>
+                <div className="bg-light text-dark p-1">Jugadas</div>
+                <div className="bets-list">
                     {total.quantity > 0 ? (
                         Object.keys(bets).map((drawId) => (
                             <div key={drawId}>
-                                <BetDraw>
+                                <div className="bets-draw">
                                     {bets[drawId].n}
-                                    <TrashIcon
+                                    <FontAwesomeIcon
                                         icon="trash-alt"
-                                        className="ml-auto"
+                                        className="bets-trash-icon ml-auto"
                                         onClick={() => onDeleteBets(drawId)}
                                     />
-                                </BetDraw>
+                                </div>
                                 {bets[drawId].j.map((j, bj) => (
-                                    <BetPlay key={bj}>
+                                    <div className="bets-play" key={bj}>
                                         <div>{j.n}</div>
                                         <div className="flex-fill text-right ml-2">
                                             {formatMoney(j.m)}
                                         </div>
-                                        <TrashIcon
+                                        <FontAwesomeIcon
                                             icon="trash-alt"
-                                            className="ml-2"
+                                            className="bets-trash-icon ml-2"
                                             onClick={() =>
                                                 onDeleteBets(drawId, bj)
                                             }
                                         />
-                                    </BetPlay>
+                                    </div>
                                 ))}
                             </div>
                         ))
@@ -138,23 +83,24 @@ export default function Bets({
                             No has agregado ninguna jugada.
                         </p>
                     )}
-                </BetList>
-                <BetSection className="d-flex">
+                </div>
+                <div className="d-flex bg-light text-dark p-1">
                     <div>Jugadas: {total.quantity}</div>
                     <div className="flex-fill text-right">
                         Total: {formatMoney(total.amount)}
                     </div>
-                </BetSection>
+                </div>
             </div>
 
             <div className="d-flex mt-4 justify-content-around">
                 <Button
-                    className="btn btn-light btn-sm"
+                    variant="light"className="btn btn-light btn-sm"
+                    size="sm"
                     onClick={() => onDeleteBets()}
                 >
                     Borrar jugadas
                 </Button>
-                <Button className="btn btn-light btn-sm" onClick={onBuyTicket}>
+                <Button variant="light" size="sm" onClick={onBuyTicket}>
                     Comprar
                 </Button>
             </div>

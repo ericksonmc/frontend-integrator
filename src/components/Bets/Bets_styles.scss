@@ -1,0 +1,30 @@
+.bets {
+    &-list {
+        color: #000;
+        height: 296px;
+        overflow-y: auto;
+        background-color: #dfdede;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    &-draw {
+        display: flex;
+        color: #b71103;
+        margin: 0 5px;
+        padding-top: 8px;
+    }
+
+    &-play {
+        display: flex;
+        color: #06639e;
+        padding: 8px 10px;
+        margin-top: 1px;
+        background-color: #fff;
+    }
+
+    &-trash-icon {
+        color: #b71103;
+        cursor: pointer;
+    }
+}

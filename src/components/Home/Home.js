@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useStore } from '../../hook/use-store';
 import { formatMoney, formatNumber } from '../../util/currency';
 import Lotteries from '../Lotteries/Lotteries';
-import BetBar from '../BetBar/BetBar';
 import Bets from '../Bets/Bets';
 import Sales from '../../api/sales';
-
-const Board = styled.div`
-    display: flex;
-    background-color: ${(props) => props.theme.backgroundColor};
-    color: ${(props) => props.theme.primaryFontColor};
-    padding: 20px;
-`;
+import './Home_styles.scss';
 
 const showError = (text) => {
     Swal.fire({
@@ -24,7 +16,13 @@ const showError = (text) => {
 };
 
 export default function Home() {
-    const { player, products, lotterySetup, setProducts } = useStore();
+    const {
+        player,
+        products,
+        lotterySetup,
+        playerBalance,
+        setProducts,
+    } = useStore();
     const [bets, setBets] = useState({});
     const [playerBet, setPlayerBet] = useState('');
     const [draws, setDraws] = useState([]);
@@ -169,7 +167,6 @@ export default function Home() {
             },
         });
 
-
         if (result.isConfirmed) {
             setBets({});
             setBetAmount('');
@@ -178,23 +175,30 @@ export default function Home() {
     };
 
     return (
-        <Container>
+        <Container fluid className="home-container p-1 overflow-hidden">
             <Row>
-                <Board>
-                    <div className="mr-3">
-                        <BetBar
-                            className="mb-1"
-                            playerBet={playerBet}
-                            setPlayerBet={setPlayerBet}
-                        />
+                <div className="home-nav w-100 d-flex">
+                    <div className="ml-auto p-3">
+                        Saldo: {formatMoney(playerBalance)}
+                    </div>
+                </div>
+            </Row>
+            <Row>
+                <Col>
+                    <div className="home-board p-3">
                         <Lotteries
                             lotteries={products}
                             draws={draws}
                             onSelectDraw={onSelectDraw}
                             onToggleDraws={onToggleDraws}
+                            playerBet={playerBet}
+                            setPlayerBet={setPlayerBet}
                         />
                     </div>
+                </Col>
+                <Col className="col-auto">
                     <Bets
+                        className="p-3"
                         bets={bets}
                         betAmount={betAmount}
                         setBetAmount={setBetAmount}
@@ -202,7 +206,7 @@ export default function Home() {
                         onDeleteBets={onDeleteBets}
                         onBuyTicket={onBuyTicket}
                     />
-                </Board>
+                </Col>
             </Row>
         </Container>
     );

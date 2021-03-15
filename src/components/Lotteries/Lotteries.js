@@ -1,20 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import OptionButton from '../shared/OptionButton';
-
-const LotteryButton = styled(OptionButton)`
-    color: ${(props) => props.theme.buttonFontColor};
-    min-width: 130px;
-    text-transform: uppercase;
-    flex-shrink: 0;
-`;
-const DrawButton = styled(OptionButton)`
-    min-width: 68px;
-    flex-shrink: 0;
-    background-color: ${(props) =>
-        props.active ? props.theme.secondaryBackgroundColor : '#fff'};
-    color: ${(props) => (props.active ? '#fff' : '#656464')};
-`;
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import Input from '../shared/Input/Input';
+import './Lotteries_styles.scss';
 
 function LotteryDetail({ lottery, onSelectDraw, onToggleDraws }) {
     const formatTime = (t) => {
@@ -31,18 +18,17 @@ function LotteryDetail({ lottery, onSelectDraw, onToggleDraws }) {
     };
 
     return (
-        <div className="d-flex flex-wrap">
-            <LotteryButton className="mr-2" onClick={onToggleDraws}>{lottery.nombre}</LotteryButton>
+        <div className="d-flex justify-content-between mt-3">
             {lottery.sorteos.map((draw, index) => (
-                <DrawButton
-                    className="ml-1"
+                <Button
                     key={draw.id}
+                    variant={draw.selected ? 'primary' : 'light'}
                     active={draw.selected}
                     onClick={() => onSelectDraw(index)}
                 >
                     <div>{draw.nombre}</div>
                     <div>{formatTime(draw.horac_ls)}</div>
-                </DrawButton>
+                </Button>
             ))}
         </div>
     );
@@ -52,21 +38,52 @@ export default function Lotteries({
     lotteries = [],
     onSelectDraw,
     onToggleDraws,
+    playerBet,
+    setPlayerBet,
 }) {
-    if (lotteries == null) {
+    const [lotteryIndex, setLotteryIndex] = useState(0);
+
+    if (lotteries === null || lotteries[lotteryIndex] === null) {
         return null;
     }
 
     return (
-        <div className="d-flex flex-column">
-            {lotteries.map((l, index) => (
+        <div className="d-flex">
+            <div>
+                {lotteries.map((l, index) => (
+                    <Button
+                        block
+                        key={index}
+                        className="d-block"
+                        variant={lotteryIndex === index ? 'primary' : 'light'}
+                        onClick={() => setLotteryIndex(index)}
+                    >
+                        {l.nombre}
+                    </Button>
+                ))}
+            </div>
+            <div className="ml-3 flex-fill">
+                <div className="d-flex align-items-center flex-wrap p-3">
+                    <label htmlFor="bets" className="m-0">
+                        Ingresa su jugada
+                    </label>
+                    <Input
+                        id="bets"
+                        className="ml-1 w-50"
+                        placeholder="Separe las jugadas con punto ."
+                        value={playerBet}
+                        onChange={(e) => setPlayerBet(e.target.value)}
+                    />
+                </div>
+
                 <LotteryDetail
-                    key={l.id}
-                    lottery={l}
-                    onSelectDraw={(drawIndex) => onSelectDraw(index, drawIndex)}
-                    onToggleDraws={() => onToggleDraws(index)}
+                    lottery={lotteries[lotteryIndex]}
+                    onSelectDraw={(drawIndex) =>
+                        onSelectDraw(lotteryIndex, drawIndex)
+                    }
+                    onToggleDraws={() => onToggleDraws()}
                 />
-            ))}
+            </div>
         </div>
     );
 }
