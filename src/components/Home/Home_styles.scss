@@ -4,9 +4,11 @@
     &-container {
         background-color: $bg-sections;
         color: $text-white;
+        height: 100%;
     }
 
     &-board {
         background-color: $bg-nav;
+        height: calc(100% - 56px);
     }
 }

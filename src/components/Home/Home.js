@@ -41,9 +41,9 @@ export default function Home() {
         { quantity: 0, amount: 0 }
     );
 
-    const onSelectDraw = (lotteryIndex, drawIndex) => {
-        const p = [...products];
-        const draw = p[lotteryIndex]['sorteos'][drawIndex];
+    const onSelectDraw = (product, lotteryIndex, drawIndex) => {
+        const p = { ...products };
+        const draw = p[product][lotteryIndex]['sorteos'][drawIndex];
         draw.selected = !draw.selected;
 
         const cDraws = { ...draws };
@@ -54,22 +54,6 @@ export default function Home() {
         }
         setDraws(cDraws);
 
-        setProducts(p);
-    };
-    const onToggleDraws = (lotteryIndex) => {
-        const p = [...products];
-        const cDraws = { ...draws };
-
-        p[lotteryIndex].sorteos.forEach((draw) => {
-            draw.selected = !draw.selected;
-            if (draw.selected) {
-                cDraws[draw.id] = draw.nombre_largo;
-            } else {
-                delete cDraws[draw.id];
-            }
-        });
-
-        setDraws(cDraws);
         setProducts(p);
     };
 
@@ -176,6 +160,13 @@ export default function Home() {
         }
     };
 
+    const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
+        onSelectDraw('triples', lotteryIndex, drawIndex);
+    };
+    const handleSelectAnimalitosDraw = (lotteryIndex, drawIndex) => {
+        onSelectDraw('animalitos', lotteryIndex, drawIndex);
+    };
+
     return (
         <Container fluid className="home-container p-1 overflow-hidden">
             <Row className="px-4">
@@ -191,21 +182,24 @@ export default function Home() {
                     Saldo: {formatMoney(playerBalance)}
                 </Col>
             </Row>
-            <Row>
-                <Col>
+            <Row className="h-100">
+                <Col className="h-100">
                     <div className="home-board p-3">
-                        <Router>
+                        <Router className="h-100">
                             <Triples
                                 default
                                 path="triples"
-                                lotteries={products}
+                                lotteries={products.triples}
                                 draws={draws}
-                                onSelectDraw={onSelectDraw}
-                                onToggleDraws={onToggleDraws}
+                                onSelectDraw={handleSelectTriplesDraw}
                                 playerBet={playerBet}
                                 setPlayerBet={setPlayerBet}
                             />
-                            <Animals path="animalitos"></Animals>
+                            <Animals
+                                path="animalitos"
+                                lotteries={products.animalitos}
+                                onSelectDraw={handleSelectAnimalitosDraw}
+                            ></Animals>
                         </Router>
                     </div>
                 </Col>

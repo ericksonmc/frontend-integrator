@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router } from '@reach/router';
 import Alert from 'react-bootstrap/Alert';
-import { ProvideTheme } from '../hook/use-theme';
 import { ProvideAuth } from '../hook/use-auth';
 import { ProvideStore } from '../hook/use-store';
 import Login from './Login/Login';
@@ -20,15 +19,13 @@ function App() {
     return (
         <ProvideStore>
             <ProvideAuth>
-                <ProvideTheme>
-                    <Router>
-                        <Login path="/login/:token"></Login>
-                        <PrivateRoute path="/">
-                            <NotFound default />
-                            <Home path="/*"></Home>
-                        </PrivateRoute>
-                    </Router>
-                </ProvideTheme>
+                <Router>
+                    <Login path="/login/:token"></Login>
+                    <PrivateRoute path="/">
+                        <NotFound default />
+                        <Home path="/*"></Home>
+                    </PrivateRoute>
+                </Router>
             </ProvideAuth>
         </ProvideStore>
     );

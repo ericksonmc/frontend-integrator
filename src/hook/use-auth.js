@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext, createContext } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useContext,
+    createContext,
+} from 'react';
 import Auth from '../api/auth';
 import { setAuthToken, deleteAuthToken } from '../util/request';
 import { useStore } from './use-store';
@@ -17,29 +23,42 @@ export const useAuth = () => {
 
 function useProvideAuth() {
     const authTK = getPersistedToken();
-    const { setPlayer, setLotterySetup, setProducts, setPlayerBalance } = useStore();
+    const {
+        setPlayer,
+        setLotterySetup,
+        setProducts,
+        setPlayerBalance,
+    } = useStore();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoadingFromPersisted, setIsLoadingFromPersisted] = useState(!!authTK);
+    const [isLoadingFromPersisted, setIsLoadingFromPersisted] = useState(
+        !!authTK
+    );
 
     if (authTK != null) {
         setAuthToken(authTK);
     }
 
-    const tokenLogin = useCallback(async (token) => {
-        try {
-            setAuthToken(token);
-            const data = await Auth.tokenLogin();
-            persistToken(token);
-            setIsLoggedIn(true);
-            setIsLoadingFromPersisted(false);
-            setPlayer(data.player);
-            setProducts(data.producst);
-            setLotterySetup(data.lottery_setup);
-            setPlayerBalance(data.saldo_actual);
-        } catch (e) {
-            throw e;
-        }
-    }, [setPlayer, setLotterySetup, setProducts, setPlayerBalance]);
+    const tokenLogin = useCallback(
+        async (token) => {
+            try {
+                setAuthToken(token);
+                const data = await Auth.tokenLogin();
+                persistToken(token);
+                setIsLoggedIn(true);
+                setIsLoadingFromPersisted(false);
+                setPlayer(data.player);
+                setProducts({
+                    triples: data.triples,
+                    animalitos: data.animalitos,
+                });
+                setLotterySetup(data.lottery_setup);
+                setPlayerBalance(data.saldo_actual);
+            } catch (e) {
+                throw e;
+            }
+        },
+        [setPlayer, setLotterySetup, setProducts, setPlayerBalance]
+    );
 
     const logout = async () => {
         await Auth.logout();

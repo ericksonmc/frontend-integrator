@@ -5,7 +5,9 @@ export const StoreContext = createContext();
 export function ProvideStore({ children }) {
     const store = useProvideStore();
 
-    return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
+    return (
+        <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+    );
 }
 
 export const useStore = () => {
@@ -14,7 +16,10 @@ export const useStore = () => {
 
 function useProvideStore() {
     const [player, setPlayer] = useState(null);
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState({
+        triples: null,
+        animalitos: null,
+    });
     const [lotterySetup, setLotterySetup] = useState(null);
     const [playerBalance, setPlayerBalance] = useState(0);
 
