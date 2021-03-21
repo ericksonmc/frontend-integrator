@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import Input from '../shared/Input/Input';
+import Bets from '../Bets/Bets';
+import useBets from '../../hook/use-bets';
 import './Triples_styles.scss';
 
-function LotteryDetail({ lottery, onSelectDraw }) {
+function LotteryDetail({ lottery, draws, onSelectDraw }) {
     const formatTime = (t) => {
         if (!t) {
             return '-';
@@ -37,9 +39,8 @@ function LotteryDetail({ lottery, onSelectDraw }) {
                 <Button
                     className="triples-draw-button p-3 rounded-0 m-1"
                     key={draw.id}
-                    variant={draw.selected ? 'primary' : 'light'}
-                    active={draw.selected}
-                    disabled={isEnabled(draw.horac)}
+                    variant={!!draws[draw.id] ? 'primary' : 'light'}
+                    disabled={!isEnabled(draw.horac)}
                     onClick={() => onSelectDraw(index)}
                 >
                     <div>{draw.nombre}</div>
@@ -50,21 +51,30 @@ function LotteryDetail({ lottery, onSelectDraw }) {
     );
 }
 
-export default function Triples({
-    lotteries = [],
-    onSelectDraw,
-    playerBet,
-    setPlayerBet,
-}) {
+export default function Triples({ lotteries = [] }) {
+    const [playerBet, setPlayerBet] = useState('');
     const [lotteryIndex, setLotteryIndex] = useState(0);
+    const {
+        bets,
+        draws,
+        handleAddBets,
+        handleDeleteBets,
+        handleBuyTicket,
+        handleSelectDraw,
+    } = useBets();
+    const [betAmount, setBetAmount] = useState('');
+
+    const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
+        handleSelectDraw('triples', lotteryIndex, drawIndex);
+    };
 
     if (lotteries === null || lotteries[lotteryIndex] === null) {
         return null;
     }
 
     return (
-        <Row className="d-flex">
-            <Col lg="auto">
+        <Row>
+            <Col lg="2">
                 {lotteries.map((l, index) => (
                     <Button
                         block
@@ -77,7 +87,7 @@ export default function Triples({
                     </Button>
                 ))}
             </Col>
-            <Col className="ml-3">
+            <Col lg="7">
                 <div className="d-flex align-items-center flex-wrap p-3">
                     <label htmlFor="bets" className="m-0">
                         Ingresa su jugada
@@ -92,10 +102,23 @@ export default function Triples({
                 </div>
 
                 <LotteryDetail
+                    draws={draws}
                     lottery={lotteries[lotteryIndex]}
                     onSelectDraw={(drawIndex) =>
-                        onSelectDraw(lotteryIndex, drawIndex)
+                        handleSelectTriplesDraw(lotteryIndex, drawIndex)
                     }
+                />
+            </Col>
+            <Col lg="3">
+                <Bets
+                    className="p-3"
+                    bets={bets}
+                    betAmount={betAmount}
+                    getBetDisplayName={(n) => n}
+                    setBetAmount={setBetAmount}
+                    onAddBets={() => handleAddBets(betAmount, playerBet, draws)}
+                    onDeleteBets={handleDeleteBets}
+                    onBuyTicket={handleBuyTicket}
                 />
             </Col>
         </Row>

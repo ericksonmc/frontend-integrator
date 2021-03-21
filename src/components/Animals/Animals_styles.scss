@@ -1,4 +1,9 @@
 .animals {
+    &-draws-list {
+        max-height: 300px;
+        overflow: auto;
+    }
+
     &-option-button {
         width: 120px;
         height: 88px;

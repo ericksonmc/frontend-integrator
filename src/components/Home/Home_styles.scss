@@ -11,4 +11,14 @@
         background-color: $bg-nav;
         height: calc(100% - 56px);
     }
+
+    &-nav-button {
+        min-width: 110px;
+
+        &.active {
+            background-color: #182171 !important;
+            border-color: #182171 !important;
+            color: #fff !important;
+        }
+    }
 }

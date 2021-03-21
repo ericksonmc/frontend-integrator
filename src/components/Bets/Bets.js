@@ -9,6 +9,7 @@ export default function Bets({
     bets,
     betAmount,
     setBetAmount,
+    getBetDisplayName,
     onAddBets,
     onDeleteBets,
     onBuyTicket,
@@ -63,7 +64,7 @@ export default function Bets({
                                 </div>
                                 {bets[drawId].j.map((j, bj) => (
                                     <div className="bets-play" key={bj}>
-                                        <div>{j.n}</div>
+                                        <div>{getBetDisplayName(j.n)}</div>
                                         <div className="flex-fill text-right ml-2">
                                             {formatMoney(j.m)}
                                         </div>
