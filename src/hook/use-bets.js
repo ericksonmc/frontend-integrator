@@ -25,14 +25,17 @@ function useBets() {
         const cDraws = { ...draws };
 
         if (!cDraws.hasOwnProperty(draw.id)) {
-            cDraws[draw.id] = draw.nombre_largo;
+            cDraws[draw.id] = {
+                name: draw.nombre_largo,
+                comodin: draw.comodin,
+            };
         } else {
             delete cDraws[draw.id];
         }
 
         setDraws(cDraws);
     };
-    const handleAddBets = (betAmount, playerBet, draws) => {
+    const handleAddBets = (betAmount, playerBet, draws, signs = []) => {
         const amount = Number(betAmount);
         if (Number.isNaN(amount) || amount < lotterySetup.monto_por_jugada) {
             showError(
@@ -65,14 +68,26 @@ function useBets() {
         let i = 0;
         Object.keys(draws).forEach((drawId) => {
             if (!cBets[drawId]) {
-                cBets[drawId] = { j: [], n: draws[drawId] };
+                cBets[drawId] = { j: [], n: draws[drawId].name };
             }
-            betNumbers.forEach((number, index) => {
-                cBets[drawId].j.push({
-                    i: i++,
-                    n: number,
-                    m: amount,
-                });
+            betNumbers.forEach((number) => {
+                if (draws[drawId].comodin) {
+                    signs.forEach((s) => {
+                        cBets[drawId].j.push({
+                            i: i++,
+                            n: number,
+                            m: amount,
+                            s: s,
+                        });
+                    });
+                } else {
+                    cBets[drawId].j.push({
+                        i: i++,
+                        n: number,
+                        m: amount,
+                        s: 0,
+                    });
+                }
             });
         });
 

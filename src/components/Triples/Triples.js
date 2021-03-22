@@ -4,6 +4,8 @@ import Input from '../shared/Input/Input';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
 import TicketModal from '../TicketModal/TicketModal';
+import ZodiacSignsModal from '../ZodiacSignsModal/ZodiacSignsModal';
+
 import './Triples_styles.scss';
 
 function LotteryDetail({ lottery, draws, onSelectDraw }) {
@@ -41,7 +43,7 @@ function LotteryDetail({ lottery, draws, onSelectDraw }) {
                     className="triples-draw-button p-3 rounded-0 m-1"
                     key={draw.id}
                     variant={!!draws[draw.id] ? 'primary' : 'light'}
-                    disabled={!isEnabled(draw.horac)}
+                    disabled={isEnabled(draw.horac)}
                     onClick={() => onSelectDraw(index)}
                 >
                     <div>{draw.nombre}</div>
@@ -65,6 +67,7 @@ export default function Triples({ lotteries = [] }) {
     } = useBets();
     const [betAmount, setBetAmount] = useState('');
     const [ticket, setTicket] = useState('');
+    const [showZodiacModal, setShowZodialModal] = useState(false);
 
     const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
         handleSelectDraw('triples', lotteryIndex, drawIndex);
@@ -75,6 +78,28 @@ export default function Triples({ lotteries = [] }) {
             const res = await handleBuyTicket(bets);
             setTicket(res.ticket);
         } catch (error) {}
+    };
+
+    const handleAddTriplesBets = () => {
+        const hasComodin = lotteries.some((l) => {
+            return l.sorteos.some((s) => {
+                if (draws[s.id]) {
+                    return s.comodin;
+                }
+
+                return false;
+            });
+        });
+
+        if (hasComodin) {
+            return setShowZodialModal(true);
+        }
+
+        handleAddBets(betAmount, playerBet, draws);
+    };
+    const handleSelectZodiacSigns = (signs) => {
+        setShowZodialModal(false);
+        handleAddBets(betAmount, playerBet, draws, signs);
     };
 
     if (lotteries === null || lotteries[lotteryIndex] === null) {
@@ -125,7 +150,7 @@ export default function Triples({ lotteries = [] }) {
                     betAmount={betAmount}
                     getBetDisplayName={(n) => n}
                     setBetAmount={setBetAmount}
-                    onAddBets={() => handleAddBets(betAmount, playerBet, draws)}
+                    onAddBets={handleAddTriplesBets}
                     onDeleteBets={handleDeleteBets}
                     onBuyTicket={handleBuyTriples}
                 />
@@ -135,6 +160,13 @@ export default function Triples({ lotteries = [] }) {
                 ticket={ticket}
                 onClose={() => setTicket('')}
             ></TicketModal>
+            {showZodiacModal && (
+                <ZodiacSignsModal
+                    show={showZodiacModal}
+                    onClose={handleSelectZodiacSigns}
+                    onCancel={() => setShowZodialModal(false)}
+                ></ZodiacSignsModal>
+            )}
         </Row>
     );
 }

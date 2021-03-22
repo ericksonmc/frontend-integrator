@@ -1,0 +1,16 @@
+.zodial-signs-modal {
+    &-header,
+    &-footer {
+        background-color: #182171;
+        color: white;
+        border-radius: 0 !important;
+    }
+
+    &-body {
+        background-color: #324198;
+    }
+    
+    &-button {
+        flex-basis: 30%;
+    }
+}

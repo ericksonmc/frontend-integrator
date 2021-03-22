@@ -5,6 +5,21 @@ import { formatMoney } from '../../util/currency';
 import Input from '../shared/Input/Input';
 import './Bets_styles.scss';
 
+const signs = {
+    1: 'Aries',
+    2: 'Tauro',
+    3: 'Geminis',
+    4: 'Cancer',
+    5: 'Leo',
+    6: 'Virgo',
+    7: 'Libra',
+    8: 'Escorpio',
+    9: 'Sagitario',
+    10: 'Capricornio',
+    11: 'Acuario',
+    12: 'Piscis',
+};
+
 export default function Bets({
     bets,
     betAmount,
@@ -63,9 +78,10 @@ export default function Bets({
                                     />
                                 </div>
                                 {bets[drawId].j.map((j, bj) => (
-                                    <div className="bets-play" key={bj}>
+                                    <div className="bets-play d-flex justify-content-between" key={bj}>
                                         <div>{getBetDisplayName(j.n)}</div>
-                                        <div className="flex-fill text-right ml-2">
+                                        {j.s !== 0 && <div className="ml-5">{signs[j.s]}</div>}
+                                        <div className="flex-fill text-right ml-auto">
                                             {formatMoney(j.m)}
                                         </div>
                                         <FontAwesomeIcon
@@ -95,7 +111,8 @@ export default function Bets({
 
             <div className="d-flex mt-4 justify-content-around">
                 <Button
-                    variant="light"className="btn btn-light btn-sm"
+                    variant="light"
+                    className="btn btn-light btn-sm"
                     size="sm"
                     onClick={() => onDeleteBets()}
                 >
