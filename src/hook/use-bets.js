@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Swal from 'sweetalert2';
 import { useStore } from '../hook/use-store';
 import { formatMoney, formatNumber } from '../util/currency';
 import { showError } from '../util/alert';
@@ -8,7 +7,7 @@ import Sales from '../api/sales';
 function useBets() {
     const [draws, setDraws] = useState([]);
     const [bets, setBets] = useState({});
-    const { player, lotterySetup, products, setProducts } = useStore();
+    const { lotterySetup, products } = useStore();
     const total = Object.values(bets).reduce(
         (memo, curr) => {
             memo.quantity += curr.j.length;
@@ -95,44 +94,39 @@ function useBets() {
         setBets(cBets);
     };
     const handleBuyTicket = async (bets) => {
-        if (total.amount < lotterySetup.mmt) {
+        if (total.amount < lotterySetup.monto_minimo_ticket) {
             showError(
-                'El monto minimo por ticket es ' + formatMoney(lotterySetup.mmt)
+                'El monto minimo por ticket es ' +
+                    formatMoney(lotterySetup.monto_minimo_ticket)
             );
             return;
         }
 
-        if (total.quantity > lotterySetup.jpt) {
-            showError('El maximo de jugadas por ticket es ' + lotterySetup.jpt);
+        if (total.quantity > lotterySetup.jugadas_por_tickets) {
+            showError(
+                'El maximo de jugadas por ticket es ' +
+                    lotterySetup.jugadas_por_tickets
+            );
             return;
         }
 
-        const result = await Swal.fire({
-            title: 'Confirmar compra',
-            showCancelButton: true,
-            confirmButtonText: 'Comprar',
-            preConfirm: async () => {
-                const today = new Date();
-                return await Sales.sales({
-                    amount: total.amount,
-                    date:
-                        today.getDate().toString().padStart(2, '0') +
-                        '/' +
-                        (today.getMonth() + 1).toString().padStart(2, '0') +
-                        '/' +
-                        today.getFullYear(),
-                    ced: player.cedula,
-                    email: player.email,
-                    bets: Object.keys(bets).map((drawId) => {
-                        return { c: drawId, j: bets[drawId].j };
-                    }),
-                });
-            },
-        });
-
-        if (result.isConfirmed) {
+        try {
+            const today = new Date();
+            const res = await Sales.sales({
+                date:
+                    today.getDate().toString().padStart(2, '0') +
+                    '/' +
+                    (today.getMonth() + 1).toString().padStart(2, '0') +
+                    '/' +
+                    today.getFullYear(),
+                bets: Object.keys(bets).map((drawId) => {
+                    return { c: drawId, j: bets[drawId].j };
+                }),
+            });
             setBets({});
-        }
+
+            return res;
+        } catch (error) {}
     };
 
     return {

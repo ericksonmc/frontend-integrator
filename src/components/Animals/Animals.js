@@ -61,13 +61,13 @@ export default function Animals({ lotteries }) {
             <Col className="col-auto">
                 <div className="animals-draws-list pr-5">
                     {lotteries.map((l, lotteryIndex) => (
-                        <>
+                        <div key={l.id}>
                             <p className="font-weight-bold text-uppercase mt-3">{l.nombre}</p>
                             {l.sorteos.map((draw, drawIndex) => (
                                 <Form.Check
                                     id={'draw' + drawIndex}
                                     type="checkbox"
-                                    key={draw.id}
+                                    key={l.id + ' ' + draw.id}
                                     label={
                                         draw.nombre_largo +
                                         ' ' +
@@ -83,7 +83,7 @@ export default function Animals({ lotteries }) {
                                     }
                                 />
                             ))}
-                        </>
+                        </div>
                     ))}
                 </div>
             </Col>

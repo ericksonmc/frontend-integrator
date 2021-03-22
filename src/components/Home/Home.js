@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, Router } from '@reach/router';
+import React from 'react';
+import { Link, Redirect, Router } from '@reach/router';
 import { Container, Row, Col } from 'react-bootstrap';
 import classnames from 'classnames';
 import { useStore } from '../../hook/use-store';
@@ -18,8 +18,8 @@ export default function Home() {
     };
 
     return (
-        <Container fluid className="home-container p-1 overflow-hidden">
-            <Row className="px-4">
+        <Container fluid className="home-container">
+            <Row className="px-4 py-2">
                 <Col className="d-flex align-items-center">
                     <Link
                         to="triples"
@@ -38,12 +38,12 @@ export default function Home() {
                     Saldo: {formatMoney(playerBalance)}
                 </Col>
             </Row>
-            <Row className="h-100">
-                <Col className="h-100">
+            <Row>
+                <Col>
                     <div className="home-board p-3">
-                        <Router className="h-100">
+                        <Router>
+                            <Redirect default noThrow from="/" to="triples" />
                             <Triples
-                                default
                                 path="triples"
                                 lotteries={products.triples}
                             />

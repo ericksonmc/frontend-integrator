@@ -3,6 +3,7 @@ import { Button, Row, Col } from 'react-bootstrap';
 import Input from '../shared/Input/Input';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
+import TicketModal from '../TicketModal/TicketModal';
 import './Triples_styles.scss';
 
 function LotteryDetail({ lottery, draws, onSelectDraw }) {
@@ -63,9 +64,17 @@ export default function Triples({ lotteries = [] }) {
         handleSelectDraw,
     } = useBets();
     const [betAmount, setBetAmount] = useState('');
+    const [ticket, setTicket] = useState('');
 
     const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
         handleSelectDraw('triples', lotteryIndex, drawIndex);
+    };
+
+    const handleBuyTriples = async () => {
+        try {
+            const res = await handleBuyTicket(bets);
+            setTicket(res.ticket);
+        } catch (error) {}
     };
 
     if (lotteries === null || lotteries[lotteryIndex] === null) {
@@ -118,9 +127,14 @@ export default function Triples({ lotteries = [] }) {
                     setBetAmount={setBetAmount}
                     onAddBets={() => handleAddBets(betAmount, playerBet, draws)}
                     onDeleteBets={handleDeleteBets}
-                    onBuyTicket={handleBuyTicket}
+                    onBuyTicket={handleBuyTriples}
                 />
             </Col>
+            <TicketModal
+                show={ticket !== ''}
+                ticket={ticket}
+                onClose={() => setTicket('')}
+            ></TicketModal>
         </Row>
     );
 }
