@@ -71,7 +71,7 @@ function useBets() {
                 cBets[drawId] = { j: [], n: draws[drawId].name };
             }
             betNumbers.forEach((number) => {
-                if (draws[drawId].comodin) {
+                if (draws[drawId].comodin && signs.length > 0) {
                     signs.forEach((s) => {
                         cBets[drawId].j.push({
                             i: i++,
@@ -108,7 +108,7 @@ function useBets() {
         }
         setBets(cBets);
     };
-    const handleBuyTicket = async (bets) => {
+    const handleBuyTicket = async (bets, saleParams = {}) => {
         if (total.amount < lotterySetup.monto_minimo_ticket) {
             showError(
                 'El monto minimo por ticket es ' +
@@ -137,6 +137,7 @@ function useBets() {
                 bets: Object.keys(bets).map((drawId) => {
                     return { c: drawId, j: bets[drawId].j };
                 }),
+                ...saleParams,
             });
             setBets({});
 

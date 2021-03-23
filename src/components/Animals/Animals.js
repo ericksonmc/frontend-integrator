@@ -3,6 +3,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import animalList from './animal-list';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
+import TicketModal from '../TicketModal/TicketModal';
 import './Animals_styles.scss';
 
 export default function Animals({ lotteries }) {
@@ -18,6 +19,7 @@ export default function Animals({ lotteries }) {
     const [playerAnimals, setPlayerAnimals] = useState(
         animalList.map((a) => ({ ...a, selected: false }))
     );
+    const [ticket, setTicket] = useState('');
     const playerBet = useMemo(() => {
         return playerAnimals
             .filter((p) => p.selected)
@@ -52,6 +54,17 @@ export default function Animals({ lotteries }) {
         }).format(d);
     };
 
+    const handleBuyAnimalitos = async () => {
+        try {
+            const res = await handleBuyTicket(bets, {
+                aniTipo: 0,
+                tip: 'N',
+                ani: true,
+            });
+            setTicket(res.ticket_string);
+        } catch (error) {}
+    };
+
     if (lotteries === null) {
         return null;
     }
@@ -62,7 +75,9 @@ export default function Animals({ lotteries }) {
                 <div className="animals-draws-list pr-5">
                     {lotteries.map((l, lotteryIndex) => (
                         <div key={l.id}>
-                            <p className="font-weight-bold text-uppercase mt-3">{l.nombre}</p>
+                            <p className="font-weight-bold text-uppercase mt-3">
+                                {l.nombre}
+                            </p>
                             {l.sorteos.map((draw, drawIndex) => (
                                 <Form.Check
                                     id={'draw' + drawIndex}
@@ -110,9 +125,14 @@ export default function Animals({ lotteries }) {
                     setBetAmount={setBetAmount}
                     onAddBets={() => handleAddBets(betAmount, playerBet, draws)}
                     onDeleteBets={handleDeleteBets}
-                    onBuyTicket={handleBuyTicket}
+                    onBuyTicket={handleBuyAnimalitos}
                 />
             </Col>
+            <TicketModal
+                show={ticket !== ''}
+                ticket={ticket}
+                onClose={() => setTicket('')}
+            ></TicketModal>
         </Row>
     );
 }

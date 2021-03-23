@@ -43,7 +43,6 @@ function LotteryDetail({ lottery, draws, onSelectDraw }) {
                     className="triples-draw-button p-3 rounded-0 m-1"
                     key={draw.id}
                     variant={!!draws[draw.id] ? 'primary' : 'light'}
-                    disabled={isEnabled(draw.horac)}
                     onClick={() => onSelectDraw(index)}
                 >
                     <div>{draw.nombre}</div>
@@ -75,8 +74,12 @@ export default function Triples({ lotteries = [] }) {
 
     const handleBuyTriples = async () => {
         try {
-            const res = await handleBuyTicket(bets);
-            setTicket(res.ticket);
+            const res = await handleBuyTicket(bets, {
+                aniTipo: 5,
+                tip: 'T',
+                ani: false,
+            });
+            setTicket(res.ticket_string);
         } catch (error) {}
     };
 
