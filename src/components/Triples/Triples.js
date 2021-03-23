@@ -44,6 +44,8 @@ export default function Triples() {
                 ani: false,
             });
             setTicket(res.ticket_string);
+            setPlayerBet('');
+            setBetAmount('');
         } catch (error) {
             if (error.response.data && error.response.data.message) {
                 showError(error.response.data.message);
@@ -115,7 +117,7 @@ export default function Triples() {
                             className="triples-draw-button p-3 rounded-0 m-1"
                             key={draw.id}
                             variant={!!draws[draw.id] ? 'primary' : 'light'}
-                            disabled={isBeforeNow(draw.horac)}
+                            disabled={!isBeforeNow(draw.horac)}
                             onClick={() =>
                                 handleSelectTriplesDraw(lotteryIndex, index)
                             }

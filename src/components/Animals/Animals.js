@@ -50,6 +50,9 @@ export default function Animals() {
     const handleSelectAnimalitosDraw = (lotteryIndex, drawIndex) => {
         handleSelectDraw('animalitos', lotteryIndex, drawIndex);
     };
+    const resetPlayerAnimals = () => {
+        setPlayerAnimals(animalList.map((a) => ({ ...a, selected: false })));
+    };
 
     const handleBuyAnimalitos = async () => {
         try {
@@ -59,6 +62,8 @@ export default function Animals() {
                 ani: true,
             });
             setTicket(res.ticket_string);
+            resetPlayerAnimals();
+            setBetAmount('');
         } catch (error) {
             if (error.response.data && error.response.data.message) {
                 showError(error.response.data.message);
@@ -94,7 +99,7 @@ export default function Animals() {
                                 className="mt-3"
                                 value={draw.id}
                                 checked={!!draws[draw.id]}
-                                disabled={isBeforeNow(draw.horac)}
+                                disabled={!isBeforeNow(draw.horac)}
                                 onChange={() =>
                                     handleSelectAnimalitosDraw(
                                         lotteryIndex,

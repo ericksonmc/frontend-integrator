@@ -142,7 +142,7 @@ function useBets() {
                 ...saleParams,
             });
             setBets({});
-
+            setDraws({});
             return res;
         } catch (error) {
             throw error;
