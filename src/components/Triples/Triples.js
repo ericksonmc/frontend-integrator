@@ -74,7 +74,7 @@ export default function Triples() {
 
     return (
         <Row>
-            <Col lg="2">
+            <Col lg="2" md="2">
                 {lotteries.map((l, index) => (
                     <Button
                         block
@@ -87,7 +87,7 @@ export default function Triples() {
                     </Button>
                 ))}
             </Col>
-            <Col lg="7">
+            <Col>
                 <div className="d-flex align-items-center flex-wrap p-3">
                     <label htmlFor="bets" className="m-0">
                         Ingresa su jugada
@@ -118,7 +118,7 @@ export default function Triples() {
                     ))}
                 </div>
             </Col>
-            <Col lg="3">
+            <Col lg="3" md="3">
                 <Bets
                     bets={bets}
                     betAmount={betAmount}

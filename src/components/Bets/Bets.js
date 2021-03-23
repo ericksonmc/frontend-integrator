@@ -109,7 +109,7 @@ export default function Bets({
                 </div>
             </div>
 
-            <div className="d-flex mt-4 justify-content-around">
+            <div className="d-flex mt-4 justify-content-around flex-wrap">
                 <Button
                     variant="light"
                     className="btn btn-light btn-sm"
@@ -118,7 +118,7 @@ export default function Bets({
                 >
                     Borrar jugadas
                 </Button>
-                <Button variant="light" size="sm" onClick={onBuyTicket}>
+                <Button className="mt-md-1" variant="light" size="sm" onClick={onBuyTicket}>
                     Comprar
                 </Button>
             </div>

@@ -67,7 +67,7 @@ export default function Animals() {
 
     return (
         <Row className="h-100 overflow-hidden">
-            <Col className="col-auto h-100 overflow-auto">
+            <Col lg="3" md="3" className="h-100 overflow-auto">
                 {lotteries.map((l, lotteryIndex) => (
                     <div key={l.id}>
                         <p className="font-weight-bold text-uppercase mt-3">
@@ -109,7 +109,7 @@ export default function Animals() {
                     </Button>
                 ))}
             </Col>
-            <Col lg="3">
+            <Col lg="3" md="3">
                 <Bets
                     bets={bets}
                     betAmount={betAmount}
