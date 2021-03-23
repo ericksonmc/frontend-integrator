@@ -4,6 +4,6 @@ import classnames from 'classnames';
 
 export default function Input(props) {
     return (
-        <input {...props} className={classnames(props.className, 'input')} />
+        <input {...props} className={classnames(props.className, 'input overflow-hidden')} />
     );
 }
