@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import Input from '../shared/Input/Input';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
+import { useStore } from '../../hook/use-store';
 import { isBeforeNow } from '../../util/time';
 import { formatTime } from '../../util/format';
 import TicketModal from '../TicketModal/TicketModal';
 import ZodiacSignsModal from '../ZodiacSignsModal/ZodiacSignsModal';
 import './Triples_styles.scss';
 
-export default function Triples({ lotteries = [] }) {
+export default function Triples() {
+    const [lotteries, setLotteries] = useState([]);
     const [playerBet, setPlayerBet] = useState('');
     const [lotteryIndex, setLotteryIndex] = useState(0);
     const {
@@ -23,6 +25,11 @@ export default function Triples({ lotteries = [] }) {
     const [betAmount, setBetAmount] = useState('');
     const [ticket, setTicket] = useState('');
     const [showZodiacModal, setShowZodialModal] = useState(false);
+    const { products } = useStore();
+
+    useEffect(() => {
+        setLotteries(products.triples);
+    }, [products, setLotteries]);
 
     const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
         handleSelectDraw('triples', lotteryIndex, drawIndex);
@@ -61,7 +68,7 @@ export default function Triples({ lotteries = [] }) {
         handleAddBets(betAmount, playerBet, draws, signs);
     };
 
-    if (lotteries === null || lotteries[lotteryIndex] === null) {
+    if (lotteries ===null || lotteries.length === 0) {
         return null;
     }
 
@@ -113,7 +120,6 @@ export default function Triples({ lotteries = [] }) {
             </Col>
             <Col lg="3">
                 <Bets
-                    className="p-3"
                     bets={bets}
                     betAmount={betAmount}
                     getBetDisplayName={(n) => n}

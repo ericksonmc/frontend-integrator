@@ -1,15 +1,13 @@
 import React from 'react';
-import { Link, Redirect, Router } from '@reach/router';
+import { Link } from '@reach/router';
 import { Container, Row, Col } from 'react-bootstrap';
 import classnames from 'classnames';
 import { useStore } from '../../hook/use-store';
 import { formatMoney } from '../../util/currency';
-import Triples from '../Triples/Triples';
-import Animals from '../Animals/Animals';
 import './Home_styles.scss';
 
-export default function Home() {
-    const { products, playerBalance } = useStore();
+export default function Home(props) {
+    const { playerBalance } = useStore();
 
     const getLinkProps = ({ isCurrent }) => {
         return {
@@ -18,7 +16,7 @@ export default function Home() {
     };
 
     return (
-        <Container fluid className="home-container">
+        <Container fluid className="home-container h-100 d-flex flex-column">
             <Row className="px-4 py-2">
                 <Col className="d-flex align-items-center">
                     <Link
@@ -38,22 +36,10 @@ export default function Home() {
                     Saldo: {formatMoney(playerBalance)}
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <div className="home-board p-3">
-                        <Router>
-                            <Redirect default noThrow from="/" to="triples" />
-                            <Triples
-                                path="triples"
-                                lotteries={products.triples}
-                            />
-                            <Animals
-                                path="animalitos"
-                                lotteries={products.animalitos}
-                            />
-                        </Router>
-                    </div>
-                </Col>
+            <Row className="flex-fill overflow-hidden">
+                <div className="home-board h-100 p-3">
+                    {props.children}
+                </div>
             </Row>
         </Container>
     );

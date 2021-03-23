@@ -1,11 +1,13 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { Router, Redirect } from '@reach/router';
 import Alert from 'react-bootstrap/Alert';
 import { ProvideAuth } from '../hook/use-auth';
 import { ProvideStore } from '../hook/use-store';
 import Login from './Login/Login';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import Home from './Home/Home';
+import Triples from './Triples/Triples';
+import Animals from './Animals/Animals';
 
 function NotFound() {
     return (
@@ -19,11 +21,15 @@ function App() {
     return (
         <ProvideStore>
             <ProvideAuth>
-                <Router>
+                <Router id="router">
                     <Login path="/login/:token"></Login>
                     <PrivateRoute path="/">
+                        <Home path="/">
+                            <Redirect default noThrow from="/" to="triples" />
+                            <Triples path="triples" />
+                            <Animals path="animalitos" />
+                        </Home>
                         <NotFound default />
-                        <Home path="/*"></Home>
                     </PrivateRoute>
                 </Router>
             </ProvideAuth>

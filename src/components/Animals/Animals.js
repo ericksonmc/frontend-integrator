@@ -1,14 +1,16 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import animalList from './animal-list';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
+import { useStore } from '../../hook/use-store';
 import TicketModal from '../TicketModal/TicketModal';
 import { isBeforeNow } from '../../util/time';
 import { formatTime } from '../../util/format';
 import './Animals_styles.scss';
 
-export default function Animals({ lotteries }) {
+export default function Animals() {
+    const [lotteries, setLotteries] = useState([]);
     const {
         bets,
         draws,
@@ -28,6 +30,11 @@ export default function Animals({ lotteries }) {
             .map((p) => p.number)
             .join('.');
     }, [playerAnimals]);
+    const { products } = useStore();
+
+    useEffect(() => {
+        setLotteries(products.triples);
+    }, [products, setLotteries]);
 
     const handleSelectAnimal = (index) => {
         const a = [...playerAnimals];
@@ -54,61 +61,56 @@ export default function Animals({ lotteries }) {
         } catch (error) {}
     };
 
-    if (lotteries === null) {
+    if (lotteries === null || lotteries.length === 0) {
         return null;
     }
 
     return (
-        <Row>
-            <Col className="col-auto">
-                <div className="animals-draws-list pr-5">
-                    {lotteries.map((l, lotteryIndex) => (
-                        <div key={l.id}>
-                            <p className="font-weight-bold text-uppercase mt-3">
-                                {l.nombre}
-                            </p>
-                            {l.sorteos.map((draw, drawIndex) => (
-                                <Form.Check
-                                    id={'draw' + drawIndex}
-                                    type="checkbox"
-                                    key={l.id + ' ' + draw.id}
-                                    label={
-                                        draw.nombre_largo +
-                                        ' ' +
-                                        formatTime(draw.horac)
-                                    }
-                                    className="mt-3"
-                                    checked={!!draws[draw.id]}
-                                    disabled={!isBeforeNow(draw.horac)}
-                                    onChange={() =>
-                                        handleSelectAnimalitosDraw(
-                                            lotteryIndex,
-                                            drawIndex
-                                        )
-                                    }
-                                />
-                            ))}
-                        </div>
-                    ))}
-                </div>
+        <Row className="h-100 overflow-hidden">
+            <Col className="col-auto h-100 overflow-auto">
+                {lotteries.map((l, lotteryIndex) => (
+                    <div key={l.id}>
+                        <p className="font-weight-bold text-uppercase mt-3">
+                            {l.nombre}
+                        </p>
+                        {l.sorteos.map((draw, drawIndex) => (
+                            <Form.Check
+                                id={'draw' + drawIndex}
+                                type="checkbox"
+                                key={l.id + ' ' + draw.id}
+                                label={
+                                    draw.nombre_largo +
+                                    ' ' +
+                                    formatTime(draw.horac)
+                                }
+                                className="mt-3"
+                                checked={!!draws[draw.id]}
+                                disabled={!isBeforeNow(draw.horac)}
+                                onChange={() =>
+                                    handleSelectAnimalitosDraw(
+                                        lotteryIndex,
+                                        drawIndex
+                                    )
+                                }
+                            />
+                        ))}
+                    </div>
+                ))}
             </Col>
-            <Col>
-                <div className="d-flex justify-content-center flex-wrap">
-                    {playerAnimals.map((animal, index) => (
-                        <Button
-                            className="animals-option-button p-3 rounded-0 m-1"
-                            key={animal.number}
-                            variant={animal.selected ? 'primary' : 'light'}
-                            onClick={() => handleSelectAnimal(index)}
-                        >
-                            {animal.name}
-                        </Button>
-                    ))}
-                </div>
+            <Col className="d-flex justify-content-center flex-wrap h-100 overflow-auto">
+                {playerAnimals.map((animal, index) => (
+                    <Button
+                        key={animal.number}
+                        className="animals-option-button p-3 rounded-0 m-1"
+                        variant={animal.selected ? 'primary' : 'light'}
+                        onClick={() => handleSelectAnimal(index)}
+                    >
+                        {animal.name}
+                    </Button>
+                ))}
             </Col>
             <Col lg="3">
                 <Bets
-                    className="p-3"
                     bets={bets}
                     betAmount={betAmount}
                     getBetDisplayName={getBetDisplayName}
