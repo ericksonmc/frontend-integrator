@@ -4,6 +4,8 @@ import animalList from './animal-list';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
 import TicketModal from '../TicketModal/TicketModal';
+import { isBeforeNow } from '../../util/time';
+import { formatTime } from '../../util/format';
 import './Animals_styles.scss';
 
 export default function Animals({ lotteries }) {
@@ -39,19 +41,6 @@ export default function Animals({ lotteries }) {
 
     const handleSelectAnimalitosDraw = (lotteryIndex, drawIndex) => {
         handleSelectDraw('animalitos', lotteryIndex, drawIndex);
-    };
-
-    const formatTime = (t) => {
-        if (!t) {
-            return '-';
-        }
-
-        const d = new Date(`1995-12-17T${t}:00`);
-        return Intl.DateTimeFormat('en', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-        }).format(d);
     };
 
     const handleBuyAnimalitos = async () => {
@@ -90,6 +79,7 @@ export default function Animals({ lotteries }) {
                                     }
                                     className="mt-3"
                                     checked={!!draws[draw.id]}
+                                    disabled={!isBeforeNow(draw.horac)}
                                     onChange={() =>
                                         handleSelectAnimalitosDraw(
                                             lotteryIndex,

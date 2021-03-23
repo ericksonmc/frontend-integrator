@@ -3,55 +3,11 @@ import { Button, Row, Col } from 'react-bootstrap';
 import Input from '../shared/Input/Input';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
+import { isBeforeNow } from '../../util/time';
+import { formatTime } from '../../util/format';
 import TicketModal from '../TicketModal/TicketModal';
 import ZodiacSignsModal from '../ZodiacSignsModal/ZodiacSignsModal';
-
 import './Triples_styles.scss';
-
-function LotteryDetail({ lottery, draws, onSelectDraw }) {
-    const formatTime = (t) => {
-        if (!t) {
-            return '-';
-        }
-
-        const d = new Date(`1995-12-17T${t}:00`);
-        return Intl.DateTimeFormat('en', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-        }).format(d);
-    };
-    const isEnabled = (t) => {
-        if (!t) {
-            return false;
-        }
-
-        const d = new Date(`1995-12-17T${t}:00`);
-        const now = new Date();
-
-        return (
-            d.getHours() > now.getHours() ||
-            (d.getHours() === now.getHours() &&
-                d.getMinutes() >= now.getMinutes())
-        );
-    };
-
-    return (
-        <div className="d-flex flex-wrap justify-content-center mt-3">
-            {lottery.sorteos.map((draw, index) => (
-                <Button
-                    className="triples-draw-button p-3 rounded-0 m-1"
-                    key={draw.id}
-                    variant={!!draws[draw.id] ? 'primary' : 'light'}
-                    onClick={() => onSelectDraw(index)}
-                >
-                    <div>{draw.nombre}</div>
-                    <div>{formatTime(draw.horac)}</div>
-                </Button>
-            ))}
-        </div>
-    );
-}
 
 export default function Triples({ lotteries = [] }) {
     const [playerBet, setPlayerBet] = useState('');
@@ -138,13 +94,22 @@ export default function Triples({ lotteries = [] }) {
                     />
                 </div>
 
-                <LotteryDetail
-                    draws={draws}
-                    lottery={lotteries[lotteryIndex]}
-                    onSelectDraw={(drawIndex) =>
-                        handleSelectTriplesDraw(lotteryIndex, drawIndex)
-                    }
-                />
+                <div className="d-flex flex-wrap justify-content-center mt-3">
+                    {lotteries[lotteryIndex].sorteos.map((draw, index) => (
+                        <Button
+                            className="triples-draw-button p-3 rounded-0 m-1"
+                            key={draw.id}
+                            variant={!!draws[draw.id] ? 'primary' : 'light'}
+                            disabled={!isBeforeNow(draw.horac)}
+                            onClick={() =>
+                                handleSelectTriplesDraw(lotteryIndex, index)
+                            }
+                        >
+                            <div>{draw.nombre}</div>
+                            <div>{formatTime(draw.horac)}</div>
+                        </Button>
+                    ))}
+                </div>
             </Col>
             <Col lg="3">
                 <Bets
