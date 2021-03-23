@@ -5,7 +5,7 @@ import { showError } from '../util/alert';
 import Sales from '../api/sales';
 
 function useBets() {
-    const [draws, setDraws] = useState([]);
+    const [draws, setDraws] = useState({});
     const [bets, setBets] = useState({});
     const { lotterySetup, products } = useStore();
     const total = Object.values(bets).reduce(
@@ -32,6 +32,8 @@ function useBets() {
         } else {
             delete cDraws[draw.id];
         }
+
+        console.log(cDraws);
 
         setDraws(cDraws);
     };
@@ -142,7 +144,9 @@ function useBets() {
             setBets({});
 
             return res;
-        } catch (error) {}
+        } catch (error) {
+            throw error;
+        }
     };
 
     return {

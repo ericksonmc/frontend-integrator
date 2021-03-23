@@ -9,6 +9,7 @@ import { formatTime } from '../../util/format';
 import TicketModal from '../TicketModal/TicketModal';
 import ZodiacSignsModal from '../ZodiacSignsModal/ZodiacSignsModal';
 import './Triples_styles.scss';
+import { showError } from '../../util/alert';
 
 export default function Triples() {
     const [lotteries, setLotteries] = useState([]);
@@ -43,7 +44,14 @@ export default function Triples() {
                 ani: false,
             });
             setTicket(res.ticket_string);
-        } catch (error) {}
+        } catch (error) {
+            if (error.response.data && error.response.data.message) {
+                showError(error.response.data.message);
+                return;
+            }
+
+            showError('Ha ocurrido un error');
+        }
     };
 
     const handleAddTriplesBets = () => {
@@ -107,7 +115,7 @@ export default function Triples() {
                             className="triples-draw-button p-3 rounded-0 m-1"
                             key={draw.id}
                             variant={!!draws[draw.id] ? 'primary' : 'light'}
-                            disabled={!isBeforeNow(draw.horac)}
+                            disabled={isBeforeNow(draw.horac)}
                             onClick={() =>
                                 handleSelectTriplesDraw(lotteryIndex, index)
                             }

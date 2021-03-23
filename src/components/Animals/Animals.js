@@ -8,6 +8,7 @@ import TicketModal from '../TicketModal/TicketModal';
 import { isBeforeNow } from '../../util/time';
 import { formatTime } from '../../util/format';
 import './Animals_styles.scss';
+import { showError } from '../../util/alert';
 
 export default function Animals() {
     const [lotteries, setLotteries] = useState([]);
@@ -33,7 +34,7 @@ export default function Animals() {
     const { products } = useStore();
 
     useEffect(() => {
-        setLotteries(products.triples);
+        setLotteries(products.animalitos);
     }, [products, setLotteries]);
 
     const handleSelectAnimal = (index) => {
@@ -58,7 +59,14 @@ export default function Animals() {
                 ani: true,
             });
             setTicket(res.ticket_string);
-        } catch (error) {}
+        } catch (error) {
+            if (error.response.data && error.response.data.message) {
+                showError(error.response.data.message);
+                return;
+            }
+
+            showError('Ha ocurrido un error');
+        }
     };
 
     if (lotteries === null || lotteries.length === 0) {
@@ -84,8 +92,9 @@ export default function Animals() {
                                     formatTime(draw.horac)
                                 }
                                 className="mt-3"
+                                value={draw.id}
                                 checked={!!draws[draw.id]}
-                                disabled={!isBeforeNow(draw.horac)}
+                                disabled={isBeforeNow(draw.horac)}
                                 onChange={() =>
                                     handleSelectAnimalitosDraw(
                                         lotteryIndex,
