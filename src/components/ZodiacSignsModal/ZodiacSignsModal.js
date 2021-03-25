@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 import './ZodiacSignsModal_styles.scss';
 
@@ -17,7 +18,7 @@ const signs = {
     12: 'Piscis',
 };
 
-export default function ZodiacSignsModal({ show, onClose, onCancel }) {
+function ZodiacSignsModal({ show, onClose, onCancel }) {
     const [selectedSigns, setSelectedSigns] = useState({});
 
     const handleSelectSign = (key) => {
@@ -73,3 +74,11 @@ export default function ZodiacSignsModal({ show, onClose, onCancel }) {
         </Modal>
     );
 }
+
+ZodiacSignsModal.propTypes = {
+    show: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
+
+export default ZodiacSignsModal;

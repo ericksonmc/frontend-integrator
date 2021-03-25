@@ -10,7 +10,7 @@ import { formatTime } from '../../util/format';
 import './Animals_styles.scss';
 import { showError } from '../../util/alert';
 
-export default function Animals() {
+function Animals() {
     const [lotteries, setLotteries] = useState([]);
     const {
         bets,
@@ -111,7 +111,6 @@ export default function Animals() {
                             ))}
                         </div>
                     ))}
-
                 </div>
             </Col>
             <Col className="animals-options-wrapper d-flex justify-content-center align-content-start flex-wrap">
@@ -146,3 +145,5 @@ export default function Animals() {
         </Row>
     );
 }
+
+export default Animals;

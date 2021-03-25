@@ -4,4 +4,4 @@ export const formatMoney = (number) => {
 
 export const formatNumber = (number) => {
     return new Intl.NumberFormat('es-VE').format(number);
-}
+};

@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from '@reach/router';
 import Alert from 'react-bootstrap/Alert';
 import { useAuth } from '../../hook/use-auth';
 
-export default function PrivateRoute(props) {
+function PrivateRoute(props) {
     const { isLoggedIn, isLoadingFromPersisted } = useAuth();
 
     if (!isLoggedIn && !isLoadingFromPersisted) {
@@ -18,3 +19,9 @@ export default function PrivateRoute(props) {
         props.children
     );
 }
+
+PrivateRoute.propTypes = {
+    children: PropTypes.node,
+};
+
+export default PrivateRoute;

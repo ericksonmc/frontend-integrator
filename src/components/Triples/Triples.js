@@ -11,7 +11,7 @@ import ZodiacSignsModal from '../ZodiacSignsModal/ZodiacSignsModal';
 import './Triples_styles.scss';
 import { showError } from '../../util/alert';
 
-export default function Triples() {
+function Triples() {
     const [lotteries, setLotteries] = useState([]);
     const [playerBet, setPlayerBet] = useState('');
     const [lotteryIndex, setLotteryIndex] = useState(0);
@@ -84,18 +84,16 @@ export default function Triples() {
 
     return (
         <Row>
-            <Col
-                className="d-flex justify-content-center"
-                lg="3"
-                md="3"
-            >
+            <Col className="d-flex justify-content-center" lg="3" md="3">
                 <div className="triples-lotteries-list">
                     {lotteries.map((l, index) => (
                         <Button
                             block
                             key={index}
                             className="d-block rounded-0 p-3"
-                            variant={lotteryIndex === index ? 'primary' : 'light'}
+                            variant={
+                                lotteryIndex === index ? 'primary' : 'light'
+                            }
                             onClick={() => setLotteryIndex(index)}
                         >
                             {l.nombre}
@@ -122,7 +120,7 @@ export default function Triples() {
                         <Button
                             className="triples-draw-button p-3 rounded-0 m-1"
                             key={draw.id}
-                            variant={!!draws[draw.id] ? 'primary' : 'light'}
+                            variant={draws[draw.id] ? 'primary' : 'light'}
                             disabled={!isBeforeNow(draw.horac)}
                             onClick={() =>
                                 handleSelectTriplesDraw(lotteryIndex, index)
@@ -161,3 +159,5 @@ export default function Triples() {
         </Row>
     );
 }
+
+export default Triples;

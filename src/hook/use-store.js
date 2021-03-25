@@ -1,4 +1,5 @@
 import React, { useState, useContext, createContext } from 'react';
+import PropTypes from 'prop-types';
 
 export const StoreContext = createContext();
 
@@ -9,6 +10,9 @@ export function ProvideStore({ children }) {
         <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
     );
 }
+ProvideStore.propTypes = {
+    children: PropTypes.element.isRequired,
+};
 
 export const useStore = () => {
     return useContext(StoreContext);

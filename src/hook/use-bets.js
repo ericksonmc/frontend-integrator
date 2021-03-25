@@ -24,7 +24,7 @@ function useBets() {
         const draw = products[product][lotteryIndex]['sorteos'][drawIndex];
         const cDraws = { ...draws };
 
-        if (!cDraws.hasOwnProperty(draw.id)) {
+        if (!cDraws[draw.id]) {
             cDraws[draw.id] = {
                 name: draw.nombre_largo,
                 comodin: draw.comodin,
@@ -127,26 +127,22 @@ function useBets() {
             return;
         }
 
-        try {
-            const today = new Date();
-            const res = await Sales.sales({
-                date:
-                    today.getDate().toString().padStart(2, '0') +
-                    '/' +
-                    (today.getMonth() + 1).toString().padStart(2, '0') +
-                    '/' +
-                    today.getFullYear(),
-                bets: Object.keys(bets).map((drawId) => {
-                    return { c: drawId, j: bets[drawId].j };
-                }),
-                ...saleParams,
-            });
-            setBets({});
-            setDraws({});
-            return res;
-        } catch (error) {
-            throw error;
-        }
+        const today = new Date();
+        const res = await Sales.sales({
+            date:
+                today.getDate().toString().padStart(2, '0') +
+                '/' +
+                (today.getMonth() + 1).toString().padStart(2, '0') +
+                '/' +
+                today.getFullYear(),
+            bets: Object.keys(bets).map((drawId) => {
+                return { c: drawId, j: bets[drawId].j };
+            }),
+            ...saleParams,
+        });
+        setBets({});
+        setDraws({});
+        return res;
     };
 
     return {

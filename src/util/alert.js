@@ -6,4 +6,4 @@ export function showError(text) {
         icon: 'error',
         heightAuto: false,
     });
-};
+}

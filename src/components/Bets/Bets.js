@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Col, Row } from 'react-bootstrap';
 import classnames from 'classnames';
@@ -21,7 +22,7 @@ const signs = {
     12: 'Piscis',
 };
 
-export default function Bets({
+function Bets({
     bets,
     betAmount,
     setBetAmount,
@@ -144,3 +145,16 @@ export default function Bets({
         </div>
     );
 }
+
+Bets.propTypes = {
+    className: PropTypes.string,
+    bets: PropTypes.object.isRequired,
+    betAmount: PropTypes.string.isRequired,
+    setBetAmount: PropTypes.func.isRequired,
+    getBetDisplayName: PropTypes.func.isRequired,
+    onAddBets: PropTypes.func.isRequired,
+    onDeleteBets: PropTypes.func.isRequired,
+    onBuyTicket: PropTypes.func.isRequired,
+};
+
+export default Bets;

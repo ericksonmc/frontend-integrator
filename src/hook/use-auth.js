@@ -5,6 +5,7 @@ import React, {
     useContext,
     createContext,
 } from 'react';
+import PropTypes from 'prop-types';
 import Auth from '../api/auth';
 import { setAuthToken, deleteAuthToken } from '../util/request';
 import { useStore } from './use-store';
@@ -16,6 +17,9 @@ export function ProvideAuth({ children }) {
 
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
+ProvideAuth.propTypes = {
+    children: PropTypes.element.isRequired,
+};
 
 export const useAuth = () => {
     return useContext(AuthContext);
@@ -40,22 +44,18 @@ function useProvideAuth() {
 
     const tokenLogin = useCallback(
         async (token) => {
-            try {
-                setAuthToken(token);
-                const data = await Auth.tokenLogin();
-                persistToken(token);
-                setIsLoggedIn(true);
-                setIsLoadingFromPersisted(false);
-                setPlayer(data.player);
-                setProducts({
-                    triples: data.triples,
-                    animalitos: data.animalitos,
-                });
-                setLotterySetup(data.lottery_setup);
-                setPlayerBalance(data.saldo_actual);
-            } catch (e) {
-                throw e;
-            }
+            setAuthToken(token);
+            const data = await Auth.tokenLogin();
+            persistToken(token);
+            setIsLoggedIn(true);
+            setIsLoadingFromPersisted(false);
+            setPlayer(data.player);
+            setProducts({
+                triples: data.triples,
+                animalitos: data.animalitos,
+            });
+            setLotterySetup(data.lottery_setup);
+            setPlayerBalance(data.saldo_actual);
         },
         [setPlayer, setLotterySetup, setProducts, setPlayerBalance]
     );

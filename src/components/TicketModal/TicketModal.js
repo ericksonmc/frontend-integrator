@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 import './TicketModal_styles.scss';
 
-export default function TicketModal({ show, ticket, onClose }) {
+function TicketModal({ show, ticket, onClose }) {
     return (
         <Modal show={show} onHide={onClose} backdrop="static">
             <Modal.Header className="ticket-modal-header">
@@ -27,3 +28,11 @@ export default function TicketModal({ show, ticket, onClose }) {
         </Modal>
     );
 }
+
+TicketModal.propTypes = {
+    show: PropTypes.bool.isRequired,
+    ticket: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired,
+};
+
+export default TicketModal;

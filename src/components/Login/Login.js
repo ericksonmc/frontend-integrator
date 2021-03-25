@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from '@reach/router';
 import { Alert, Container, Row, Spinner } from 'react-bootstrap';
 import { useAuth } from '../../hook/use-auth';
@@ -27,7 +28,6 @@ function Login(props) {
     }
 
     return loading ? (
-
         <Container>
             <Row className="justify-content-center align-items-center">
                 <Spinner animation="border" />
@@ -41,7 +41,11 @@ function Login(props) {
                 </Alert>
             </Row>
         </Container>
-        );
+    );
 }
+
+Login.propTypes = {
+    token: PropTypes.string,
+};
 
 export default Login;
