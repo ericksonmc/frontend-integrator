@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
+import classnames from 'classnames';
 import { formatMoney } from '../../util/currency';
 import Input from '../shared/Input/Input';
 import './Bets_styles.scss';
@@ -48,7 +49,7 @@ export default function Bets({
     };
 
     return (
-        <div className={props.className}>
+        <div className={classnames(props.className, 'bets')}>
             <div className="d-flex align-items-center">
                 <label htmlFor="amount" className="mb-0 mr-4">
                     Monto
@@ -78,9 +79,16 @@ export default function Bets({
                                     />
                                 </div>
                                 {bets[drawId].j.map((j, bj) => (
-                                    <div className="bets-play d-flex justify-content-between" key={bj}>
+                                    <div
+                                        className="bets-play d-flex justify-content-between"
+                                        key={bj}
+                                    >
                                         <div>{getBetDisplayName(j.n)}</div>
-                                        {j.s !== 0 && <div className="ml-5">{signs[j.s]}</div>}
+                                        {j.s !== 0 && (
+                                            <div className="ml-5">
+                                                {signs[j.s]}
+                                            </div>
+                                        )}
                                         <div className="flex-fill text-right ml-auto">
                                             {formatMoney(j.m)}
                                         </div>
@@ -109,19 +117,30 @@ export default function Bets({
                 </div>
             </div>
 
-            <div className="d-flex mt-3 justify-content-around flex-wrap">
-                <Button
-                    variant="light"
-                    className="mt-md-1"
-                    size="sm"
-                    onClick={() => onDeleteBets()}
-                >
-                    Borrar jugadas
-                </Button>
-                <Button className="mt-md-1 ml-1" variant="light" size="sm" onClick={onBuyTicket}>
-                    Comprar
-                </Button>
-            </div>
+            <Row className="mt-2">
+                <Col lg="6">
+                    <Button
+                        block
+                        variant="light"
+                        className="mt-2"
+                        size="sm"
+                        onClick={() => onDeleteBets()}
+                    >
+                        Borrar jugadas
+                    </Button>
+                </Col>
+                <Col lg="6">
+                    <Button
+                        block
+                        className="mt-2"
+                        variant="light"
+                        size="sm"
+                        onClick={onBuyTicket}
+                    >
+                        Comprar
+                    </Button>
+                </Col>
+            </Row>
         </div>
     );
 }

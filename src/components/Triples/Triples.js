@@ -78,26 +78,32 @@ export default function Triples() {
         handleAddBets(betAmount, playerBet, draws, signs);
     };
 
-    if (lotteries ===null || lotteries.length === 0) {
+    if (lotteries === null || lotteries.length === 0) {
         return null;
     }
 
     return (
         <Row>
-            <Col lg="2" md="2">
-                {lotteries.map((l, index) => (
-                    <Button
-                        block
-                        key={index}
-                        className="d-block rounded-0 p-3"
-                        variant={lotteryIndex === index ? 'primary' : 'light'}
-                        onClick={() => setLotteryIndex(index)}
-                    >
-                        {l.nombre}
-                    </Button>
-                ))}
+            <Col
+                className="d-flex justify-content-center"
+                lg="3"
+                md="3"
+            >
+                <div className="triples-lotteries-list">
+                    {lotteries.map((l, index) => (
+                        <Button
+                            block
+                            key={index}
+                            className="d-block rounded-0 p-3"
+                            variant={lotteryIndex === index ? 'primary' : 'light'}
+                            onClick={() => setLotteryIndex(index)}
+                        >
+                            {l.nombre}
+                        </Button>
+                    ))}
+                </div>
             </Col>
-            <Col>
+            <Col className="triples-draws-list">
                 <div className="d-flex align-items-center flex-wrap p-3">
                     <label htmlFor="bets" className="m-0">
                         Ingresa su jugada
@@ -130,6 +136,7 @@ export default function Triples() {
             </Col>
             <Col lg="3" md="3">
                 <Bets
+                    className="mx-auto"
                     bets={bets}
                     betAmount={betAmount}
                     getBetDisplayName={(n) => n}

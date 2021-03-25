@@ -36,7 +36,7 @@ export default function Home(props) {
                     Saldo: {formatMoney(playerBalance)}
                 </Col>
             </Row>
-            <Row className="flex-fill overflow-hidden">
+            <Row className="home-content flex-fill">
                 <div className="home-board h-100 p-3">
                     {props.children}
                 </div>

@@ -7,11 +7,14 @@
     }
 
     &-board {
+        width: 100%;
+        background-color: $bg-nav;
+
+        // div added by reach-router
         & > div[tabindex] {
             height: 100%;
             overflow: hidden;
         }
-        background-color: $bg-nav;
     }
 
     &-nav-button {
@@ -21,6 +24,12 @@
             background-color: #182171 !important;
             border-color: #182171 !important;
             color: #fff !important;
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        &-content {
+            overflow: hidden;
         }
     }
 }

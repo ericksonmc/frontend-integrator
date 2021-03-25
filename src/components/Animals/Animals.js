@@ -79,39 +79,42 @@ export default function Animals() {
     }
 
     return (
-        <Row className="h-100 overflow-hidden">
-            <Col lg="3" md="3" className="h-100 overflow-auto">
-                {lotteries.map((l, lotteryIndex) => (
-                    <div key={l.id}>
-                        <p className="font-weight-bold text-uppercase mt-3">
-                            {l.nombre}
-                        </p>
-                        {l.sorteos.map((draw, drawIndex) => (
-                            <Form.Check
-                                id={'draw' + drawIndex}
-                                type="checkbox"
-                                key={l.id + ' ' + draw.id}
-                                label={
-                                    draw.nombre_largo +
-                                    ' ' +
-                                    formatTime(draw.horac)
-                                }
-                                className="mt-3"
-                                value={draw.id}
-                                checked={!!draws[draw.id]}
-                                disabled={!isBeforeNow(draw.horac)}
-                                onChange={() =>
-                                    handleSelectAnimalitosDraw(
-                                        lotteryIndex,
-                                        drawIndex
-                                    )
-                                }
-                            />
-                        ))}
-                    </div>
-                ))}
+        <Row className="h-100">
+            <Col lg="3" md="3" className="animals-draws-wrapper">
+                <div className="animals-draws-list mx-auto h-100 overflow-auto">
+                    {lotteries.map((l, lotteryIndex) => (
+                        <div key={l.id}>
+                            <p className="font-weight-bold text-uppercase mt-3">
+                                {l.nombre}
+                            </p>
+                            {l.sorteos.map((draw, drawIndex) => (
+                                <Form.Check
+                                    id={'draw' + drawIndex}
+                                    type="checkbox"
+                                    key={l.id + ' ' + draw.id}
+                                    label={
+                                        draw.nombre_largo +
+                                        ' ' +
+                                        formatTime(draw.horac)
+                                    }
+                                    className="mt-3"
+                                    value={draw.id}
+                                    checked={!!draws[draw.id]}
+                                    disabled={!isBeforeNow(draw.horac)}
+                                    onChange={() =>
+                                        handleSelectAnimalitosDraw(
+                                            lotteryIndex,
+                                            drawIndex
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                    ))}
+
+                </div>
             </Col>
-            <Col className="d-flex justify-content-center flex-wrap h-100 overflow-auto">
+            <Col className="animals-options-wrapper d-flex justify-content-center align-content-start flex-wrap">
                 {playerAnimals.map((animal, index) => (
                     <Button
                         key={animal.number}
@@ -125,6 +128,7 @@ export default function Animals() {
             </Col>
             <Col lg="3" md="3">
                 <Bets
+                    className="mx-auto"
                     bets={bets}
                     betAmount={betAmount}
                     getBetDisplayName={getBetDisplayName}

@@ -3,4 +3,27 @@
         width: 120px;
         height: 88px;
     }
+
+    &-options-wrapper {
+        margin: 25px 0;
+    }
+
+    @media screen and (min-width: 768px) {
+        &-draws-wrapper {
+            height: 100%;
+            overflow: auto;
+        }
+
+        &-options-wrapper {
+            height: 100%;
+            overflow: auto;
+            margin: 0;
+        }
+    }
+
+    @media screen and (min-width: 1280px) {
+        &-draws-list {
+            max-width: 350px;
+        }
+    }
 }

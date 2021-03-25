@@ -1,4 +1,8 @@
 .bets {
+    @media screen and (min-width: 1280px) {
+        max-width: 300px;
+    }
+
     &-list {
         color: #000;
         height: 296px;
