@@ -29,7 +29,7 @@ function Login(props) {
 
     return loading ? (
         <Container>
-            <Row className="justify-content-center align-items-center">
+            <Row className="justify-content-center align-items-center h-100">
                 <Spinner animation="border" />
             </Row>
         </Container>
