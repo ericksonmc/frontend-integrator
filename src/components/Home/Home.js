@@ -5,6 +5,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import classnames from 'classnames';
 import { useStore } from '../../hook/use-store';
 import { formatMoney } from '../../util/currency';
+import animalLogo from '../../img/animal.png';
+import triplesLogo from '../../img/triples.png';
 import './Home_styles.scss';
 
 function Home(props) {
@@ -12,10 +14,9 @@ function Home(props) {
 
     const getLinkProps = ({ isCurrent }) => {
         return {
-            className: classnames(
-                'home-nav-button btn btn-light rounded-0 p-3',
-                { active: isCurrent }
-            ),
+            className: classnames('home-nav-button d-flex', {
+                active: isCurrent,
+            }),
         };
     };
 
@@ -24,10 +25,16 @@ function Home(props) {
             <Row className="px-4 py-2">
                 <Col className="d-flex align-items-center">
                     <Link to="triples" getProps={getLinkProps}>
-                        Triples
+                        <img src={triplesLogo} />
+                        <span className="align-self-end ml-2 text-uppercase font-weight-bold">
+                            Triples
+                        </span>
                     </Link>
                     <Link to="animalitos" getProps={getLinkProps}>
-                        Animalitos
+                        <img src={animalLogo} />
+                        <span className="align-self-end ml-2 text-uppercase font-weight-bold">
+                            Animalitos
+                        </span>
                     </Link>
                 </Col>
                 <Col className="col-auto p-3">

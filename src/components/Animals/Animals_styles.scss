@@ -1,11 +1,39 @@
 .animals {
+    &-draws-list {
+        color: black;
+        background-color: white;
+    }
+
     &-option-button {
-        width: 120px;
-        height: 88px;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+
+    &-logo {
+        border: 3px solid transparent;
+        border-radius: 50%;
+
+        &-selected {
+            border-color: #00ac5c;
+        }
+    }
+
+    &-logo-name-selected {
+        color: #00ac5c;
     }
 
     &-options-wrapper {
         margin: 25px 0;
+    }
+
+    &-results-button {
+        background-color: transparent;
+        border: 1px #00ac5c solid;
+        color: white;
+        font-weight: bold;
+        height: 40px;
+        text-transform: uppercase;
+        width: 100%;
     }
 
     @media screen and (min-width: 768px) {

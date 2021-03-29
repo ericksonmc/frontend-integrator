@@ -7,7 +7,7 @@ import Sales from '../api/sales';
 function useBets() {
     const [draws, setDraws] = useState({});
     const [bets, setBets] = useState({});
-    const { lotterySetup, products } = useStore();
+    const { lotterySetup, products, setPlayerBalance } = useStore();
     const total = Object.values(bets).reduce(
         (memo, curr) => {
             memo.quantity += curr.j.length;
@@ -32,8 +32,6 @@ function useBets() {
         } else {
             delete cDraws[draw.id];
         }
-
-        console.log(cDraws);
 
         setDraws(cDraws);
     };
@@ -142,6 +140,7 @@ function useBets() {
         });
         setBets({});
         setDraws({});
+        setPlayerBalance(res.saldo_actual);
         return res;
     };
 

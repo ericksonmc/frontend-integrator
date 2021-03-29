@@ -19,11 +19,22 @@
 
     &-nav-button {
         min-width: 110px;
+        color: white;
+
+        &:not(:last-child)::after {
+            content: '';
+            width: 2px;
+            background-color: white;
+            margin: 0 10px;
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: white;
+        }
 
         &.active {
-            background-color: #182171 !important;
-            border-color: #182171 !important;
-            color: #fff !important;
+            color: #00ac5c !important;
         }
     }
 

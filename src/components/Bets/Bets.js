@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import classnames from 'classnames';
 import { formatMoney } from '../../util/currency';
 import Input from '../shared/Input/Input';
@@ -51,95 +51,93 @@ function Bets({
 
     return (
         <div className={classnames(props.className, 'bets')}>
-            <div className="d-flex align-items-center">
-                <label htmlFor="amount" className="mb-0 mr-4">
-                    Monto
-                </label>
-                <Input
-                    value={betAmount}
-                    onChange={(e) => setBetAmount(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                />
-            </div>
-            <Button block className="mt-4" variant="light" onClick={onAddBets}>
-                Agregar Jugadas
-            </Button>
+            <div className="bets-wrapper">
+                <div className="d-flex flex-column align-items-end">
+                    <div className="d-flex flex-column align-items-center">
+                        <label htmlFor="amount" className="mb-0 mr-4 text-uppercase font-weight-bold">
+                            Monto
+                        </label>
+                        <Input
+                            value={betAmount}
+                            onChange={(e) => setBetAmount(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                        />
+                    </div>
+                </div>
+                <button className="mt-4 bets-add-button" onClick={onAddBets}>
+                    Agregar Jugada
+                </button>
 
-            <div className="mt-1">
-                <div className="bg-light text-dark p-1">Jugadas</div>
-                <div className="bets-list">
-                    {total.quantity > 0 ? (
-                        Object.keys(bets).map((drawId) => (
-                            <div key={drawId}>
-                                <div className="bets-draw">
-                                    {bets[drawId].n}
-                                    <FontAwesomeIcon
-                                        icon="trash-alt"
-                                        className="bets-trash-icon ml-auto"
-                                        onClick={() => onDeleteBets(drawId)}
-                                    />
-                                </div>
-                                {bets[drawId].j.map((j, bj) => (
-                                    <div
-                                        className="bets-play d-flex justify-content-between"
-                                        key={bj}
-                                    >
-                                        <div>{getBetDisplayName(j.n)}</div>
-                                        {j.s !== 0 && (
-                                            <div className="ml-5">
-                                                {signs[j.s]}
-                                            </div>
-                                        )}
-                                        <div className="flex-fill text-right ml-auto">
-                                            {formatMoney(j.m)}
-                                        </div>
+                <div className="mt-3">
+                    <div className="bets-list-header py-2 px-1">Jugadas</div>
+                    <div className="bets-list">
+                        {total.quantity > 0 ? (
+                            Object.keys(bets).map((drawId) => (
+                                <div key={drawId}>
+                                    <div className="bets-draw">
+                                        {bets[drawId].n}
                                         <FontAwesomeIcon
                                             icon="trash-alt"
-                                            className="bets-trash-icon ml-2"
-                                            onClick={() =>
-                                                onDeleteBets(drawId, bj)
-                                            }
+                                            className="bets-trash-icon ml-auto"
+                                            onClick={() => onDeleteBets(drawId)}
                                         />
                                     </div>
-                                ))}
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-center mt-2 font-weight-normal">
-                            No has agregado ninguna jugada.
-                        </p>
-                    )}
-                </div>
-                <div className="d-flex bg-light text-dark p-1">
-                    <div>Jugadas: {total.quantity}</div>
-                    <div className="flex-fill text-right">
-                        Total: {formatMoney(total.amount)}
+                                    {bets[drawId].j.map((j, bj) => (
+                                        <div
+                                            className="bets-play d-flex justify-content-between"
+                                            key={bj}
+                                        >
+                                            <div>{getBetDisplayName(j.n)}</div>
+                                            {j.s !== 0 && (
+                                                <div className="ml-5">
+                                                    {signs[j.s]}
+                                                </div>
+                                            )}
+                                            <div className="flex-fill text-right ml-auto">
+                                                {formatMoney(j.m)}
+                                            </div>
+                                            <FontAwesomeIcon
+                                                icon="trash-alt"
+                                                className="bets-trash-icon ml-2"
+                                                onClick={() =>
+                                                    onDeleteBets(drawId, bj)
+                                                }
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-center mt-2 font-weight-normal">
+                                No has agregado ninguna jugada.
+                            </p>
+                        )}
+                    </div>
+                    <div className="d-flex bets-list-footer p-1">
+                        <div>Jugadas: {total.quantity}</div>
+                        <div className="flex-fill text-right">
+                            Total: {formatMoney(total.amount)}
+                        </div>
                     </div>
                 </div>
             </div>
 
             <Row className="mt-2">
                 <Col lg="6">
-                    <Button
-                        block
-                        variant="light"
-                        className="mt-2"
-                        size="sm"
+                    <button
+                        className="mt-2 bets-delete-button w-100"
                         onClick={() => onDeleteBets()}
                     >
-                        Borrar jugadas
-                    </Button>
+                        Borrar jugada
+                    </button>
                 </Col>
                 <Col lg="6">
-                    <Button
-                        block
-                        className="mt-2"
-                        variant="light"
-                        size="sm"
+                    <button
+                        className="mt-2 bets-buy-button w-100"
                         onClick={onBuyTicket}
                     >
                         Comprar
-                    </Button>
+                    </button>
                 </Col>
             </Row>
         </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
+import classnames from 'classnames';
 import animalList from './animal-list';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
@@ -7,6 +8,7 @@ import { useStore } from '../../hook/use-store';
 import TicketModal from '../TicketModal/TicketModal';
 import { isBeforeNow } from '../../util/time';
 import { formatTime } from '../../util/format';
+import animalsButtonImg from '../../img/animals-button.png';
 import './Animals_styles.scss';
 import { showError } from '../../util/alert';
 
@@ -80,8 +82,8 @@ function Animals() {
 
     return (
         <Row className="h-100">
-            <Col lg="3" md="3" className="animals-draws-wrapper">
-                <div className="animals-draws-list mx-auto h-100 overflow-auto">
+            <Col lg="3" md="3" className="animals-draws-wrapper d-flex flex-column">
+                <div className="animals-draws-list mx-auto px-2 overflow-auto">
                     {lotteries.map((l, lotteryIndex) => (
                         <div key={l.id}>
                             <p className="font-weight-bold text-uppercase mt-3">
@@ -112,17 +114,35 @@ function Animals() {
                         </div>
                     ))}
                 </div>
+                <button className="mt-4 animals-results-button">
+                    Resultados
+                </button>
             </Col>
             <Col className="animals-options-wrapper d-flex justify-content-center align-content-start flex-wrap">
                 {playerAnimals.map((animal, index) => (
-                    <Button
+                    <div
                         key={animal.number}
-                        className="animals-option-button p-3 rounded-0 m-1"
-                        variant={animal.selected ? 'primary' : 'light'}
+                        className="animals-option-button m-1"
                         onClick={() => handleSelectAnimal(index)}
                     >
-                        {animal.name}
-                    </Button>
+                        <img
+                            className={classnames('animals-logo w-100', {
+                                'animals-logo-selected': animal.selected,
+                            })}
+                            src={animalsButtonImg}
+                        />
+                        <div
+                            className={classnames(
+                                'text-center text-uppercase font-weight-bold mt-1',
+                                {
+                                    'animals-logo-name-selected':
+                                        animal.selected,
+                                }
+                            )}
+                        >
+                            {animal.name}
+                        </div>
+                    </div>
                 ))}
             </Col>
             <Col lg="3" md="3">

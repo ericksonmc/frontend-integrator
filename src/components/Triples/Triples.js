@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import classnames from 'classnames';
 import Input from '../shared/Input/Input';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
@@ -78,6 +79,10 @@ function Triples() {
         handleAddBets(betAmount, playerBet, draws, signs);
     };
 
+    const getTripleImage = (name) => {
+        return `/triples/${name.toLowerCase().replace(' ', '-')}.png`;
+    };
+
     if (lotteries === null || lotteries.length === 0) {
         return null;
     }
@@ -87,40 +92,56 @@ function Triples() {
             <Col className="d-flex justify-content-center" lg="3" md="3">
                 <div className="triples-lotteries-list">
                     {lotteries.map((l, index) => (
-                        <Button
-                            block
+                        <div
                             key={index}
-                            className="d-block rounded-0 p-3"
-                            variant={
-                                lotteryIndex === index ? 'primary' : 'light'
-                            }
+                            className={classnames(
+                                'd-block triples-lottery-img',
+                                {
+                                    'triples-lottery-img-selected':
+                                        lotteryIndex === index,
+                                }
+                            )}
                             onClick={() => setLotteryIndex(index)}
                         >
-                            {l.nombre}
-                        </Button>
+                            <img
+                                className="w-100 h-100"
+                                src={getTripleImage(l.nombre)}
+                            />
+                        </div>
                     ))}
                 </div>
             </Col>
             <Col className="triples-draws-list">
-                <div className="d-flex align-items-center flex-wrap p-3">
-                    <label htmlFor="bets" className="m-0">
-                        Ingresa su jugada
-                    </label>
+                <div className="d-flex align-items-center flex-wrap">
                     <Input
                         id="bets"
-                        className="ml-1 w-50"
+                        className="ml-1 flex-fill"
                         placeholder="Separe las jugadas con punto ."
                         value={playerBet}
                         onChange={(e) => setPlayerBet(e.target.value)}
                     />
+                    <button className="triples-special-play-button">
+                        permuta
+                    </button>
+                    <button className="triples-special-play-button">
+                        serie
+                    </button>
+                    <button className="triples-special-play-button">
+                        corrida
+                    </button>
                 </div>
 
                 <div className="d-flex flex-wrap justify-content-center mt-3">
                     {lotteries[lotteryIndex].sorteos.map((draw, index) => (
-                        <Button
-                            className="triples-draw-button p-3 rounded-0 m-1"
+                        <button
+                            className={classnames(
+                                'triples-draw-button p-3 rounded-0 m-1',
+                                {
+                                    'triples-draw-button-selected':
+                                        draws[draw.id],
+                                }
+                            )}
                             key={draw.id}
-                            variant={draws[draw.id] ? 'primary' : 'light'}
                             disabled={!isBeforeNow(draw.horac)}
                             onClick={() =>
                                 handleSelectTriplesDraw(lotteryIndex, index)
@@ -128,7 +149,7 @@ function Triples() {
                         >
                             <div>{draw.nombre}</div>
                             <div>{formatTime(draw.horac)}</div>
-                        </Button>
+                        </button>
                     ))}
                 </div>
             </Col>
