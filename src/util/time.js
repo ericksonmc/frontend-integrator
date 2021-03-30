@@ -3,10 +3,21 @@ export const isBeforeNow = (t) => {
         return false;
     }
 
-    const d = new Date(`1995-12-17T${t}:00`);
-    const now = new Date();
+    const [tHour, tMinute] = t.split(':').map((x) => Number(x));
+
+    // get Venezuela hour and minute
+    const [currentVEHour, currentVEMinute] = new Date()
+        .toLocaleString(['en'], {
+            timeZone: 'America/Caracas',
+            hour: '2-digit',
+            hourCycle: 'h23',
+            minute: '2-digit',
+        })
+        .split(':')
+        .map((x) => Number(x));
+
     return (
-        d.getHours() > now.getHours() ||
-        (d.getHours() === now.getHours() && d.getMinutes() >= now.getMinutes())
+        tHour > currentVEHour ||
+        (tHour === currentVEHour && tMinute >= currentVEMinute)
     );
 };
