@@ -7,6 +7,11 @@ import useBets from '../../hook/use-bets';
 import { useStore } from '../../hook/use-store';
 import { isBeforeNow } from '../../util/time';
 import { formatTime } from '../../util/format';
+import {
+    getPermutePlays,
+    getSeriePlays,
+    getRangePlays,
+} from '../../util/special-plays';
 import TicketModal from '../TicketModal/TicketModal';
 import ZodiacSignsModal from '../ZodiacSignsModal/ZodiacSignsModal';
 import './Triples_styles.scss';
@@ -15,6 +20,7 @@ import { showError } from '../../util/alert';
 function Triples() {
     const [lotteries, setLotteries] = useState([]);
     const [playerBet, setPlayerBet] = useState('');
+    const [selectedPlayerBet, setSelectedPlayerBet] = useState('');
     const [lotteryIndex, setLotteryIndex] = useState(0);
     const {
         bets,
@@ -32,6 +38,16 @@ function Triples() {
     useEffect(() => {
         setLotteries(products.triples);
     }, [products, setLotteries]);
+
+    const specialPlays = [
+        { name: 'permuta', fn: getPermutePlays },
+        { name: 'serie', fn: getSeriePlays },
+        { name: 'corrida', fn: getRangePlays },
+    ];
+
+    const handleSpecialPlay = (fn) => {
+        handleAddTriplesBets(fn(playerBet.split('.')).join('.'));
+    };
 
     const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
         handleSelectDraw('triples', lotteryIndex, drawIndex);
@@ -57,7 +73,7 @@ function Triples() {
         }
     };
 
-    const handleAddTriplesBets = () => {
+    const handleAddTriplesBets = (play) => {
         const hasComodin = lotteries.some((l) => {
             return l.sorteos.some((s) => {
                 if (draws[s.id]) {
@@ -69,14 +85,15 @@ function Triples() {
         });
 
         if (hasComodin) {
+            setSelectedPlayerBet(play);
             return setShowZodialModal(true);
         }
 
-        handleAddBets(betAmount, playerBet, draws);
+        handleAddBets(betAmount, play, draws);
     };
     const handleSelectZodiacSigns = (signs) => {
         setShowZodialModal(false);
-        handleAddBets(betAmount, playerBet, draws, signs);
+        handleAddBets(betAmount, selectedPlayerBet, draws, signs);
     };
 
     const getTripleImage = (name) => {
@@ -120,15 +137,15 @@ function Triples() {
                         value={playerBet}
                         onChange={(e) => setPlayerBet(e.target.value)}
                     />
-                    <button className="triples-special-play-button">
-                        permuta
-                    </button>
-                    <button className="triples-special-play-button">
-                        serie
-                    </button>
-                    <button className="triples-special-play-button">
-                        corrida
-                    </button>
+                    {specialPlays.map((play, index) => (
+                        <button
+                            key={index}
+                            className="triples-special-play-button"
+                            onClick={() => handleSpecialPlay(play.fn)}
+                        >
+                            {play.name}
+                        </button>
+                    ))}
                 </div>
 
                 <div className="d-flex flex-wrap justify-content-center mt-3">
@@ -160,7 +177,7 @@ function Triples() {
                     betAmount={betAmount}
                     getBetDisplayName={(n) => n}
                     setBetAmount={setBetAmount}
-                    onAddBets={handleAddTriplesBets}
+                    onAddBets={() => handleAddTriplesBets(playerBet)}
                     onDeleteBets={handleDeleteBets}
                     onBuyTicket={handleBuyTriples}
                 />
