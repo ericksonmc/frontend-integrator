@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute/PrivateRoute';
 import Home from './Home/Home';
 import Triples from './Triples/Triples';
 import Animals from './Animals/Animals';
+import TicketHistory from './TicketHistory/TicketHistory';
 
 function NotFound() {
     return (
@@ -28,6 +29,7 @@ function App() {
                             <Redirect default noThrow from="/" to="triples" />
                             <Triples path="triples" />
                             <Animals path="animalitos" />
+                            <TicketHistory path="history" />
                         </Home>
                         <NotFound default />
                     </PrivateRoute>

@@ -6,3 +6,11 @@ export const formatTime = (t) => {
         hour12: true,
     }).format(d);
 };
+
+export const formatDateTime = (d) => {
+    return Intl.DateTimeFormat('es-VE', {
+        timeZone: 'America/Caracas',
+        dateStyle: 'medium',
+        timeStyle: 'medium'
+    }).format(new Date(d));
+};

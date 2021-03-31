@@ -36,6 +36,12 @@ function Home(props) {
                             Animalitos
                         </span>
                     </Link>
+                    <Link to="history" getProps={getLinkProps}>
+                        <img src={triplesLogo} />
+                        <span className="align-self-end ml-2 text-uppercase font-weight-bold">
+                            Historial
+                        </span>
+                    </Link>
                 </Col>
                 <Col className="col-auto p-3">
                     Saldo: {formatMoney(playerBalance)}

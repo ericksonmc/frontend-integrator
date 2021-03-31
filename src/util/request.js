@@ -4,8 +4,8 @@ import axios from 'axios';
 export const API_URL = process.env.REACT_APP_API_URL;
 export const appendBase = (url) => `${API_URL}${url}`;
 
-export const get = (url) => {
-    return axios.get(appendBase(url));
+export const get = (url, config = {}) => {
+    return axios.get(appendBase(url), config);
 };
 export const post = (url, payload, config = {}) => {
     return axios.post(appendBase(url), payload, config);

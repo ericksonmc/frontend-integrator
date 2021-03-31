@@ -69,7 +69,7 @@ function useBets() {
         const cBets = { ...bets };
         let i = 0;
         Object.keys(draws)
-            .filter((drawId) => isBeforeNow(draws[drawId].horac))
+            .filter((drawId) => isBeforeNow(draws[drawId].hour))
             .forEach((drawId) => {
                 if (!cBets[drawId]) {
                     cBets[drawId] = { j: [], n: draws[drawId].name };
