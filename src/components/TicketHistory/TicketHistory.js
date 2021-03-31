@@ -36,7 +36,7 @@ function TicketHistory() {
     };
 
     return (
-        <>
+        <div className="h-100">
             <div>
                 <label htmlFor="history-date" className="mr-3">
                     Seleccione fecha a consultar:
@@ -51,49 +51,51 @@ function TicketHistory() {
                     consultar
                 </button>
             </div>
-            <Table variant="dark">
-                <thead>
-                    <tr>
-                        <th>Serial</th>
-                        <th>Monto</th>
-                        <th>Fecha</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tickets.length > 0 ? (
-                        tickets.map((ticket) => (
-                            <tr key={ticket.id}>
-                                <td>{ticket.serial}</td>
-                                <td>{formatMoney(ticket.ticket_amount)}</td>
-                                <td>{formatDateTime(ticket.created_at)}</td>
+            <div className="h-100 overflow-auto">
+                <Table variant="dark">
+                    <thead>
+                        <tr>
+                            <th>Serial</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tickets.length > 0 ? (
+                            tickets.map((ticket, index) => (
+                                <tr key={index}>
+                                    <td>{ticket.serial}</td>
+                                    <td>{formatMoney(ticket.ticket_amount)}</td>
+                                    <td>{formatDateTime(ticket.created_at)}</td>
+                                    <td>
+                                        <button
+                                            disabled={isLoading}
+                                            onClick={() =>
+                                                setModalTicket(ticket.ticket)
+                                            }
+                                        >
+                                            ver ticket
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
                                 <td>
-                                    <button
-                                        disabled={isLoading}
-                                        onClick={() =>
-                                            setModalTicket(ticket.ticket)
-                                        }
-                                    >
-                                        ver ticket
-                                    </button>
+                                    <p>No hay tickets para mostrar</p>
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td>
-                                <p>No hay tickets para mostrar</p>
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
             <TicketModal
                 show={modalTicket !== ''}
                 ticket={modalTicket}
                 onClose={() => setModalTicket('')}
             ></TicketModal>
-        </>
+        </div>
     );
 }
 

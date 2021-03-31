@@ -42,6 +42,12 @@ function Home(props) {
                             Historial
                         </span>
                     </Link>
+                    <Link to="awards" getProps={getLinkProps}>
+                        <img src={triplesLogo} />
+                        <span className="align-self-end ml-2 text-uppercase font-weight-bold">
+                            Resultados
+                        </span>
+                    </Link>
                 </Col>
                 <Col className="col-auto p-3">
                     Saldo: {formatMoney(playerBalance)}

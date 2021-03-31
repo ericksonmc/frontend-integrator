@@ -5,3 +5,11 @@ export const listTickets = async (date) => {
 
     return res.data;
 };
+
+export const listAwards = async (date, type) => {
+    const res = await get(`/v1/reports/awards`, {
+        params: { date, tipo: Number(type) },
+    });
+
+    return res.data;
+};

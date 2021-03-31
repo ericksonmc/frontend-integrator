@@ -9,6 +9,7 @@ import Home from './Home/Home';
 import Triples from './Triples/Triples';
 import Animals from './Animals/Animals';
 import TicketHistory from './TicketHistory/TicketHistory';
+import Awards from './Awards/Awards';
 
 function NotFound() {
     return (
@@ -30,6 +31,7 @@ function App() {
                             <Triples path="triples" />
                             <Animals path="animalitos" />
                             <TicketHistory path="history" />
+                            <Awards path="awards" />
                         </Home>
                         <NotFound default />
                     </PrivateRoute>
