@@ -3,6 +3,7 @@ import { useStore } from '../hook/use-store';
 import { formatMoney, formatNumber } from '../util/currency';
 import { showError } from '../util/alert';
 import Sales from '../api/sales';
+import { isBeforeNow } from '../util/time';
 
 function useBets() {
     const [draws, setDraws] = useState({});
@@ -28,6 +29,7 @@ function useBets() {
             cDraws[draw.id] = {
                 name: draw.nombre_largo,
                 comodin: draw.comodin,
+                hour: draw.horac,
             };
         } else {
             delete cDraws[draw.id];
@@ -66,30 +68,32 @@ function useBets() {
         const betNumbers = playerBet.split('.');
         const cBets = { ...bets };
         let i = 0;
-        Object.keys(draws).forEach((drawId) => {
-            if (!cBets[drawId]) {
-                cBets[drawId] = { j: [], n: draws[drawId].name };
-            }
-            betNumbers.forEach((number) => {
-                if (draws[drawId].comodin && signs.length > 0) {
-                    signs.forEach((s) => {
+        Object.keys(draws)
+            .filter((drawId) => isBeforeNow(draws[drawId].horac))
+            .forEach((drawId) => {
+                if (!cBets[drawId]) {
+                    cBets[drawId] = { j: [], n: draws[drawId].name };
+                }
+                betNumbers.forEach((number) => {
+                    if (draws[drawId].comodin && signs.length > 0) {
+                        signs.forEach((s) => {
+                            cBets[drawId].j.push({
+                                i: i++,
+                                n: number,
+                                m: amount,
+                                s: s,
+                            });
+                        });
+                    } else {
                         cBets[drawId].j.push({
                             i: i++,
                             n: number,
                             m: amount,
-                            s: s,
+                            s: 0,
                         });
-                    });
-                } else {
-                    cBets[drawId].j.push({
-                        i: i++,
-                        n: number,
-                        m: amount,
-                        s: 0,
-                    });
-                }
+                    }
+                });
             });
-        });
 
         setBets(cBets);
     };
