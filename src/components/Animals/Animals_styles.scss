@@ -52,6 +52,7 @@
     @media screen and (min-width: 1280px) {
         &-draws-list {
             max-width: 350px;
+            min-width: 350px;
         }
     }
 }

@@ -34,9 +34,19 @@ function Animals() {
             .join('.');
     }, [playerAnimals]);
     const { products } = useStore();
+    const availableLotteries = useMemo(() => {
+        return lotteries.map((lottery) => {
+            return {
+                ...lottery,
+                sorteos: lottery.sorteos.filter((draw) =>
+                    isBeforeNow(draw.horac)
+                ),
+            };
+        });
+    }, [lotteries]);
 
     useEffect(() => {
-        setLotteries(products.animalitos);
+        setLotteries(products.animalitos || []);
     }, [products, setLotteries]);
 
     const handleSelectAnimal = (index) => {
@@ -82,41 +92,48 @@ function Animals() {
 
     return (
         <Row className="h-100">
-            <Col lg="3" md="3" className="animals-draws-wrapper d-flex flex-column">
+            <Col
+                lg="3"
+                md="3"
+                className="animals-draws-wrapper d-flex flex-column"
+            >
                 <div className="animals-draws-list mx-auto px-2 overflow-auto">
-                    {lotteries.map((l, lotteryIndex) => (
+                    {availableLotteries.map((l, lotteryIndex) => (
                         <div key={l.id}>
                             <p className="font-weight-bold text-uppercase mt-3">
                                 {l.nombre}
                             </p>
-                            {l.sorteos.map((draw, drawIndex) => (
-                                <Form.Check
-                                    id={'draw' + drawIndex}
-                                    type="checkbox"
-                                    key={l.id + ' ' + draw.id}
-                                    label={
-                                        draw.nombre_largo +
-                                        ' ' +
-                                        formatTime(draw.horac)
-                                    }
-                                    className="mt-3"
-                                    value={draw.id}
-                                    checked={!!draws[draw.id]}
-                                    disabled={!isBeforeNow(draw.horac)}
-                                    onChange={() =>
-                                        handleSelectAnimalitosDraw(
-                                            lotteryIndex,
-                                            drawIndex
-                                        )
-                                    }
-                                />
-                            ))}
+                            {l.sorteos.length > 0 ? (
+                                l.sorteos.map((draw, drawIndex) => (
+                                    <Form.Check
+                                        id={'draw' + drawIndex}
+                                        type="checkbox"
+                                        key={l.id + ' ' + draw.id}
+                                        label={
+                                            draw.nombre_largo +
+                                            ' ' +
+                                            formatTime(draw.horac)
+                                        }
+                                        className="mt-3"
+                                        value={draw.id}
+                                        checked={!!draws[draw.id]}
+                                        disabled={!isBeforeNow(draw.horac)}
+                                        onChange={() =>
+                                            handleSelectAnimalitosDraw(
+                                                lotteryIndex,
+                                                drawIndex
+                                            )
+                                        }
+                                    />
+                                ))
+                            ) : (
+                                <p className="ml-2 text-muted">
+                                    No hay sorteos disponibles
+                                </p>
+                            )}
                         </div>
                     ))}
                 </div>
-                <button className="mt-4 animals-results-button">
-                    Resultados
-                </button>
             </Col>
             <Col className="animals-options-wrapper d-flex justify-content-center align-content-start flex-wrap">
                 {playerAnimals.map((animal, index) => (

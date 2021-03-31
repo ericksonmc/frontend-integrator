@@ -33,10 +33,15 @@ function Triples() {
     const [betAmount, setBetAmount] = useState('');
     const [ticket, setTicket] = useState('');
     const [showZodiacModal, setShowZodialModal] = useState(false);
+    const [availableDraws, setAvailableDraws] = useState([]);
     const { products } = useStore();
 
     useEffect(() => {
-        setLotteries(products.triples);
+        setLotteries(products.triples || []);
+
+        if (lotteries !== null && lotteries.length > 0) {
+            handleChangeLottery(0);
+        }
     }, [products, setLotteries]);
 
     const specialPlays = [
@@ -48,11 +53,9 @@ function Triples() {
     const handleSpecialPlay = (fn) => {
         handleAddTriplesBets(fn(playerBet.split('.')).join('.'));
     };
-
     const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
         handleSelectDraw('triples', lotteryIndex, drawIndex);
     };
-
     const handleBuyTriples = async () => {
         try {
             const res = await handleBuyTicket(bets, {
@@ -72,7 +75,6 @@ function Triples() {
             showError('Ha ocurrido un error');
         }
     };
-
     const handleAddTriplesBets = (play) => {
         const hasComodin = lotteries.some((l) => {
             return l.sorteos.some((s) => {
@@ -94,6 +96,12 @@ function Triples() {
     const handleSelectZodiacSigns = (signs) => {
         setShowZodialModal(false);
         handleAddBets(betAmount, selectedPlayerBet, draws, signs);
+    };
+    const handleChangeLottery = (index) => {
+        setLotteryIndex(index);
+        setAvailableDraws(
+            lotteries[index].sorteos.filter((draw) => isBeforeNow(draw.horac))
+        );
     };
 
     const getTripleImage = (name) => {
@@ -118,7 +126,7 @@ function Triples() {
                                         lotteryIndex === index,
                                 }
                             )}
-                            onClick={() => setLotteryIndex(index)}
+                            onClick={() => handleChangeLottery(index)}
                         >
                             <img
                                 className="w-100 h-100"
@@ -149,25 +157,29 @@ function Triples() {
                 </div>
 
                 <div className="d-flex flex-wrap justify-content-center mt-3">
-                    {lotteries[lotteryIndex].sorteos.map((draw, index) => (
-                        <button
-                            className={classnames(
-                                'triples-draw-button p-3 rounded-0 m-1',
-                                {
-                                    'triples-draw-button-selected':
-                                        draws[draw.id],
+                    {availableDraws.length > 0 ? (
+                        availableDraws.map((draw, index) => (
+                            <button
+                                className={classnames(
+                                    'triples-draw-button p-3 rounded-0 m-1',
+                                    {
+                                        'triples-draw-button-selected':
+                                            draws[draw.id],
+                                    }
+                                )}
+                                key={draw.id}
+                                disabled={!isBeforeNow(draw.horac)}
+                                onClick={() =>
+                                    handleSelectTriplesDraw(lotteryIndex, index)
                                 }
-                            )}
-                            key={draw.id}
-                            disabled={!isBeforeNow(draw.horac)}
-                            onClick={() =>
-                                handleSelectTriplesDraw(lotteryIndex, index)
-                            }
-                        >
-                            <div>{draw.nombre}</div>
-                            <div>{formatTime(draw.horac)}</div>
-                        </button>
-                    ))}
+                            >
+                                <div>{draw.nombre}</div>
+                                <div>{formatTime(draw.horac)}</div>
+                            </button>
+                        ))
+                    ) : (
+                        <p className="mt-3">No hay sorteos disponibles</p>
+                    )}
                 </div>
             </Col>
             <Col lg="3" md="3">
