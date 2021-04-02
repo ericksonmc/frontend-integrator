@@ -20,6 +20,7 @@ function useBets() {
         },
         { quantity: 0, amount: 0 }
     );
+    const { setShowGlobalLoader } = useStore();
 
     const handleSelectDraw = (draw) => {
         const cDraws = { ...draws };
@@ -130,23 +131,31 @@ function useBets() {
             return;
         }
 
+        setShowGlobalLoader(true);
         const today = new Date();
-        const res = await Sales.sales({
-            date:
-                today.getDate().toString().padStart(2, '0') +
-                '/' +
-                (today.getMonth() + 1).toString().padStart(2, '0') +
-                '/' +
-                today.getFullYear(),
-            bets: Object.keys(bets).map((drawId) => {
-                return { c: drawId, j: bets[drawId].j };
-            }),
-            ...saleParams,
-        });
-        setBets({});
-        setDraws({});
-        setPlayerBalance(res.saldo_actual);
-        return res;
+        try {
+            const res = await Sales.sales({
+                date:
+                    today.getDate().toString().padStart(2, '0') +
+                    '/' +
+                    (today.getMonth() + 1).toString().padStart(2, '0') +
+                    '/' +
+                    today.getFullYear(),
+                bets: Object.keys(bets).map((drawId) => {
+                    return { c: drawId, j: bets[drawId].j };
+                }),
+                ...saleParams,
+            });
+            setBets({});
+            setDraws({});
+            setPlayerBalance(res.saldo_actual);
+            return res;
+        } catch (error) {
+            setShowGlobalLoader(false);
+            throw error;
+        } finally {
+            setShowGlobalLoader(false);
+        }
     };
 
     return {

@@ -16,22 +16,22 @@ function RulesModal({ products, show, onClose }) {
                     <>
                         <h4>Triples</h4>
                         {products.triples.map((p) => (
-                            <>
+                            <div key={p.id}>
                                 <p className="mt-3 mb-0">{p.nombre}</p>
                                 <a href="/reglamento" target="_blank">
                                     Descargue aquí el reglamento del juego
                                 </a>
-                            </>
+                            </div>
                         ))}
 
                         <h4 className="mt-3">Animalitos</h4>
                         {products.animalitos.map((p) => (
-                            <>
+                            <div key={p.id}>
                                 <p className="mt-3 mb-0">{p.nombre}</p>
                                 <a href="/reglamento" target="_blank">
                                     Descargue aquí el reglamento del juego
                                 </a>
-                            </>
+                            </div>
                         ))}
                     </>
                 )}

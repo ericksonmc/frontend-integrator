@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useStore } from '../../hook/use-store';
 import { listTickets } from '../../api/reports';
 import { showError } from '../../util/alert';
 import { formatMoney } from '../../util/currency';
@@ -11,7 +12,7 @@ function TicketHistory() {
     const [date, setDate] = useState('');
     const [tickets, setTickets] = useState([]);
     const [modalTicket, setModalTicket] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const { setShowGlobalLoader } = useStore();
 
     const handleSearch = async () => {
         if (date === '') {
@@ -19,7 +20,7 @@ function TicketHistory() {
             return;
         }
 
-        setIsLoading(true);
+        setShowGlobalLoader(true);
         try {
             const t = await listTickets(date);
 
@@ -31,7 +32,7 @@ function TicketHistory() {
         } catch (error) {
             showError('Hubo un error al consultar los tickets');
         } finally {
-            setIsLoading(false);
+            setShowGlobalLoader(false);
         }
     };
 
@@ -47,9 +48,7 @@ function TicketHistory() {
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                 />
-                <button disabled={isLoading} onClick={handleSearch}>
-                    consultar
-                </button>
+                <button onClick={handleSearch}>consultar</button>
             </div>
             <div className="h-100 overflow-auto">
                 <Table variant="dark">
@@ -70,7 +69,6 @@ function TicketHistory() {
                                     <td>{formatDateTime(ticket.created_at)}</td>
                                     <td>
                                         <button
-                                            disabled={isLoading}
                                             onClick={() =>
                                                 setModalTicket(ticket.ticket)
                                             }

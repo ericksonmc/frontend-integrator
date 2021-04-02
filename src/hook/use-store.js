@@ -26,15 +26,18 @@ function useProvideStore() {
     });
     const [lotterySetup, setLotterySetup] = useState(null);
     const [playerBalance, setPlayerBalance] = useState(0);
+    const [showGlobalLoader, setShowGlobalLoader] = useState(false);
 
     return {
         player,
         products,
         lotterySetup,
         playerBalance,
+        showGlobalLoader,
         setPlayer,
         setProducts,
         setLotterySetup,
         setPlayerBalance,
+        setShowGlobalLoader,
     };
 }

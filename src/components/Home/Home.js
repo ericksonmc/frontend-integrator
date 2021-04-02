@@ -9,6 +9,7 @@ import animalLogo from '../../img/animal.png';
 import triplesLogo from '../../img/triples.png';
 import './Home_styles.scss';
 import RulesModal from '../RulesModal/RulesModal';
+import GlobalLoader from '../GlobalLoader/GlobalLoader';
 
 function Home(props) {
     const { playerBalance, products } = useStore();
@@ -72,6 +73,7 @@ function Home(props) {
                 products={products}
                 onClose={() => setShowRulesModal(!showRulesModal)}
             ></RulesModal>
+            <GlobalLoader />
         </Container>
     );
 }

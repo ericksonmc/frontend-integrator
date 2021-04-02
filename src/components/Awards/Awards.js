@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useStore } from '../../hook/use-store';
 import { listAwards } from '../../api/reports';
 import { showError } from '../../util/alert';
 import Input from '../shared/Input/Input';
@@ -23,7 +24,7 @@ function Awards() {
     const [date, setDate] = useState('');
     const [type, setType] = useState('0');
     const [awards, setAwards] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const { setShowGlobalLoader } = useStore();
 
     const handleSearch = async () => {
         if (date === '') {
@@ -31,14 +32,14 @@ function Awards() {
             return;
         }
 
-        setIsLoading(true);
+        setShowGlobalLoader(true);
         try {
             const res = await listAwards(date, type);
             setAwards(res);
         } catch (error) {
             showError('Hubo un error al consultar los resultados');
         } finally {
-            setIsLoading(false);
+            setShowGlobalLoader(false);
         }
     };
 
@@ -51,21 +52,14 @@ function Awards() {
                 <Input
                     id="history-date"
                     type="date"
-                    disabled={isLoading}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                 />
-                <select
-                    disabled={isLoading}
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                >
+                <select value={type} onChange={(e) => setType(e.target.value)}>
                     <option value="0">Triples</option>
                     <option value="1">Animalitos</option>
                 </select>
-                <button disabled={isLoading} onClick={handleSearch}>
-                    consultar
-                </button>
+                <button onClick={handleSearch}>consultar</button>
             </div>
             {awards.length > 0 ? (
                 awards.map((award, index) => (
