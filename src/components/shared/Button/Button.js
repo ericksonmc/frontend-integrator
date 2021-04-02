@@ -8,7 +8,7 @@ function Button(props) {
     return (
         <Btn
             {...props}
-            className={classnames(props.className, {
+            className={classnames(props.className, 'button', {
                 ['button-' + props.variant]: props.variant,
             })}
         >

@@ -6,6 +6,7 @@ import { showError } from '../../util/alert';
 import { formatMoney } from '../../util/currency';
 import { formatDateTime } from '../../util/format';
 import Input from '../shared/Input/Input';
+import Button from '../shared/Button/Button';
 import TicketModal from '../TicketModal/TicketModal';
 
 function TicketHistory() {
@@ -38,17 +39,21 @@ function TicketHistory() {
 
     return (
         <div className="h-100">
-            <div>
-                <label htmlFor="history-date" className="mr-3">
-                    Seleccione fecha a consultar:
-                </label>
-                <Input
-                    id="history-date"
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
-                <button onClick={handleSearch}>consultar</button>
+            <div className="d-flex mb-3">
+                <div>
+                    <label htmlFor="history-date" className="mr-3">
+                        Seleccione fecha a consultar:
+                    </label>
+                    <Input
+                        id="history-date"
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+                </div>
+                <Button className="ml-3 align-self-end" onClick={handleSearch}>
+                    consultar
+                </Button>
             </div>
             <div className="h-100 overflow-auto">
                 <Table variant="dark">

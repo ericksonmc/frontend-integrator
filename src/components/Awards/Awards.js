@@ -4,6 +4,7 @@ import { useStore } from '../../hook/use-store';
 import { listAwards } from '../../api/reports';
 import { showError } from '../../util/alert';
 import Input from '../shared/Input/Input';
+import Button from '../shared/Button/Button';
 
 const signs = {
     1: 'Aries',
@@ -45,21 +46,35 @@ function Awards() {
 
     return (
         <div className="h-100 overflow-auto">
-            <div>
-                <label htmlFor="history-date" className="mr-3">
-                    Seleccione fecha a consultar:
-                </label>
-                <Input
-                    id="history-date"
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
-                <select value={type} onChange={(e) => setType(e.target.value)}>
-                    <option value="0">Triples</option>
-                    <option value="1">Animalitos</option>
-                </select>
-                <button onClick={handleSearch}>consultar</button>
+            <div className="d-flex mb-3">
+                <div>
+                    <label htmlFor="history-date" className="mr-3">
+                        Seleccione fecha a consultar:
+                    </label>
+                    <Input
+                        id="history-date"
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+                </div>
+                <div className="ml-3">
+                    <label htmlFor="product" className="mr-3">
+                        Producto
+                    </label>
+                    <select
+                        id="product"
+                        className="form-control"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                    >
+                        <option value="0">Triples</option>
+                        <option value="1">Animalitos</option>
+                    </select>
+                </div>
+                <Button className="ml-3 align-self-end" onClick={handleSearch}>
+                    consultar
+                </Button>
             </div>
             {awards.length > 0 ? (
                 awards.map((award, index) => (
