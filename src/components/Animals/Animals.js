@@ -58,10 +58,6 @@ function Animals() {
     const getBetDisplayName = (number) => {
         return animalList.find((a) => a.number === number).name;
     };
-
-    const handleSelectAnimalitosDraw = (lotteryIndex, drawIndex) => {
-        handleSelectDraw('animalitos', lotteryIndex, drawIndex);
-    };
     const resetPlayerAnimals = () => {
         setPlayerAnimals(animalList.map((a) => ({ ...a, selected: false })));
     };
@@ -98,7 +94,7 @@ function Animals() {
                 className="animals-draws-wrapper d-flex flex-column"
             >
                 <div className="animals-draws-list mx-auto px-2 overflow-auto">
-                    {availableLotteries.map((l, lotteryIndex) => (
+                    {availableLotteries.map((l) => (
                         <div key={l.id}>
                             <p className="font-weight-bold text-uppercase mt-3">
                                 {l.nombre}
@@ -118,12 +114,7 @@ function Animals() {
                                         value={draw.id}
                                         checked={!!draws[draw.id]}
                                         disabled={!isBeforeNow(draw.horac)}
-                                        onChange={() =>
-                                            handleSelectAnimalitosDraw(
-                                                lotteryIndex,
-                                                drawIndex
-                                            )
-                                        }
+                                        onChange={() => handleSelectDraw(draw)}
                                     />
                                 ))
                             ) : (

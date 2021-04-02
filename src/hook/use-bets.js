@@ -8,7 +8,7 @@ import { isBeforeNow } from '../util/time';
 function useBets() {
     const [draws, setDraws] = useState({});
     const [bets, setBets] = useState({});
-    const { lotterySetup, products, setPlayerBalance } = useStore();
+    const { lotterySetup, setPlayerBalance } = useStore();
     const total = Object.values(bets).reduce(
         (memo, curr) => {
             memo.quantity += curr.j.length;
@@ -21,8 +21,7 @@ function useBets() {
         { quantity: 0, amount: 0 }
     );
 
-    const handleSelectDraw = (product, lotteryIndex, drawIndex) => {
-        const draw = products[product][lotteryIndex]['sorteos'][drawIndex];
+    const handleSelectDraw = (draw) => {
         const cDraws = { ...draws };
 
         if (!cDraws[draw.id]) {

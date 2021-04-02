@@ -55,9 +55,6 @@ function Triples() {
     const handleSpecialPlay = (fn) => {
         handleAddTriplesBets(fn(playerBet.split('.')).join('.'));
     };
-    const handleSelectTriplesDraw = (lotteryIndex, drawIndex) => {
-        handleSelectDraw('triples', lotteryIndex, drawIndex);
-    };
     const handleBuyTriples = async () => {
         try {
             const res = await handleBuyTicket(bets, {
@@ -160,7 +157,7 @@ function Triples() {
 
                 <div className="d-flex flex-wrap justify-content-center mt-3">
                     {availableDraws.length > 0 ? (
-                        availableDraws.map((draw, index) => (
+                        availableDraws.map((draw) => (
                             <button
                                 className={classnames(
                                     'triples-draw-button p-3 rounded-0 m-1',
@@ -171,9 +168,7 @@ function Triples() {
                                 )}
                                 key={draw.id}
                                 disabled={!isBeforeNow(draw.horac)}
-                                onClick={() =>
-                                    handleSelectTriplesDraw(lotteryIndex, index)
-                                }
+                                onClick={() => handleSelectDraw(draw)}
                             >
                                 <div>{draw.nombre}</div>
                                 <div>{formatTime(draw.horac)}</div>
