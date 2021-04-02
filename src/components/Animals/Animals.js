@@ -61,6 +61,13 @@ function Animals() {
     const resetPlayerAnimals = () => {
         setPlayerAnimals(animalList.map((a) => ({ ...a, selected: false })));
     };
+    const handleAddAnimalitosBets = () => {
+        handleAddBets(betAmount, playerBet, draws);
+
+        // clear ui elements
+        resetPlayerAnimals();
+        setBetAmount('');
+    };
 
     const handleBuyAnimalitos = async () => {
         try {
@@ -160,7 +167,7 @@ function Animals() {
                     betAmount={betAmount}
                     getBetDisplayName={getBetDisplayName}
                     setBetAmount={setBetAmount}
-                    onAddBets={() => handleAddBets(betAmount, playerBet, draws)}
+                    onAddBets={handleAddAnimalitosBets}
                     onDeleteBets={handleDeleteBets}
                     onBuyTicket={handleBuyAnimalitos}
                 />

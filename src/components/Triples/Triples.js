@@ -92,10 +92,18 @@ function Triples() {
         }
 
         handleAddBets(betAmount, play, draws);
+
+        // clear ui elements
+        setPlayerBet('');
+        setBetAmount('');
     };
     const handleSelectZodiacSigns = (signs) => {
         setShowZodialModal(false);
         handleAddBets(betAmount, selectedPlayerBet, draws, signs);
+        
+        // clear ui elements
+        setPlayerBet('');
+        setBetAmount('');
     };
     const handleChangeLottery = (index) => {
         setLotteryIndex(index);

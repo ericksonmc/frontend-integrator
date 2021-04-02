@@ -94,6 +94,9 @@ function useBets() {
             });
 
         setBets(cBets);
+
+        // clear ui elements
+        setDraws({});
     };
     const handleDeleteBets = (drawId = null, numberIndex = null) => {
         let cBets = { ...bets };
