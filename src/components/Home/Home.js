@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -8,9 +8,11 @@ import { formatMoney } from '../../util/currency';
 import animalLogo from '../../img/animal.png';
 import triplesLogo from '../../img/triples.png';
 import './Home_styles.scss';
+import RulesModal from '../RulesModal/RulesModal';
 
 function Home(props) {
-    const { playerBalance } = useStore();
+    const { playerBalance, products } = useStore();
+    const [showRulesModal, setShowRulesModal] = useState(false);
 
     const getLinkProps = ({ isCurrent }) => {
         return {
@@ -48,6 +50,15 @@ function Home(props) {
                             Resultados
                         </span>
                     </Link>
+                    <div
+                        className="d-flex home-nav-button"
+                        onClick={() => setShowRulesModal(!showRulesModal)}
+                    >
+                        <img src={triplesLogo} />
+                        <span className="align-self-end ml-2 text-uppercase font-weight-bold">
+                            Reglamento
+                        </span>
+                    </div>
                 </Col>
                 <Col className="col-auto p-3">
                     Saldo: {formatMoney(playerBalance)}
@@ -56,6 +67,11 @@ function Home(props) {
             <Row className="home-content flex-fill">
                 <div className="home-board h-100 p-3">{props.children}</div>
             </Row>
+            <RulesModal
+                show={showRulesModal}
+                products={products}
+                onClose={() => setShowRulesModal(!showRulesModal)}
+            ></RulesModal>
         </Container>
     );
 }

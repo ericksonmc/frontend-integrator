@@ -20,6 +20,7 @@
     &-nav-button {
         min-width: 110px;
         color: white;
+        cursor: pointer;
 
         &:not(:last-child)::after {
             content: '';
