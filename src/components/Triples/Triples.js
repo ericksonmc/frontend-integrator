@@ -38,11 +38,13 @@ function Triples() {
 
     useEffect(() => {
         setLotteries(products.triples || []);
+    }, [products, setLotteries]);
 
-        if (lotteries !== null && lotteries.length > 0) {
+    useEffect(() => {
+        if (lotteries.length > 0) {
             handleChangeLottery(0);
         }
-    }, [products, setLotteries]);
+    }, [lotteries]);
 
     const specialPlays = [
         { name: 'permuta', fn: getPermutePlays },

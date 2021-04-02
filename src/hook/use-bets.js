@@ -34,7 +34,6 @@ function useBets() {
         } else {
             delete cDraws[draw.id];
         }
-
         setDraws(cDraws);
     };
     const handleAddBets = (betAmount, playerBet, draws, signs = []) => {

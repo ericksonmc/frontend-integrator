@@ -52,17 +52,19 @@ function Bets({
     return (
         <div className={classnames(props.className, 'bets')}>
             <div className="bets-wrapper">
-                <div className="d-flex flex-column align-items-end">
-                    <div className="d-flex flex-column align-items-center">
-                        <label htmlFor="amount" className="mb-0 mr-4 text-uppercase font-weight-bold">
-                            Monto
-                        </label>
-                        <Input
-                            value={betAmount}
-                            onChange={(e) => setBetAmount(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
-                    </div>
+                <div className="d-flex align-items-center">
+                    <label
+                        htmlFor="amount"
+                        className="mb-0 mr-4 text-uppercase font-weight-bold"
+                    >
+                        Monto
+                    </label>
+                    <Input
+                        className="flex-fill"
+                        value={betAmount}
+                        onChange={(e) => setBetAmount(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
                 </div>
                 <button className="mt-4 bets-add-button" onClick={onAddBets}>
                     Agregar Jugada
@@ -120,26 +122,25 @@ function Bets({
                         </div>
                     </div>
                 </div>
+                <Row className="mt-2">
+                    <Col lg="6">
+                        <button
+                            className="mt-2 bets-delete-button w-100"
+                            onClick={() => onDeleteBets()}
+                        >
+                            Borrar jugada
+                        </button>
+                    </Col>
+                    <Col lg="6">
+                        <button
+                            className="mt-2 bets-buy-button w-100"
+                            onClick={onBuyTicket}
+                        >
+                            Comprar
+                        </button>
+                    </Col>
+                </Row>
             </div>
-
-            <Row className="mt-2">
-                <Col lg="6">
-                    <button
-                        className="mt-2 bets-delete-button w-100"
-                        onClick={() => onDeleteBets()}
-                    >
-                        Borrar jugada
-                    </button>
-                </Col>
-                <Col lg="6">
-                    <button
-                        className="mt-2 bets-buy-button w-100"
-                        onClick={onBuyTicket}
-                    >
-                        Comprar
-                    </button>
-                </Col>
-            </Row>
         </div>
     );
 }
