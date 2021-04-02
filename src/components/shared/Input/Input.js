@@ -7,7 +7,10 @@ function Input(props) {
     return (
         <input
             {...props}
-            className={classnames(props.className, 'input overflow-hidden')}
+            className={classnames(
+                props.className,
+                'input overflow-hidden form-control'
+            )}
         />
     );
 }

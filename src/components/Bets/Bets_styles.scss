@@ -28,30 +28,6 @@
         cursor: pointer;
     }
 
-    &-add-button {
-        background-color: transparent;
-        border: 1px #00ac5c solid;
-        color: white;
-        font-weight: bold;
-        height: 40px;
-        text-transform: uppercase;
-        width: 100%;
-    }
-
-    &-delete-button {
-        border: none;
-        background-color: #b6b6bc;
-        text-transform: uppercase;
-        color: white;
-    }
-
-    &-buy-button {
-        border: none;
-        background-color: #00ac5c;
-        text-transform: uppercase;
-        color: white;
-    }
-
     &-list-header,
     &-list-footer {
         background-color: #b6b6bc;

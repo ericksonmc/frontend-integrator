@@ -5,6 +5,7 @@ import { Col, Row } from 'react-bootstrap';
 import classnames from 'classnames';
 import { formatMoney } from '../../util/currency';
 import Input from '../shared/Input/Input';
+import Button from '../shared/Button/Button';
 import './Bets_styles.scss';
 
 const signs = {
@@ -66,9 +67,14 @@ function Bets({
                         onKeyDown={handleKeyDown}
                     />
                 </div>
-                <button className="mt-4 bets-add-button" onClick={onAddBets}>
+                <Button
+                    block
+                    variant="outline-success"
+                    className="mt-4"
+                    onClick={onAddBets}
+                >
                     Agregar Jugada
-                </button>
+                </Button>
 
                 <div className="mt-3">
                     <div className="bets-list-header py-2 px-1">Jugadas</div>
@@ -124,20 +130,24 @@ function Bets({
                 </div>
                 <Row className="mt-2">
                     <Col lg="6">
-                        <button
-                            className="mt-2 bets-delete-button w-100"
+                        <Button
+                            block
+                            variant="light"
+                            className="mt-2"
                             onClick={() => onDeleteBets()}
                         >
                             Borrar jugada
-                        </button>
+                        </Button>
                     </Col>
                     <Col lg="6">
-                        <button
-                            className="mt-2 bets-buy-button w-100"
+                        <Button
+                            block
+                            variant="success"
+                            className="mt-2"
                             onClick={onBuyTicket}
                         >
                             Comprar
-                        </button>
+                        </Button>
                     </Col>
                 </Row>
             </div>

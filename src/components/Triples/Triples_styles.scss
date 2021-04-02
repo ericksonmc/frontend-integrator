@@ -22,26 +22,7 @@
         min-width: 120px;
         height: 88px;
         flex-shrink: 0;
-        background-color: $bg-option-button;
-        color: $text-option-button;
         cursor: pointer;
-        border: 1px #00ac5c solid;
-
-        &-selected {
-            background-color: #00ac5c;
-            color: white;
-        }
-    }
-
-    &-special-play-button {
-        background-color: #00ac5c;
-        border: none;
-        color: white;
-        font-weight: bold;
-        height: 30px;
-        margin-left: 10px;
-        min-width: 90px;
-        text-transform: uppercase;
     }
 
     &-draws-list {

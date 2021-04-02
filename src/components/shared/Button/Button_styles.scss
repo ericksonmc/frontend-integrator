@@ -1,0 +1,14 @@
+.button {
+    &-success,
+    &-light {
+        border: none !important;
+        border-radius: 0 !important;
+        text-transform: uppercase !important;
+    }
+
+    &-outline-success {
+        border-radius: 0 !important;
+        text-transform: uppercase !important;
+        color: white !important;
+    }
+}

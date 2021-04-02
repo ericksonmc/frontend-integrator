@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import classnames from 'classnames';
 import Input from '../shared/Input/Input';
+import Button from '../shared/Button/Button';
 import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
 import { useStore } from '../../hook/use-store';
@@ -137,42 +138,39 @@ function Triples() {
             </Col>
             <Col className="triples-draws-list">
                 <div className="d-flex align-items-center flex-wrap">
-                    <Input
-                        id="bets"
-                        className="ml-1 flex-fill"
-                        placeholder="Separe las jugadas con punto ."
-                        value={playerBet}
-                        onChange={(e) => setPlayerBet(e.target.value)}
-                    />
+                    <div className="ml-1 flex-fill">
+                        <Input
+                            id="bets"
+                            placeholder="Separe las jugadas con punto ."
+                            value={playerBet}
+                            onChange={(e) => setPlayerBet(e.target.value)}
+                        />
+                    </div>
                     {specialPlays.map((play, index) => (
-                        <button
+                        <Button
+                            variant="success"
                             key={index}
-                            className="triples-special-play-button"
+                            className="ml-2"
                             onClick={() => handleSpecialPlay(play.fn)}
                         >
                             {play.name}
-                        </button>
+                        </Button>
                     ))}
                 </div>
 
                 <div className="d-flex flex-wrap justify-content-center mt-3">
                     {availableDraws.length > 0 ? (
                         availableDraws.map((draw) => (
-                            <button
-                                className={classnames(
-                                    'triples-draw-button p-3 rounded-0 m-1',
-                                    {
-                                        'triples-draw-button-selected':
-                                            draws[draw.id],
-                                    }
-                                )}
+                            <Button
                                 key={draw.id}
+                                className="triples-draw-button p-3 m-1"
+                                variant={draws[draw.id] ? 'success' : 'light'}
                                 disabled={!isBeforeNow(draw.horac)}
                                 onClick={() => handleSelectDraw(draw)}
                             >
                                 <div>{draw.nombre}</div>
                                 <div>{formatTime(draw.horac)}</div>
-                            </button>
+                            </Button>
                         ))
                     ) : (
                         <p className="mt-3">No hay sorteos disponibles</p>
