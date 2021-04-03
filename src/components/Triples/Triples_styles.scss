@@ -2,12 +2,13 @@
 
 .triples {
     &-lottery-img {
-        padding: 10px;
-        max-width: 250px;
-        height: 90px;
         background-color: white;
         border-radius: 10px;
         border: 3px solid white;
+        cursor: pointer;
+        height: 90px;
+        max-width: 250px;
+        padding: 10px;
 
         &-selected {
             border-color: #00ac5c;

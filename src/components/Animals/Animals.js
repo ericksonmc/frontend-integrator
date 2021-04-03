@@ -122,7 +122,6 @@ function Animals() {
                                         className="mt-3"
                                         value={draw.id}
                                         checked={!!draws[draw.id]}
-                                        disabled={!isBeforeNow(draw.horac)}
                                         onChange={() => handleSelectDraw(draw)}
                                     />
                                 ))
