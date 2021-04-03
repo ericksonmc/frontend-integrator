@@ -17,22 +17,17 @@ function Animals() {
     const {
         bets,
         draws,
+        betAmount,
         handleAddBets,
         handleDeleteBets,
         handleBuyTicket,
         handleSelectDraw,
+        setBetAmount,
     } = useBets();
-    const [betAmount, setBetAmount] = useState('');
     const [playerAnimals, setPlayerAnimals] = useState(
         animalList.map((a) => ({ ...a, selected: false }))
     );
     const [ticket, setTicket] = useState('');
-    const playerBet = useMemo(() => {
-        return playerAnimals
-            .filter((p) => p.selected)
-            .map((p) => p.number)
-            .join('.');
-    }, [playerAnimals]);
     const { products } = useStore();
     const availableLotteries = useMemo(() => {
         return lotteries.map((lottery) => {
@@ -62,11 +57,12 @@ function Animals() {
         setPlayerAnimals(animalList.map((a) => ({ ...a, selected: false })));
     };
     const handleAddAnimalitosBets = () => {
-        handleAddBets(betAmount, playerBet, draws);
+        const play = playerAnimals
+            .filter((p) => p.selected)
+            .map((p) => p.number)
+            .join('.');
 
-        // clear ui elements
-        resetPlayerAnimals();
-        setBetAmount('');
+        handleAddBets(play, resetPlayerAnimals);
     };
 
     const handleBuyAnimalitos = async () => {
@@ -78,7 +74,6 @@ function Animals() {
             });
             setTicket(res.ticket_string);
             resetPlayerAnimals();
-            setBetAmount('');
         } catch (error) {
             if (
                 error.response &&

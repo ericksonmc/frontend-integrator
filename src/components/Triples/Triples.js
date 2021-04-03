@@ -21,17 +21,18 @@ import { showError } from '../../util/alert';
 function Triples() {
     const [lotteries, setLotteries] = useState([]);
     const [playerBet, setPlayerBet] = useState('');
-    const [selectedPlayerBet, setSelectedPlayerBet] = useState('');
+    const [inputPlayerBet, setInputPlayerBet] = useState('');
     const [lotteryIndex, setLotteryIndex] = useState(0);
     const {
         bets,
         draws,
+        betAmount,
         handleAddBets,
         handleDeleteBets,
         handleBuyTicket,
         handleSelectDraw,
+        setBetAmount,
     } = useBets();
-    const [betAmount, setBetAmount] = useState('');
     const [ticket, setTicket] = useState('');
     const [showZodiacModal, setShowZodialModal] = useState(false);
     const [availableDraws, setAvailableDraws] = useState([]);
@@ -53,8 +54,13 @@ function Triples() {
         { name: 'corrida', fn: getRangePlays },
     ];
 
+    const resetUI = () => {
+        setInputPlayerBet('');
+    };
+
     const handleSpecialPlay = (fn) => {
-        handleAddTriplesBets(fn(playerBet.split('.')).join('.'));
+        const play = fn(inputPlayerBet.split('.')).join('.');
+        handleAddTriplesBets(play);
     };
     const handleBuyTriples = async () => {
         try {
@@ -64,8 +70,7 @@ function Triples() {
                 ani: false,
             });
             setTicket(res.ticket_string);
-            setPlayerBet('');
-            setBetAmount('');
+            resetUI();
         } catch (error) {
             if (
                 error.response &&
@@ -94,23 +99,15 @@ function Triples() {
         });
 
         if (hasComodin) {
-            setSelectedPlayerBet(play);
+            setPlayerBet(play);
             return setShowZodialModal(true);
         }
 
-        handleAddBets(betAmount, play, draws);
-
-        // clear ui elements
-        setPlayerBet('');
-        setBetAmount('');
+        handleAddBets(play, resetUI);
     };
     const handleSelectZodiacSigns = (signs) => {
         setShowZodialModal(false);
-        handleAddBets(betAmount, selectedPlayerBet, draws, signs);
-
-        // clear ui elements
-        setPlayerBet('');
-        setBetAmount('');
+        handleAddBets(playerBet, resetUI, signs);
     };
     const handleChangeLottery = (index) => {
         setLotteryIndex(index);
@@ -157,8 +154,8 @@ function Triples() {
                         <Input
                             id="bets"
                             placeholder="Separe las jugadas con punto ."
-                            value={playerBet}
-                            onChange={(e) => setPlayerBet(e.target.value)}
+                            value={inputPlayerBet}
+                            onChange={(e) => setInputPlayerBet(e.target.value)}
                         />
                     </div>
                     {specialPlays.map((play, index) => (
@@ -180,7 +177,6 @@ function Triples() {
                                 key={draw.id}
                                 className="triples-draw-button p-3 m-1"
                                 variant={draws[draw.id] ? 'success' : 'light'}
-                                disabled={!isBeforeNow(draw.horac)}
                                 onClick={() => handleSelectDraw(draw)}
                             >
                                 <div>{draw.nombre}</div>
@@ -199,7 +195,7 @@ function Triples() {
                     betAmount={betAmount}
                     getBetDisplayName={(n) => n}
                     setBetAmount={setBetAmount}
-                    onAddBets={() => handleAddTriplesBets(playerBet)}
+                    onAddBets={() => handleAddTriplesBets(inputPlayerBet)}
                     onDeleteBets={handleDeleteBets}
                     onBuyTicket={handleBuyTriples}
                 />

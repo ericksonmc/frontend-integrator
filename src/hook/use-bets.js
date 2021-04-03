@@ -8,6 +8,7 @@ import { isBeforeNow } from '../util/time';
 function useBets() {
     const [draws, setDraws] = useState({});
     const [bets, setBets] = useState({});
+    const [betAmount, setBetAmount] = useState('');
     const { lotterySetup, setPlayerBalance } = useStore();
     const total = Object.values(bets).reduce(
         (memo, curr) => {
@@ -36,7 +37,7 @@ function useBets() {
         }
         setDraws(cDraws);
     };
-    const handleAddBets = (betAmount, playerBet, draws, signs = []) => {
+    const handleAddBets = (play, onAdd, signs = []) => {
         const amount = Number(betAmount);
         if (Number.isNaN(amount) || amount < lotterySetup.monto_por_jugada) {
             showError(
@@ -54,7 +55,7 @@ function useBets() {
             return;
         }
 
-        if (playerBet === '') {
+        if (play === '') {
             showError('Ingresa tu jugada');
             return;
         }
@@ -64,7 +65,7 @@ function useBets() {
             return;
         }
 
-        const betNumbers = playerBet.split('.');
+        const betNumbers = play.split('.');
         const cBets = { ...bets };
         let i = 0;
         Object.keys(draws)
@@ -98,6 +99,11 @@ function useBets() {
 
         // clear ui elements
         setDraws({});
+        setBetAmount('');
+
+        if (onAdd) {
+            onAdd();
+        }
     };
     const handleDeleteBets = (drawId = null, numberIndex = null) => {
         let cBets = { ...bets };
@@ -150,6 +156,7 @@ function useBets() {
             });
             setBets({});
             setDraws({});
+            setBetAmount('');
             setPlayerBalance(res.saldo_actual);
             return res;
         } catch (error) {
@@ -164,10 +171,12 @@ function useBets() {
         bets,
         draws,
         setBets,
+        betAmount,
         handleAddBets,
         handleDeleteBets,
         handleBuyTicket,
         handleSelectDraw,
+        setBetAmount,
     };
 }
 
