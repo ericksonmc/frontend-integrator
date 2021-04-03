@@ -4,13 +4,14 @@ import Alert from 'react-bootstrap/Alert';
 import { ErrorBoundary } from '@sentry/react';
 import { ProvideAuth } from '../hook/use-auth';
 import { ProvideStore } from '../hook/use-store';
-import Login from './Login/Login';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import Home from './Home/Home';
 import Triples from './Triples/Triples';
 import Animals from './Animals/Animals';
 import TicketHistory from './TicketHistory/TicketHistory';
 import Awards from './Awards/Awards';
+import Login from './Login/Login';
+import TokenLogin from './TokenLogin/TokenLogin';
 
 function NotFound() {
     return (
@@ -26,7 +27,8 @@ function App() {
             <ProvideStore>
                 <ProvideAuth>
                     <Router id="router">
-                        <Login path="/login/:token"></Login>
+                        <Login path="/login" />
+                        <TokenLogin path="/login/:token" />
                         <PrivateRoute path="/">
                             <Home path="/">
                                 <Redirect

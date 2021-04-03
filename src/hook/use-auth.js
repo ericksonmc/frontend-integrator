@@ -26,7 +26,6 @@ export const useAuth = () => {
 };
 
 function useProvideAuth() {
-    const authTK = getPersistedToken();
     const {
         setPlayer,
         setLotterySetup,
@@ -34,28 +33,25 @@ function useProvideAuth() {
         setPlayerBalance,
     } = useStore();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoadingFromPersisted, setIsLoadingFromPersisted] = useState(
-        !!authTK
-    );
-
-    if (authTK != null) {
-        setAuthToken(authTK);
-    }
 
     const tokenLogin = useCallback(
         async (token) => {
-            setAuthToken(token);
-            const data = await Auth.tokenLogin();
-            persistToken(token);
-            setIsLoggedIn(true);
-            setIsLoadingFromPersisted(false);
-            setPlayer(data.player);
-            setProducts({
-                triples: data.triples,
-                animalitos: data.animalitos,
-            });
-            setLotterySetup(data.lottery_setup);
-            setPlayerBalance(data.saldo_actual);
+            try {
+                setAuthToken(token);
+                const data = await Auth.tokenLogin();
+                persistToken(token);
+                setIsLoggedIn(true);
+                setPlayer(data.player);
+                setProducts({
+                    triples: data.triples,
+                    animalitos: data.animalitos,
+                });
+                setLotterySetup(data.lottery_setup);
+                setPlayerBalance(data.saldo_actual);
+            } catch (error) {
+                persistToken(null);
+                throw error;
+            }
         },
         [setPlayer, setLotterySetup, setProducts, setPlayerBalance]
     );
@@ -68,30 +64,26 @@ function useProvideAuth() {
         setIsLoggedIn(false);
     };
 
-    useEffect(() => {
-        if (authTK != null) {
-            tokenLogin(authTK);
+    const getPersistedToken = () => {
+        return window.localStorage.getItem('authTK');
+    };
+
+    const persistToken = (token) => {
+        if (token) {
+            return window.localStorage.setItem('authTK', token);
         }
 
+        window.localStorage.removeItem('authTK');
+    };
+
+    useEffect(() => {
         return () => setPlayer(null);
-    }, [authTK, setPlayer, tokenLogin]);
+    }, []);
 
     return {
         isLoggedIn,
-        isLoadingFromPersisted,
         tokenLogin,
         logout,
+        getPersistedToken,
     };
-}
-
-function persistToken(token) {
-    if (token) {
-        return window.localStorage.setItem('authTK', token);
-    }
-
-    window.localStorage.removeItem('authTK');
-}
-
-function getPersistedToken() {
-    return window.localStorage.getItem('authTK');
 }

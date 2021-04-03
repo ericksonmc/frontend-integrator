@@ -1,51 +1,37 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from '@reach/router';
-import { Alert, Container, Row, Spinner } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Redirect, navigate } from '@reach/router';
+import { Alert, Container, Row } from 'react-bootstrap';
 import { useAuth } from '../../hook/use-auth';
 
-function Login(props) {
+function Login() {
     const auth = useAuth();
-    const [loading, setLoading] = useState(true);
-
-    const login = useCallback(async () => {
-        try {
-            setLoading(true);
-            await auth.tokenLogin(props.token);
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
-        }
-    }, [props.token, auth]);
+    const [invalidToken, setInvalidToken] = useState(false);
 
     useEffect(() => {
-        login();
-    }, [login]);
+        const token = auth.getPersistedToken();
+
+        if (token) {
+            return navigate('/login/' + token);
+        }
+
+        setInvalidToken(true);
+    }, []);
 
     if (auth.isLoggedIn) {
-        return <Redirect noThrow from="/login/:token" to="/" />;
+        return <Redirect noThrow from="/login" to="/" />;
     }
 
-    return loading ? (
-        <Container>
-            <Row className="justify-content-center align-items-center h-100">
-                <Spinner animation="border" />
-            </Row>
-        </Container>
-    ) : (
-        <Container>
-            <Row className="justify-content-center align-items-center">
-                <Alert variant="success" className="w-50 m-auto text-center">
-                    Loged!
-                </Alert>
-            </Row>
-        </Container>
+    return (
+        invalidToken && (
+            <Container fluid className="h-100">
+                <Row className="h-100 justify-content-center align-items-center">
+                    <Alert variant="danger" className="w-50 m-auto text-center">
+                        Debe proveer una token válida de inicio de sesión
+                    </Alert>
+                </Row>
+            </Container>
+        )
     );
 }
-
-Login.propTypes = {
-    token: PropTypes.string,
-};
 
 export default Login;
