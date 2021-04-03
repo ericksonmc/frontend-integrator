@@ -67,8 +67,15 @@ function Triples() {
             setPlayerBet('');
             setBetAmount('');
         } catch (error) {
-            if (error.response.data && error.response.data.message) {
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
                 showError(error.response.data.message);
+                return;
+            } else if (error.message) {
+                showError(error.message);
                 return;
             }
 
@@ -100,7 +107,7 @@ function Triples() {
     const handleSelectZodiacSigns = (signs) => {
         setShowZodialModal(false);
         handleAddBets(betAmount, selectedPlayerBet, draws, signs);
-        
+
         // clear ui elements
         setPlayerBet('');
         setBetAmount('');

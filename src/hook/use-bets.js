@@ -115,20 +115,22 @@ function useBets() {
         setBets(cBets);
     };
     const handleBuyTicket = async (bets, saleParams = {}) => {
+        if (total.quantity === 0) {
+            throw new Error('No hay jugadas agregadas');
+        }
+
         if (total.amount < lotterySetup.monto_minimo_ticket) {
-            showError(
+            throw new Error(
                 'El monto minimo por ticket es ' +
                     formatMoney(lotterySetup.monto_minimo_ticket)
             );
-            return;
         }
 
         if (total.quantity > lotterySetup.jugadas_por_tickets) {
-            showError(
+            throw new Error(
                 'El maximo de jugadas por ticket es ' +
                     lotterySetup.jugadas_por_tickets
             );
-            return;
         }
 
         setShowGlobalLoader(true);

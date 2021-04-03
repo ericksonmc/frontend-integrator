@@ -80,8 +80,15 @@ function Animals() {
             resetPlayerAnimals();
             setBetAmount('');
         } catch (error) {
-            if (error.response.data && error.response.data.message) {
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
                 showError(error.response.data.message);
+                return;
+            } else if (error.message) {
+                showError(error.message);
                 return;
             }
 
