@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Redirect } from '@reach/router';
 import Alert from 'react-bootstrap/Alert';
+import { ErrorBoundary } from '@sentry/react';
 import { ProvideAuth } from '../hook/use-auth';
 import { ProvideStore } from '../hook/use-store';
 import Login from './Login/Login';
@@ -21,23 +22,30 @@ function NotFound() {
 
 function App() {
     return (
-        <ProvideStore>
-            <ProvideAuth>
-                <Router id="router">
-                    <Login path="/login/:token"></Login>
-                    <PrivateRoute path="/">
-                        <Home path="/">
-                            <Redirect default noThrow from="/" to="triples" />
-                            <Triples path="triples" />
-                            <Animals path="animalitos" />
-                            <TicketHistory path="history" />
-                            <Awards path="awards" />
-                        </Home>
-                        <NotFound default />
-                    </PrivateRoute>
-                </Router>
-            </ProvideAuth>
-        </ProvideStore>
+        <ErrorBoundary fallback={'An error has occurred'}>
+            <ProvideStore>
+                <ProvideAuth>
+                    <Router id="router">
+                        <Login path="/login/:token"></Login>
+                        <PrivateRoute path="/">
+                            <Home path="/">
+                                <Redirect
+                                    default
+                                    noThrow
+                                    from="/"
+                                    to="triples"
+                                />
+                                <Triples path="triples" />
+                                <Animals path="animalitos" />
+                                <TicketHistory path="history" />
+                                <Awards path="awards" />
+                            </Home>
+                            <NotFound default />
+                        </PrivateRoute>
+                    </Router>
+                </ProvideAuth>
+            </ProvideStore>
+        </ErrorBoundary>
     );
 }
 
