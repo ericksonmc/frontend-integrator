@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Col, Row } from 'react-bootstrap';
+import NumberFormat from 'react-number-format';
 import classnames from 'classnames';
 import { formatMoney } from '../../util/currency';
 import Input from '../shared/Input/Input';
@@ -60,11 +61,16 @@ function Bets({
                     >
                         Monto
                     </label>
-                    <Input
+
+                    <NumberFormat
+                        isNumericString
                         className="flex-fill"
+                        thousandSeparator="."
+                        decimalSeparator=","
                         value={betAmount}
-                        onChange={(e) => setBetAmount(e.target.value)}
+                        onValueChange={(e) => setBetAmount(e.value)}
                         onKeyDown={handleKeyDown}
+                        customInput={Input}
                     />
                 </div>
                 <Button
