@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import classnames from 'classnames';
 import animalList from './animal-list';
 import Bets from '../Bets/Bets';
@@ -109,21 +109,29 @@ function Animals() {
                                 {l.nombre}
                             </p>
                             {l.sorteos.length > 0 ? (
-                                l.sorteos.map((draw, drawIndex) => (
-                                    <Form.Check
-                                        id={'draw' + drawIndex}
-                                        type="checkbox"
-                                        key={l.id + ' ' + draw.id}
-                                        label={
-                                            draw.nombre_largo +
-                                            ' ' +
-                                            formatTime(draw.horac)
-                                        }
+                                l.sorteos.map((draw) => (
+                                    <div
                                         className="mt-3"
-                                        value={draw.id}
-                                        checked={!!draws[draw.id]}
-                                        onChange={() => handleSelectDraw(draw)}
-                                    />
+                                        key={l.id + ' ' + draw.id}
+                                    >
+                                        <input
+                                            id={'draw' + draw.id}
+                                            type="checkbox"
+                                            value={draw.id}
+                                            checked={!!draws[draw.id]}
+                                            onChange={() =>
+                                                handleSelectDraw(draw)
+                                            }
+                                        />
+                                        <label
+                                            htmlFor={'draw' + draw.id}
+                                            className=" animals-draw-label ml-2"
+                                        >
+                                            {draw.nombre_largo +
+                                                ' ' +
+                                                formatTime(draw.horac)}
+                                        </label>
+                                    </div>
                                 ))
                             ) : (
                                 <p className="ml-2 text-muted">

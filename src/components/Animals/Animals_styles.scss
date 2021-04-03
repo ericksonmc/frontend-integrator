@@ -1,4 +1,8 @@
 .animals {
+    &-draw-label {
+        cursor: pointer;
+    }
+
     &-draws-list {
         color: black;
         background-color: white;
