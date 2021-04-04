@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { navigate } from '@reach/router';
 import { Container, Row, Spinner } from 'react-bootstrap';
 import { useAuth } from '../../hook/use-auth';
+import queryString from 'query-string';
 
 function TokenLogin(props) {
     const auth = useAuth();
@@ -13,6 +14,11 @@ function TokenLogin(props) {
             try {
                 setLoading(true);
                 await auth.tokenLogin(token);
+
+                const queryParams = queryString.parse(props.location.search);
+                if (queryParams.next) {
+                    return navigate(queryParams.next);
+                }
                 return navigate('/');
             } catch (e) {
                 return navigate('/login');
@@ -40,6 +46,7 @@ function TokenLogin(props) {
 
 TokenLogin.propTypes = {
     token: PropTypes.string,
+    location: PropTypes.object,
 };
 
 export default TokenLogin;

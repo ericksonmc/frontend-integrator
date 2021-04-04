@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect, navigate } from '@reach/router';
 import { Alert, Container, Row } from 'react-bootstrap';
 import { useAuth } from '../../hook/use-auth';
 
-function Login() {
+function Login(props) {
     const auth = useAuth();
     const [invalidToken, setInvalidToken] = useState(false);
 
@@ -11,7 +12,7 @@ function Login() {
         const token = auth.getPersistedToken();
 
         if (token) {
-            return navigate('/login/' + token);
+            return navigate('/login/' + token + props.location.search);
         }
 
         setInvalidToken(true);
@@ -33,5 +34,9 @@ function Login() {
         )
     );
 }
+
+Login.propTypes = {
+    location: PropTypes.object,
+};
 
 export default Login;

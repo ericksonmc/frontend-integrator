@@ -3,12 +3,19 @@ import PropTypes from 'prop-types';
 import { Redirect } from '@reach/router';
 import Alert from 'react-bootstrap/Alert';
 import { useAuth } from '../../hook/use-auth';
+import queryString from 'query-string';
 
 function PrivateRoute(props) {
     const { isLoggedIn, isLoadingFromPersisted } = useAuth();
 
     if (!isLoggedIn && !isLoadingFromPersisted) {
-        return <Redirect noThrow to="/login" />;
+        const queryParams = queryString.stringify(
+            {
+                next: props.location.pathname,
+            },
+            { skipEmptyString: true }
+        );
+        return <Redirect noThrow to={'/login?' + queryParams} />;
     }
 
     return isLoadingFromPersisted ? (
@@ -22,6 +29,7 @@ function PrivateRoute(props) {
 
 PrivateRoute.propTypes = {
     children: PropTypes.node,
+    location: PropTypes.object,
 };
 
 export default PrivateRoute;
