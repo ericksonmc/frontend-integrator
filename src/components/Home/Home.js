@@ -10,6 +10,7 @@ import triplesLogo from '../../img/triples.png';
 import './Home_styles.scss';
 import RulesModal from '../RulesModal/RulesModal';
 import GlobalLoader from '../GlobalLoader/GlobalLoader';
+import background from '../../img/fondo-caribeapuesta.jpg';
 
 function Home(props) {
     const { playerBalance, products } = useStore();
@@ -66,7 +67,7 @@ function Home(props) {
                 </Col>
             </Row>
             <Row className="home-content flex-fill">
-                <div className="home-board h-100 p-3">{props.children}</div>
+                <div className="home-board h-100 p-3" style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>{props.children}</div>
             </Row>
             <RulesModal
                 show={showRulesModal}
