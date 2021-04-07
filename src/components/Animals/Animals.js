@@ -111,7 +111,7 @@ function Animals() {
                             {l.sorteos.length > 0 ? (
                                 l.sorteos.map((draw) => (
                                     <div
-                                        className="mt-3"
+                                        className="mt-1"
                                         key={l.id + ' ' + draw.id}
                                     >
                                         <input
