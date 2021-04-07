@@ -18,8 +18,8 @@ function RulesModal({ products, show, onClose }) {
                         {products.triples.map((p) => (
                             <div key={p.id}>
                                 <p className="mt-3 mb-0">{p.nombre}</p>
-                                <a href="/reglamento" target="_blank">
-                                    Descargue aquí el reglamento del juego
+                                <a href={p.reglamento} rel="noreferrer" target="_blank">
+                                    Descargue aquí el reglamento del juego 
                                 </a>
                             </div>
                         ))}
@@ -28,8 +28,8 @@ function RulesModal({ products, show, onClose }) {
                         {products.animalitos.map((p) => (
                             <div key={p.id}>
                                 <p className="mt-3 mb-0">{p.nombre}</p>
-                                <a href="/reglamento" target="_blank">
-                                    Descargue aquí el reglamento del juego
+                                <a href={p.reglamento} rel="noreferrer" target="_blank">
+                                Descargue aquí el reglamento del juego
                                 </a>
                             </div>
                         ))}

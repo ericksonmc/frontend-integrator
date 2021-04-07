@@ -7,6 +7,10 @@ import { useStore } from '../../hook/use-store';
 import { formatMoney } from '../../util/currency';
 import animalLogo from '../../img/animal.png';
 import triplesLogo from '../../img/triples.png';
+import historyLogo from '../../img/history.png';
+import rules from '../../img/rules.png';
+import results from '../../img/results.png';
+
 import './Home_styles.scss';
 import RulesModal from '../RulesModal/RulesModal';
 import GlobalLoader from '../GlobalLoader/GlobalLoader';
@@ -29,25 +33,25 @@ function Home(props) {
             <Row className="px-4 py-2">
                 <Col className="d-flex align-items-center">
                     <Link to="triples" getProps={getLinkProps}>
-                        <img src={triplesLogo} />
+                        <img src={triplesLogo} className="image-responsive" />
                         <span className="align-self-end ml-2 text-uppercase font-weight-bold">
                             Triples
                         </span>
                     </Link>
                     <Link to="animalitos" getProps={getLinkProps}>
-                        <img src={animalLogo} />
+                        <img src={animalLogo} className="image-responsive" />
                         <span className="align-self-end ml-2 text-uppercase font-weight-bold">
                             Animalitos
                         </span>
                     </Link>
                     <Link to="history" getProps={getLinkProps}>
-                        <img src={triplesLogo} />
+                        <img src={historyLogo} className="image-responsive" />
                         <span className="align-self-end ml-2 text-uppercase font-weight-bold">
                             Historial
                         </span>
                     </Link>
                     <Link to="awards" getProps={getLinkProps}>
-                        <img src={triplesLogo} />
+                        <img src={rules} className="image-responsive" />
                         <span className="align-self-end ml-2 text-uppercase font-weight-bold">
                             Resultados
                         </span>
@@ -56,7 +60,7 @@ function Home(props) {
                         className="d-flex home-nav-button"
                         onClick={() => setShowRulesModal(!showRulesModal)}
                     >
-                        <img src={triplesLogo} />
+                        <img src={results} className="image-responsive" />
                         <span className="align-self-end ml-2 text-uppercase font-weight-bold">
                             Reglamento
                         </span>

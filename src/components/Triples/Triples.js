@@ -127,7 +127,7 @@ function Triples() {
     return (
         <Row>
             <Col className="d-flex justify-content-center" lg="3" md="3">
-                <div className="triples-lotteries-list">
+                <div className="triples-lotteries-list pt-5">
                     {lotteries.map((l, index) => (
                         <div
                             key={index}
