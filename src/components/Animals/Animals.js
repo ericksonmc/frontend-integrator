@@ -7,7 +7,6 @@ import useBets from '../../hook/use-bets';
 import { useStore } from '../../hook/use-store';
 import TicketModal from '../TicketModal/TicketModal';
 import { isBeforeNow } from '../../util/time';
-import { formatTime } from '../../util/format';
 import animalsButtonImg from '../../img/animals-button.png';
 import './Animals_styles.scss';
 import { showError } from '../../util/alert';
@@ -111,7 +110,7 @@ function Animals() {
                             {l.sorteos.length > 0 ? (
                                 l.sorteos.map((draw) => (
                                     <div
-                                        className="mt-1"
+                                        className="mt-0"
                                         key={l.id + ' ' + draw.id}
                                     >
                                         <input
@@ -127,9 +126,7 @@ function Animals() {
                                             htmlFor={'draw' + draw.id}
                                             className=" animals-draw-label ml-2"
                                         >
-                                            {draw.nombre_largo +
-                                                ' ' +
-                                                formatTime(draw.horac)}
+                                            {draw.nombre_largo}
                                         </label>
                                     </div>
                                 ))
