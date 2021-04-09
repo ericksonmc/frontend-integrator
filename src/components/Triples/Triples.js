@@ -18,6 +18,9 @@ import ZodiacSignsModal from '../ZodiacSignsModal/ZodiacSignsModal';
 import './Triples_styles.scss';
 import { showError } from '../../util/alert';
 
+const betRegexp = /^(?:[0-9]{2,3})(?:\.(?:[0-9]{2,3}))*$/;
+const partialBetRegexp = /^(?:[0-9]{0,3})(?:\.(?:[0-9]{0,3}))*$/;
+
 function Triples() {
     const [lotteries, setLotteries] = useState([]);
     const [playerBet, setPlayerBet] = useState('');
@@ -88,6 +91,19 @@ function Triples() {
         }
     };
     const handleAddTriplesBets = (play) => {
+        // remove empty numbers
+        play = play
+            .split('.')
+            .filter((v) => v !== '')
+            .join('.');
+
+        if (!betRegexp.test(play)) {
+            showError(
+                'Ingresa una jugada válida, solo se aceptan terminales o triples.'
+            );
+            return;
+        }
+
         const hasComodin = lotteries.some((l) => {
             return l.sorteos.some((s) => {
                 if (draws[s.id]) {
@@ -114,6 +130,11 @@ function Triples() {
         setAvailableDraws(
             lotteries[index].sorteos.filter((draw) => isBeforeNow(draw.horac))
         );
+    };
+    const handleInputPlayerBetChange = (e) => {
+        if (partialBetRegexp.test(e.target.value)) {
+            setInputPlayerBet(e.target.value);
+        }
     };
 
     const getTripleImage = (name) => {
@@ -155,7 +176,7 @@ function Triples() {
                             id="bets"
                             placeholder="Separe las jugadas con punto ."
                             value={inputPlayerBet}
-                            onChange={(e) => setInputPlayerBet(e.target.value)}
+                            onChange={handleInputPlayerBetChange}
                         />
                     </div>
                     {specialPlays.map((play, index) => (
