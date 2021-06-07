@@ -1,11 +1,10 @@
 import { post, destroy } from '../util/request';
-import sorteos from './sorteos.json';
 
 export const tokenLogin = async () => {
     const res = await post(`/v1/auth/auto_login`);
     return {
         ...res.data,
-        ...transformProducts(res.data.products || sorteos[0]),
+        ...transformProducts(res.data.producst),
     };
 };
 

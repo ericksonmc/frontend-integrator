@@ -1,9 +1,11 @@
 import { post } from '../util/request';
 
 export const sales = async (sale) => {
-    const res = await post(`/v1/ventas/ventas_externos`, sale);
+    const res = await post(`/v1/sales`, {
+        plays: sale,
+    });
 
-    return res.data;
+    return res.data.data[0][0];
 };
 
 const Sales = { sales };
