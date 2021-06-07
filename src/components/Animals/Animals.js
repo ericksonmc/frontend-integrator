@@ -66,11 +66,7 @@ function Animals() {
 
     const handleBuyAnimalitos = async () => {
         try {
-            const res = await handleBuyTicket(bets, {
-                aniTipo: 0,
-                tip: 'N',
-                ani: true,
-            });
+            const res = await handleBuyTicket(bets);
             setTicket(res.ticket_string);
             resetPlayerAnimals();
         } catch (error) {

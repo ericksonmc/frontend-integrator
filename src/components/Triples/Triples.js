@@ -66,11 +66,7 @@ function Triples() {
     };
     const handleBuyTriples = async () => {
         try {
-            const res = await handleBuyTicket(bets, {
-                aniTipo: 5,
-                tip: 'T',
-                ani: false,
-            });
+            const res = await handleBuyTicket(bets);
             setTicket(res.ticket_string);
             resetUI();
         } catch (error) {

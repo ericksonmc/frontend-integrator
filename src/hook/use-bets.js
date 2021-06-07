@@ -120,7 +120,7 @@ function useBets() {
         }
         setBets(cBets);
     };
-    const handleBuyTicket = async (bets, saleParams = {}) => {
+    const handleBuyTicket = async (bets) => {
         if (total.quantity === 0) {
             throw new Error('No hay jugadas agregadas');
         }
@@ -140,20 +140,18 @@ function useBets() {
         }
 
         setShowGlobalLoader(true);
-        const today = new Date();
         try {
-            const res = await Sales.sales({
-                date:
-                    today.getDate().toString().padStart(2, '0') +
-                    '/' +
-                    (today.getMonth() + 1).toString().padStart(2, '0') +
-                    '/' +
-                    today.getFullYear(),
-                bets: Object.keys(bets).map((drawId) => {
-                    return { c: drawId, j: bets[drawId].j };
-                }),
-                ...saleParams,
-            });
+            const res = await Sales.sales(
+                Object.keys(bets)
+                    .map((drawId) => {
+                        return bets[drawId].j.map((j) => ({
+                            number: j.n,
+                            amount: j.m,
+                            lotery_id: drawId,
+                        }));
+                    })
+                    .flat()
+            );
             setBets({});
             setDraws({});
             setBetAmount('');
