@@ -7,7 +7,6 @@ import Bets from '../Bets/Bets';
 import useBets from '../../hook/use-bets';
 import { useStore } from '../../hook/use-store';
 import { isBeforeNow } from '../../util/time';
-import { formatTime } from '../../util/format';
 import {
     getPermutePlays,
     getSeriePlays,
@@ -201,7 +200,6 @@ function Triples() {
                                 onClick={() => handleSelectDraw(draw)}
                             >
                                 <div>{draw.nombre}</div>
-                                <div>{formatTime(draw.horac)}</div>
                             </Button>
                         ))
                     ) : (
