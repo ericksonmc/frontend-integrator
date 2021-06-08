@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Alert, Row, Col } from 'react-bootstrap';
 import classnames from 'classnames';
 import animalList from './animal-list';
 import Bets from '../Bets/Bets';
@@ -87,7 +87,13 @@ function Animals() {
     };
 
     if (lotteries === null || lotteries.length === 0) {
-        return null;
+        return (
+            <div className="align-items-center d-flex h-100 justify-content-center">
+                <Alert variant="info" className="m-auto text-center w-50">
+                    No hay loterías activas en este momento.
+                </Alert>
+            </div>
+        );
     }
 
     return (

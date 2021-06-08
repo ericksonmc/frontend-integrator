@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Alert, Row, Col } from 'react-bootstrap';
 import classnames from 'classnames';
 import Input from '../shared/Input/Input';
 import Button from '../shared/Button/Button';
@@ -137,7 +137,13 @@ function Triples() {
     };
 
     if (lotteries === null || lotteries.length === 0) {
-        return null;
+        return (
+            <div className="align-items-center d-flex h-100 justify-content-center">
+                <Alert variant="info" className="m-auto text-center w-50">
+                    No hay loterías activas en este momento.
+                </Alert>
+            </div>
+        );
     }
 
     return (
