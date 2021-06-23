@@ -35,7 +35,7 @@ function Triples() {
         handleSelectDraw,
         setBetAmount,
     } = useBets();
-    const [ticketBets, setTicketBets] = useState([]);
+    const [ticket, setTicket] = useState('');
     const [showZodiacModal, setShowZodialModal] = useState(false);
     const [availableDraws, setAvailableDraws] = useState([]);
     const { products } = useStore();
@@ -67,7 +67,7 @@ function Triples() {
     const handleBuyTriples = async () => {
         try {
             const res = await handleBuyTicket(bets);
-            setTicketBets(res.bets);
+            setTicket(res.ticket_string);
             resetUI();
         } catch (error) {
             if (
@@ -222,10 +222,9 @@ function Triples() {
                 />
             </Col>
             <TicketModal
-                show={ticketBets.length > 0}
-                bets={ticketBets}
-                lotteries={lotteries}
-                onClose={() => setTicketBets([])}
+                show={ticket !== ''}
+                ticket={ticket}
+                onClose={() => setTicket('')}
             ></TicketModal>
             {showZodiacModal && (
                 <ZodiacSignsModal
