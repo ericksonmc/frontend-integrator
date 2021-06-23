@@ -75,7 +75,11 @@ function Animals() {
                 error.response.data &&
                 error.response.data.message
             ) {
-                showError(error.response.data.message);
+                let description = '';
+                if (error.response.data.data && error.response.data.data.msj) {
+                    description = error.response.data.data.msj;
+                }
+                showError(error.response.data.message, description);
                 return;
             } else if (error.message) {
                 showError(error.message);
