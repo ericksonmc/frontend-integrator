@@ -69,13 +69,13 @@ function TicketHistory() {
                         {tickets.length > 0 ? (
                             tickets.map((ticket, index) => (
                                 <tr key={index}>
-                                    <td>{ticket.serial}</td>
-                                    <td>{formatMoney(ticket.ticket_amount)}</td>
+                                    <td>{ticket.number}</td>
+                                    <td>{formatMoney(ticket.total_amount)}</td>
                                     <td>{formatDateTime(ticket.created_at)}</td>
                                     <td>
                                         <button
                                             onClick={() =>
-                                                setModalTicket(ticket.ticket)
+                                                setModalTicket(ticket.ticket_string)
                                             }
                                         >
                                             ver ticket

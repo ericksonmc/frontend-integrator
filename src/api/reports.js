@@ -1,7 +1,9 @@
 import { get } from '../util/request';
 
 export const listTickets = async (date) => {
-    const res = await get(`/v1/reports/tickets`, { params: { date } });
+    const res = await get(`/v1/reports/consult_tickets`, {
+        params: { date_from: date },
+    });
 
     return res.data;
 };
