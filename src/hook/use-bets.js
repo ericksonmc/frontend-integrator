@@ -155,7 +155,10 @@ function useBets() {
             setBets({});
             setDraws({});
             setBetAmount('');
-            setPlayerBalance(res.saldo_actual);
+
+            if (res.saldo_actual != null) {
+                setPlayerBalance(res.saldo_actual);
+            }
             return res;
         } catch (error) {
             setShowGlobalLoader(false);
