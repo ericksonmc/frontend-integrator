@@ -26,7 +26,7 @@ function Animals() {
     const [playerAnimals, setPlayerAnimals] = useState(
         animalList.map((a) => ({ ...a, selected: false }))
     );
-    const [ticketBets, setTicketBets] = useState([]);
+    const [ticket, setTicket] = useState('');
     const { products } = useStore();
     const availableLotteries = useMemo(() => {
         return lotteries.map((lottery) => {
@@ -67,7 +67,7 @@ function Animals() {
     const handleBuyAnimalitos = async () => {
         try {
             const res = await handleBuyTicket(bets);
-            setTicketBets(res.bets);
+            setTicket(res.ticket_string);
             resetPlayerAnimals();
         } catch (error) {
             if (
@@ -75,7 +75,11 @@ function Animals() {
                 error.response.data &&
                 error.response.data.message
             ) {
-                showError(error.response.data.message);
+                let description = '';
+                if (error.response.data.data && error.response.data.data.msj) {
+                    description = error.response.data.data.msj;
+                }
+                showError(error.response.data.message, description);
                 return;
             } else if (error.message) {
                 showError(error.message);
@@ -181,10 +185,9 @@ function Animals() {
                 />
             </Col>
             <TicketModal
-                show={ticketBets.length > 0}
-                bets={ticketBets}
-                lotteries={lotteries}
-                onClose={() => setTicketBets([])}
+                show={ticket !== ''}
+                ticket={ticket}
+                onClose={() => setTicket('')}
             ></TicketModal>
         </Row>
     );

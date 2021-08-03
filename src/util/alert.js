@@ -1,8 +1,9 @@
 import Swal from 'sweetalert2';
 
-export function showError(text) {
+export function showError(title, text = '') {
     Swal.fire({
-        title: text,
+        title,
+        text,
         icon: 'error',
         heightAuto: false,
     });

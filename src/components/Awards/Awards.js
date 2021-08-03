@@ -6,24 +6,9 @@ import { showError } from '../../util/alert';
 import Input from '../shared/Input/Input';
 import Button from '../shared/Button/Button';
 
-const signs = {
-    1: 'Aries',
-    2: 'Tauro',
-    3: 'Geminis',
-    4: 'Cancer',
-    5: 'Leo',
-    6: 'Virgo',
-    7: 'Libra',
-    8: 'Escorpio',
-    9: 'Sagitario',
-    10: 'Capricornio',
-    11: 'Acuario',
-    12: 'Piscis',
-};
-
 function Awards() {
     const [date, setDate] = useState('');
-    const [type, setType] = useState('0');
+    const [type, setType] = useState('TRIPLES');
     const [awards, setAwards] = useState([]);
     const { setShowGlobalLoader } = useStore();
 
@@ -35,8 +20,29 @@ function Awards() {
 
         setShowGlobalLoader(true);
         try {
-            const res = await listAwards(date, type);
-            setAwards(res);
+            const res = await listAwards(date);
+
+            setAwards(
+                Object.values(
+                    res
+                        .filter(
+                            (l) =>
+                                l.type === type &&
+                                l.results &&
+                                l.results.length > 0
+                        )
+                        .reduce((m, c) => {
+                            const { product, ...rest } = c;
+                            m[product.id] = m[product.id] || product;
+
+                            m[product.id].draws = m.draws || [];
+
+                            m[product.id].draws.push(rest);
+
+                            return m;
+                        }, {})
+                )
+            );
         } catch (error) {
             showError('Hubo un error al consultar los resultados');
         } finally {
@@ -68,8 +74,8 @@ function Awards() {
                         value={type}
                         onChange={(e) => setType(e.target.value)}
                     >
-                        <option value="0">Triples</option>
-                        <option value="1">Animalitos</option>
+                        <option value="TRIPLES">Triples</option>
+                        <option value="ANIMALES">Animalitos</option>
                     </select>
                 </div>
                 <Button className="ml-3 align-self-end" onClick={handleSearch}>
@@ -79,28 +85,28 @@ function Awards() {
             {awards.length > 0 ? (
                 awards.map((award, index) => (
                     <div key={index}>
-                        <h1>{award.nombre}</h1>
+                        <h1>{award.name}</h1>
                         <Table variant="dark">
                             <thead>
                                 <tr>
-                                    <th>Nombre</th>
+                                    <th>Sorteo</th>
                                     <th>Numero</th>
-                                    <th>Signo</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {award.sorteos.length > 0 ? (
-                                    award.sorteos.map((draw, index) => (
-                                        <tr key={index}>
-                                            <td>{draw.nombre}</td>
-                                            <td>{draw.numero}</td>
-                                            <td>
-                                                {draw.signo !== 0
-                                                    ? signs[draw.signo]
-                                                    : '-'}
-                                            </td>
-                                        </tr>
-                                    ))
+                                {award.draws.length > 0 ? (
+                                    award.draws.map((draw) =>
+                                        draw.results.map((result, index) => (
+                                            <tr key={index}>
+                                                <td>{draw.name}</td>
+                                                <td>
+                                                    {type === 'ANIMALES'
+                                                        ? result.number.name
+                                                        : result.number.value}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )
                                 ) : (
                                     <tr>
                                         <td>
