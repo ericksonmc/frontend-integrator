@@ -37,6 +37,20 @@ function useBets() {
         }
         setDraws(cDraws);
     };
+    const handleSelectMultipleDraws = (tDraws) => {
+        const cDraws = { ...draws };
+
+        tDraws.forEach((draw) => {
+            if (!cDraws[draw.id]) {
+                cDraws[draw.id] = {
+                    name: draw.nombre_largo,
+                    comodin: draw.comodin,
+                    hour: draw.horac,
+                };
+            }
+        });
+        setDraws(cDraws);
+    };
     const handleAddBets = (play, onAdd, signs = []) => {
         const amount = Number(betAmount);
         if (Number.isNaN(amount) || amount < lotterySetup.monto_por_jugada) {
@@ -177,6 +191,7 @@ function useBets() {
         handleDeleteBets,
         handleBuyTicket,
         handleSelectDraw,
+        handleSelectMultipleDraws,
         setBetAmount,
     };
 }

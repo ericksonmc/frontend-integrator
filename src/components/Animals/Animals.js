@@ -167,7 +167,7 @@ function Animals() {
                                 }
                             )}
                         >
-                            {animal.name}
+                            {`${animal.number} ${animal.name}`}
                         </div>
                     </div>
                 ))}

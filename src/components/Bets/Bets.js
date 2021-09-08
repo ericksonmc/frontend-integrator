@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Col, Row } from 'react-bootstrap';
 import NumberFormat from 'react-number-format';
 import classnames from 'classnames';
 import { formatMoney } from '../../util/currency';
@@ -134,28 +133,24 @@ function Bets({
                         </div>
                     </div>
                 </div>
-                <Row className="mt-2">
-                    <Col lg="6">
-                        <Button
-                            block
-                            variant="light"
-                            className="mt-2"
-                            onClick={() => onDeleteBets()}
-                        >
-                            Borrar jugada
-                        </Button>
-                    </Col>
-                    <Col lg="6">
-                        <Button
-                            block
-                            variant="success"
-                            className="mt-2"
-                            onClick={onBuyTicket}
-                        >
-                            Comprar
-                        </Button>
-                    </Col>
-                </Row>
+                <div className="d-flex mt-2">
+                    <Button
+                        block
+                        variant="light"
+                        className="mt-2 text-uppercase text-nowrap"
+                        onClick={() => onDeleteBets()}
+                    >
+                        Borrar jugada
+                    </Button>
+                    <Button
+                        block
+                        variant="success"
+                        className="mt-2 ml-2 text-uppercase"
+                        onClick={onBuyTicket}
+                    >
+                        Comprar
+                    </Button>
+                </div>
             </div>
         </div>
     );

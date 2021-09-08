@@ -20,6 +20,20 @@ import { showError } from '../../util/alert';
 const betRegexp = /^(?:[0-9]{2,3})(?:\.(?:[0-9]{2,3}))*$/;
 const partialBetRegexp = /^(?:[0-9]{0,3})(?:\.(?:[0-9]{0,3}))*$/;
 
+const terminalBetRegexp = /^(?:[0-9]{2,2})(?:\.(?:[0-9]{2,2}))*$/;
+const partialTerminalBetRegexp = /^(?:[0-9]{0,2})(?:\.(?:[0-9]{0,2}))*$/;
+
+const validateBet = (lotteryType, bet) => {
+    const regexp = lotteryType === 'TRIPLES' ? betRegexp : terminalBetRegexp;
+    return regexp.test(bet);
+};
+
+const validatePartialBet = (lotteryType, bet) => {
+    const regexp =
+        lotteryType === 'TRIPLES' ? partialBetRegexp : partialTerminalBetRegexp;
+    return regexp.test(bet);
+};
+
 function Triples() {
     const [lotteries, setLotteries] = useState([]);
     const [playerBet, setPlayerBet] = useState('');
@@ -33,6 +47,7 @@ function Triples() {
         handleDeleteBets,
         handleBuyTicket,
         handleSelectDraw,
+        handleSelectMultipleDraws,
         setBetAmount,
     } = useBets();
     const [ticket, setTicket] = useState('');
@@ -96,10 +111,12 @@ function Triples() {
             .filter((v) => v !== '')
             .join('.');
 
-        if (!betRegexp.test(play)) {
-            showError(
-                'Ingresa una jugada válida, solo se aceptan terminales o triples.'
-            );
+        if (!validateBet(lotteries[lotteryIndex].type, play)) {
+            const message =
+                lotteries[lotteryIndex].type === 'TRIPLES'
+                    ? 'Ingresa una jugada válida, solo se aceptan terminales o triples.'
+                    : 'Ingresa una jugada válida, solo se aceptan terminales.';
+            showError(message);
             return;
         }
 
@@ -131,13 +148,13 @@ function Triples() {
         );
     };
     const handleInputPlayerBetChange = (e) => {
-        if (partialBetRegexp.test(e.target.value)) {
+        if (validatePartialBet(lotteries[lotteryIndex].type, e.target.value)) {
             setInputPlayerBet(e.target.value);
         }
     };
 
     const getTripleImage = (name) => {
-        return `/triples/${name.toLowerCase().replace(' ', '-')}.png`;
+        return `/triples/${name.toLowerCase().replaceAll(' ', '-')}.png`;
     };
 
     if (lotteries === null || lotteries.length === 0) {
@@ -188,7 +205,7 @@ function Triples() {
                         <Button
                             variant="success"
                             key={index}
-                            className="ml-2"
+                            className="ml-2 text-uppercase"
                             onClick={() => handleSpecialPlay(play.fn)}
                         >
                             {play.name}
@@ -198,16 +215,29 @@ function Triples() {
 
                 <div className="d-flex flex-wrap justify-content-center mt-3">
                     {availableDraws.length > 0 ? (
-                        availableDraws.map((draw) => (
+                        <>
                             <Button
-                                key={draw.id}
                                 className="triples-draw-button p-3 m-1"
-                                variant={draws[draw.id] ? 'success' : 'light'}
-                                onClick={() => handleSelectDraw(draw)}
+                                variant="light"
+                                onClick={() =>
+                                    handleSelectMultipleDraws(availableDraws)
+                                }
                             >
-                                <div>{draw.nombre}</div>
+                                TODOS
                             </Button>
-                        ))
+                            {availableDraws.map((draw) => (
+                                <Button
+                                    key={draw.id}
+                                    className="triples-draw-button p-3 m-1"
+                                    variant={
+                                        draws[draw.id] ? 'success' : 'light'
+                                    }
+                                    onClick={() => handleSelectDraw(draw)}
+                                >
+                                    <div>{draw.nombre}</div>
+                                </Button>
+                            ))}
+                        </>
                     ) : (
                         <p className="mt-3">No hay sorteos disponibles</p>
                     )}

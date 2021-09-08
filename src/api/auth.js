@@ -26,25 +26,24 @@ function transformProducts(products) {
     };
     let date;
     let lotteryType;
+    let productId;
 
     for (const product of products) {
-        if (product.type === 'TERMINALES') {
-            continue;
-        }
-
+        productId = product.product_new_id || product.product_id;
         lotteryType = product.type === 'ANIMALES' ? 'animalitos' : 'triples';
 
-        if (!data[lotteryType][product.product_id]) {
-            data[lotteryType][product.product_id] = {
-                id: product.product_id,
+        if (!data[lotteryType][productId]) {
+            data[lotteryType][productId] = {
+                id: productId,
                 nombre: product.name.match(productNameRegexp)[1],
                 sorteos: [],
+                type: product.type,
             };
         }
 
         date = new Date(product.lotery_hour);
 
-        data[lotteryType][product.product_id]['sorteos'].push({
+        data[lotteryType][productId]['sorteos'].push({
             id: product.id,
             nombre: product.name,
             nombre_largo: product.name,
