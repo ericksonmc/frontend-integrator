@@ -16,9 +16,6 @@ export const logout = async () => {
 
 const Auth = { tokenLogin, logout };
 
-const productNameRegexp =
-    /^((?:\w{2,}\s?)+)(?:\s\w)?\s(?:\d+:\d*\s?(?:A|P)\.?M)$/;
-
 function transformProducts(products) {
     const data = {
         triples: {},
@@ -35,7 +32,7 @@ function transformProducts(products) {
         if (!data[lotteryType][productId]) {
             data[lotteryType][productId] = {
                 id: productId,
-                nombre: product.name.match(productNameRegexp)[1],
+                nombre: product.product_new_name,
                 sorteos: [],
                 type: product.type,
             };

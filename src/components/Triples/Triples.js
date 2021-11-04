@@ -168,9 +168,9 @@ function Triples() {
     }
 
     return (
-        <Row>
-            <Col className="d-flex justify-content-center" lg="3" md="3">
-                <div className="triples-lotteries-list pt-5">
+        <Row className="h-100">
+            <Col className="d-flex justify-content-center triples-draws-wrapper" lg="3" md="3">
+                <div className="triples-lotteries-list py-2">
                     {lotteries.map((l, index) => (
                         <div
                             key={index}

@@ -7,7 +7,7 @@
         border: 3px solid white;
         cursor: pointer;
         height: 90px;
-        max-width: 250px;
+        max-width: 230px;
         padding: 10px;
 
         &-selected {
@@ -33,6 +33,16 @@
     @media screen and (min-width: 768px) {
         &-draws-list {
             margin: 0;
+        }
+
+        &-draws-wrapper {
+            height: 100%;
+            overflow: auto;
+        }
+
+        &-lotteries-list {
+            height: 100%;
+            overflow: auto;
         }
     }
 
