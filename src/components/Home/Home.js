@@ -29,7 +29,7 @@ function Home(props) {
     };
 
     return (
-        <Container fluid className="home-container d-flex flex-column">
+        <Container fluid className="home-container d-flex flex-column" style="min-height: 100%;">
             <Row className="px-4 py-2">
                 <Col className="d-flex align-items-center">
                     <Link to="triples" getProps={getLinkProps}>
@@ -71,7 +71,7 @@ function Home(props) {
                 </Col>
             </Row>
             <Row className="home-content flex-fill">
-                <div className="home-board h-100 p-3" style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>{props.children}</div>
+                <div className="home-board p-3" style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>{props.children}</div>
             </Row>
             <RulesModal
                 show={showRulesModal}
