@@ -39,7 +39,6 @@ function transformProducts(products) {
         }
 
         date = new Date(product.lotery_hour);
-
         data[lotteryType][productId]['sorteos'].push({
             id: product.id,
             nombre: product.name,

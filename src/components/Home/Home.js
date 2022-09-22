@@ -14,7 +14,7 @@ import results from '../../img/results.png';
 import './Home_styles.scss';
 import RulesModal from '../RulesModal/RulesModal';
 import GlobalLoader from '../GlobalLoader/GlobalLoader';
-import background from '../../img/fondo-caribeapuesta.jpg';
+import background from '../../img/fondo-caribeapuesta.png';
 
 function Home(props) {
     const { playerBalance, products } = useStore();
@@ -29,7 +29,7 @@ function Home(props) {
     };
 
     return (
-        <Container fluid className="home-container h-100 d-flex flex-column">
+        <Container fluid className="home-container d-flex flex-column">
             <Row className="px-4 py-2">
                 <Col className="d-flex align-items-center">
                     <Link to="triples" getProps={getLinkProps}>
