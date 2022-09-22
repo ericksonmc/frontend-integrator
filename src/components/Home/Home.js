@@ -29,7 +29,7 @@ function Home(props) {
     };
 
     return (
-        <Container fluid className="home-container d-flex flex-column" style="min-height: 100%;">
+        <Container fluid className="home-container d-flex flex-column" style={{minHeight: '100%'}}>
             <Row className="px-4 py-2">
                 <Col className="d-flex align-items-center">
                     <Link to="triples" getProps={getLinkProps}>
